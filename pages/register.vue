@@ -1,55 +1,96 @@
 <script setup>
-definePageMeta ({
-    layout:"defualt"
-})
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useCookie } from "#app";
+
+definePageMeta({
+  layout: "default",
+});
+
+const { $axios } = useNuxtApp();
+const router = useRouter();
+
+const error = ref("");
+const formData = ref({
+  name: "",
+  username: "",
+  password: "",
+  confirmPassword: "",
+});
+
+async function register() {
+  error.value = "";
+
+  if (formData.value.password !== formData.value.confirmPassword) {
+    error.value = "รหัสผ่านไม่ตรงกัน";
+    return;
+  }
+
+  try {
+    const payload = {
+      user_name: formData.value.name,
+      user_username: formData.value.username,
+      user_password: formData.value.password,
+    };
+
+    const response = await $axios.post("/auth/register", payload);
+
+    if (response.status === 201) {
+      // optional: save token / cookie if backend returns it
+      router.push("/"); // เปลี่ยนเส้นทางไปหน้า login
+    }
+  } catch (err) {
+    console.error("Registration error:", err);
+    error.value = "เกิดข้อผิดพลาดในการลงทะเบียน";
+  }
+}
 </script>
+
 <template>
   <div class="flex justify-center h-screen items-center mx-auto">
     <div class="bg-white shadow-gray-500 p-8 rounded-4xl shadow-md w-full max-w-md">
       <h1 class="text-4xl font-bold mb-6 text-center">Mai Khmer</h1>
-      <h2 class="text-2xl  mb-4 text-center">ลงทะเบียน</h2>
-      <form onSubmit={onSubmit} className="flex flex-col gap-5">
+      <h2 class="text-2xl mb-4 text-center">ลงทะเบียน</h2>
+
+      <form @submit.prevent="register" class="flex flex-col gap-5">
+        <div class="mb-4">
+          <label class="block text-gray-700">ชื่อ-นามสกุล</label>
+          <input
+            v-model="formData.name"
+            type="text"
+            placeholder="ชื่อ-นามสกุล"
+            class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
 
         <div class="mb-4">
-          <label for="email" class="block text-gray-700">ชื่อผู้ใช้</label>
+          <label class="block text-gray-700">ชื่อผู้ใช้</label>
           <input
-            v-model="ชื่อผู้ใช้"
+            v-model="formData.username"
             type="text"
-            id="text"
             placeholder="ชื่อผู้ใช้"
             class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
-        <div class="mb-4">
-          <label for="email" class="block text-gray-700">Email</label>
-          <input
-            v-model="email"
-            type="email"
-            id="email"
-            placeholder="Email"
-            class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
 
-        <div class="mb-6">
-          <label for="password" class="block text-gray-700">รหัสผ่าน</label>
+        <div class="mb-4">
+          <label class="block text-gray-700">รหัสผ่าน</label>
           <input
-            v-model="password"
+            v-model="formData.password"
             type="password"
-            id="password"
             placeholder="รหัสผ่าน"
             class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
-        <div class="mb-6">
-          <label for="password" class="block text-gray-700">ยืนยันรหัสผ่าน</label>
+
+        <div class="mb-4">
+          <label class="block text-gray-700">ยืนยันรหัสผ่าน</label>
           <input
-            v-model="ยืนยันรหัสผ่าน"
+            v-model="formData.confirmPassword"
             type="password"
-            id="password"
             placeholder="ยืนยันรหัสผ่าน"
             class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
@@ -62,16 +103,14 @@ definePageMeta ({
         >
           ลงทะเบียน
         </button>
-      
-        <label className="text-gray-500 p-2 text-sm text-center w-full">
-              ยังไม่มีบัญชีใช่ไหม?
-              <NuxtLink
-                href="/"
-                className="text-red-500 font-bold hover:underline ml-1"
-              >
-                เข้าสู่ระบบ
-              </NuxtLink>
-            </label>
+
+        <label class="text-gray-500 p-2 text-sm text-center w-full">
+          มีบัญชีอยู่แล้ว?
+          <NuxtLink href="/" class="text-red-500 font-bold hover:underline ml-1">
+            เข้าสู่ระบบ
+          </NuxtLink>
+        </label>
+
         <p v-if="error" class="text-red-500 mt-4 text-center">{{ error }}</p>
       </form>
     </div>
