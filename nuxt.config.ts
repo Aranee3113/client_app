@@ -20,15 +20,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || "http://localhost:8000/api",
-    },
-  },
-  devServer: {
-    proxy: {
-      "/api": {
-        target: "http://localhost:8000/api",
-        changeOrigin: true,
-      },
+      apiBase: process.env.NUXT_PUBLIC_API_BASE,
     },
   },
 });

@@ -11,7 +11,7 @@ export default defineNuxtPlugin(() => {
   });
 
   const $axios = axios.create({
-    baseURL: config.public.apiBaseUrl || "http://localhost:8008/api",
+    baseURL: config.public.apiBase,
     withCredentials: true,
   });
 

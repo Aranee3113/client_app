@@ -10,8 +10,8 @@ definePageMeta({
 
 const error = ref("");
 const formData = ref({
-  email: "",
-  password: "",
+  user_username: "",
+  user_password: "",
 });
 
 async function login() {
@@ -26,7 +26,7 @@ async function login() {
 
       console.log("Login success", response.data);
       // ✅ Redirect to homepage or dashboard
-      router.push("/");
+      router.push("/editor/home");
     }
   } catch (err) {
     error.value = "รหัสผ่านหรืออีเมลไม่ถูกต้อง!";
@@ -48,7 +48,7 @@ async function login() {
         <div class="mb-4">
           <label for="email" class="block text-gray-700">Email</label>
           <input
-            v-model="formData.email"
+            v-model="formData.user_username"
             type="email"
             class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
@@ -58,7 +58,7 @@ async function login() {
         <div class="mb-6">
           <label for="password" class="block text-gray-700">Password</label>
           <input
-            v-model="formData.password"
+            v-model="formData.user_password"
             type="password"
             class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
