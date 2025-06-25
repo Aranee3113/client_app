@@ -37,7 +37,7 @@ async function register() {
 
     if (response.status === 201) {
       // optional: save token / cookie if backend returns it
-      router.push("/"); // เปลี่ยนเส้นทางไปหน้า login
+      router.push("/login"); 
     }
   } catch (err) {
     console.error("Registration error:", err);

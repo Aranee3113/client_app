@@ -1,5 +1,8 @@
+<script setup>
+import { Shirt, Search } from "lucide-vue-next";
+</script>
 <template>
-  <nav class="bg-[#785849]">
+  <nav class="bg-[#fdfdfd] shadow-md shadow-gray-500">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="relative flex h-20 items-center justify-between">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -48,33 +51,47 @@
           </button>
         </div>
         <div
-          class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
+          class="flex flex-1 items-center justify-between sm:items-stretch sm:justify-start space-x-6"
         >
-          <div class="hidden sm:ml-6 sm:block">
-            <div class="space-x-4">
-              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-              <a
-                href="#"
-                class="rounded-md px-3 py-2 text-3xl font-medium text-white"
-                aria-current="page"
-                >Mai Khmer</a
-              >
-              <a
-                href="#"
-                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300  hover:text-white"
-                >หน้าหลัก</a
-              >
-              <a
-                href="#"
-                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:text-white"
-                >ชุมชนผ้าทอ</a
-              >
-              <a
-                href="#"
-                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:text-white"
-                >เกี่ยวกับเรา</a
-              >
-            </div>
+          <div class="flex items-center space-x-6 ">
+            <a
+              href="#"
+              class="rounded-md px-3 py-2 text-3xl font-medium text-[#ff5a5f]  hover:text-black flex items-center space-x-2"
+              aria-current="page"
+            >
+              <Shirt />
+              <span>Mai Khmer</span>
+            </a>
+            <a
+              href="#"
+              class="rounded-md px-3 py-2 text-sm font-medium text-black hover:text-[#ff5a5f]"
+              >หน้าหลัก</a
+            >
+            <a
+              href="#"
+              class="rounded-md px-3 py-2 text-sm font-medium text-black hover:text-[#ff5a5f]"
+              >ชุมชนผ้าทอ</a
+            >
+            <a
+              href="#"
+              class="rounded-md px-3 py-2 text-sm font-medium text-black hover:text-[#ff5a5f]"
+              >เกี่ยวกับเรา</a
+            >
+          </div>
+
+          <div class="flex items-center space-x-2 ">
+            <input
+              type="text"
+              placeholder="ค้นหา..."
+              class="w-full max-w-xs sm:w-48 rounded-md border border-gray-300 bg-white py-1.5  px-3 text-sm text-gray-900 shadow-md shadow-gray-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 sm:text-sm"
+            />
+            <button
+              type="button"
+              class="rounded-md bg-[#ff5a5f] shadow-md shadow-gray-500 px-4 py-1.5 text-sm font-medium text-black hover:text-white  hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+            >
+              <Search />
+              
+            </button>
           </div>
         </div>
         <div
@@ -82,7 +99,7 @@
         >
           <button
             type="button"
-            class="relative rounded-full bg-[#0c0b0b] p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+            class="relative rounded-full bg-[#fefefe] shadow-md shadow-gray-500 p-1 text-[#ff5a5f] hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
           >
             <span class="absolute -inset-1.5"></span>
             <span class="sr-only">View notifications</span>
