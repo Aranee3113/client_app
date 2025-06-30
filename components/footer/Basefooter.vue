@@ -1,31 +1,29 @@
-
-
 <template>
-<footer class="bg-[#785849] rounded-lg shadow-sm dark:bg-gray-900 m-4">
-    <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-        <div class="sm:flex sm:items-center sm:justify-between">
-            <a href="https://flowbite.com/" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
-                <span class="self-center text-2xl font-semibold whitespace-nowrap  text-white dark:text-white-400">Mai Khmer</span>
-            </a>
-            <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
-                <li>
-                    <a href="#" class="hover:underline me-4 md:me-6">About</a>
-                </li>
-                <li>
-                    <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
-                </li>
-                <li>
-                    <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
-                </li>
-                <li>
-                    <a href="#" class="hover:underline">Contact</a>
-                </li>
-            </ul>
-        </div>
-        <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-        <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a>. All Rights Reserved.</span>
+  <footer class="bg-[#fdfdfd] dark:bg-gray-900 shadow-sm rounded-t-2xl mt-10">
+    <div class="w-full max-w-screen-xl mx-auto p-6 md:py-10">
+      <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+        <a href="#" class="flex items-center space-x-3">
+          <span class="text-3xl font-bold text-[#ff5a5f] dark:text-white">Mai Khmer</span>
+        </a>
+        <ul class="flex flex-wrap gap-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+          <li>
+            <a href="#" class="hover:text-[#ff5a5f] transition-colors duration-200">About</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-[#ff5a5f] transition-colors duration-200">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-[#ff5a5f] transition-colors duration-200">Licensing</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-[#ff5a5f] transition-colors duration-200">Contact</a>
+          </li>
+        </ul>
+      </div>
+      <hr class="my-6 border-gray-300 dark:border-gray-700" />
+      <p class="text-sm text-center text-gray-500 dark:text-gray-400">
+        © 2023 <a href="#" class="hover:underline text-[#ff5a5f]">Mai Khmer</a>. All Rights Reserved.
+      </p>
     </div>
-</footer>
-
-
+  </footer>
 </template>

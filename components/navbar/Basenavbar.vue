@@ -32,7 +32,6 @@ import { Shirt, Search } from "lucide-vue-next";
               />
             </svg>
 
-            -->
             <svg
               class="hidden size-6"
               fill="none"
@@ -53,44 +52,45 @@ import { Shirt, Search } from "lucide-vue-next";
         <div
           class="flex flex-1 items-center justify-between sm:items-stretch sm:justify-start space-x-6"
         >
-          <div class="flex items-center space-x-6 ">
+          <div class="flex items-center space-x-6">
             <a
               href="#"
-              class="rounded-md px-3 py-2 text-3xl font-medium text-[#ff5a5f]  hover:text-black flex items-center space-x-2"
+              class="rounded-md px-3 py-2 text-3xl font-medium text-[#ff5a5f] hover:text-black flex items-center space-x-2"
               aria-current="page"
             >
               <Shirt />
               <span>Mai Khmer</span>
             </a>
-            <a
-              href="#"
+            <NuxtLink
+              to="/editor/home"
               class="rounded-md px-3 py-2 text-sm font-medium text-black hover:text-[#ff5a5f]"
-              >หน้าหลัก</a
             >
-            <a
-              href="#"
+              หน้าหลัก
+            </NuxtLink>
+
+            <NuxtLink
+              to="/editor/home"
               class="rounded-md px-3 py-2 text-sm font-medium text-black hover:text-[#ff5a5f]"
-              >ชุมชนผ้าทอ</a
-            >
-            <a
-              href="#"
+              >ชุมชนผ้าทอ
+            </NuxtLink>
+            <NuxtLink
+              to="/editor/managepost"
               class="rounded-md px-3 py-2 text-sm font-medium text-black hover:text-[#ff5a5f]"
-              >เกี่ยวกับเรา</a
-            >
+              >PostList
+            </NuxtLink>
           </div>
 
-          <div class="flex items-center space-x-2 ">
+          <div class="flex items-center space-x-2">
             <input
               type="text"
               placeholder="ค้นหา..."
-              class="w-full max-w-xs sm:w-48 rounded-md border border-gray-300 bg-white py-1.5  px-3 text-sm text-gray-900 shadow-md shadow-gray-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 sm:text-sm"
+              class="w-full max-w-xs sm:w-48 rounded-md border border-gray-300 bg-white py-1.5 px-3 text-sm text-gray-900 shadow-md shadow-gray-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 sm:text-sm"
             />
             <button
               type="button"
-              class="rounded-md bg-[#ff5a5f] shadow-md shadow-gray-500 px-4 py-1.5 text-sm font-medium text-black hover:text-white  hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              class="rounded-md bg-[#ff5a5f] shadow-md shadow-gray-500 px-4 py-1.5 text-sm font-medium text-black hover:text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
             >
               <Search />
-              
             </button>
           </div>
         </div>
@@ -134,7 +134,7 @@ import { Shirt, Search } from "lucide-vue-next";
                 <span class="sr-only">Open user menu</span>
               </button>
             </div>
-            -->
+
             <div
               class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden"
               role="menu"
@@ -151,22 +151,7 @@ import { Shirt, Search } from "lucide-vue-next";
                 id="user-menu-item-0"
                 >แก้ไขโปรไฟล์</a
               >
-              <a
-                href="#"
-                class="block px-4 py-2 text-sm text-gray-700"
-                role="menuitem"
-                tabindex="-1"
-                id="user-menu-item-1"
-                >จัดการข้อมูลผ้าทอ</a
-              >
-              <a
-                href="#"
-                class="block px-4 py-2 text-sm text-gray-700"
-                role="menuitem"
-                tabindex="-1"
-                id="user-menu-item-2"
-                >จัดการชุมชนผ้าทอ</a
-              >
+          
               <a
                 href="#"
                 class="block px-4 py-2 text-sm text-gray-700"

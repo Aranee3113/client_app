@@ -1,26 +1,26 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-const { $axios } = useNuxtApp()
+import { ref, onMounted } from "vue";
+const { $axios } = useNuxtApp();
 
-const posts = ref([])
+const posts = ref([]);
 
 const fetchPosts = async () => {
   try {
-    const response = await $axios.get('/post') // เรียก API backend
+    const response = await $axios.get("/post"); // เรียก API backend
     if (response.status === 200 && response.data.data) {
-      posts.value = response.data.data
-      console.log('Posts:', posts.value)
+      posts.value = response.data.data;
+      console.log("Posts:", posts.value);
     } else {
-      console.warn('ไม่มีข้อมูลโพสต์')
+      console.warn("ไม่มีข้อมูลโพสต์");
     }
   } catch (error) {
-    console.error('เกิดข้อผิดพลาด:', error)
+    console.error("เกิดข้อผิดพลาด:", error);
   }
-}
+};
 
 onMounted(() => {
-  fetchPosts()
-})
+  fetchPosts();
+});
 </script>
 
 <template>
@@ -37,10 +37,11 @@ onMounted(() => {
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div
+        <NuxtLink
           v-for="post in posts"
           :key="post.post_id"
-          class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition"
+          :to="`/editor/post_list_detail_id/${post.post_id}`"
+          class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition block"
         >
           <h2 class="text-xl font-bold text-purple-700 mb-2">
             {{ post.post_name }}
@@ -52,7 +53,7 @@ onMounted(() => {
           <p class="text-sm text-gray-400 mt-1">
             👤 ผู้ใช้ ID: {{ post.user_id }}
           </p>
-        </div>
+        </NuxtLink>
       </div>
     </div>
   </div>
