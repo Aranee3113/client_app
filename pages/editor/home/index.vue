@@ -24,20 +24,6 @@
           <p class="text-sm text-gray-500 mt-1">
             สถานที่: {{ item.textile_location }}
           </p>
-          <div class="mt-4 flex justify-end space-x-2">
-            <button
-              class="bg-[#00a699] text-white px-4 py-1 rounded hover:bg-green-800"
-              @click="editTextile = item"
-            >
-              แก้ไข
-            </button>
-            <button
-              class="bg-[#ff5a5f] text-white px-4 py-1 rounded hover:bg-red-600"
-              @click="deleteTextile(item.textile_id)"
-            >
-              ลบ
-            </button>
-          </div>
         </div>
       </div>
     </div>

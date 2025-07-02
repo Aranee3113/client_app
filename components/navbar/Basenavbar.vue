@@ -69,14 +69,14 @@ import { Shirt, Search } from "lucide-vue-next";
             </NuxtLink>
 
             <NuxtLink
-              to="/editor/home"
+              to="/editor/managetextile"
               class="rounded-md px-3 py-2 text-sm font-medium text-black hover:text-[#ff5a5f]"
               >ชุมชนผ้าทอ
             </NuxtLink>
             <NuxtLink
               to="/editor/managepost"
               class="rounded-md px-3 py-2 text-sm font-medium text-black hover:text-[#ff5a5f]"
-              >PostList
+              >จัดการโพสต์
             </NuxtLink>
           </div>
 

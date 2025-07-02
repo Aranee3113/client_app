@@ -12,6 +12,10 @@ const loading = ref(true);
 const isSubmitting = ref(false);
 const message = ref("");
 
+// Mock ข้อมูล user_id และ is_active
+const userId = 1;
+const isActive = 1;
+
 const fetchPost = async () => {
   try {
     const res = await $axios.get(`/post/${postId}`);
@@ -40,10 +44,12 @@ const updatePost = async () => {
     const res = await $axios.put(`/post/${postId}`, {
       post_name: postName.value,
       post_description: postDescription.value,
+      post_timestamp: new Date(), // ส่ง timestamp ปัจจุบัน
+      user_id: userId,
+      is_active: isActive,
     });
 
     if (res.status === 200) {
-      // ✅ บันทึกสำเร็จ → redirect ทันที
       router.push("/editor/managepost");
     } else {
       message.value = "❌ ไม่สามารถบันทึกโพสต์ได้";
