@@ -5,7 +5,7 @@ const { $axios } = useNuxtApp();
 const router = useRouter();
 
 definePageMeta({
-  layouts: "default", // ✅ Fixed typo
+  layout: "default", // ✅ Fixed typo
 });
 
 const error = ref("");

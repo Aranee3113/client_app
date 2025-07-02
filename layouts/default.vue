@@ -1,7 +1,10 @@
 <template>
-  <div>
-    <header>My Header</header>
+  <div class="min-h-screen bg-whit">
+    <!-- navbar componenst  -->
     <slot />
+    <!-- footer componenst  -->
   </div>
-  <footer>My Footer</footer>
 </template>
+
+<script setup>
+</script>
