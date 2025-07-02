@@ -21,6 +21,42 @@ const getTextiles = async () => {
     console.error("เกิดข้อผิดพลาด:", error);
   }
 };
+const newTextile = ref({
+  textile_name: "",
+  textile_description: "",
+  textile_location: "",
+});
+
+const createTextile = async () => {
+  try {
+    const { textile_name, textile_description, textile_location } =
+      newTextile.value;
+
+    if (!textile_name || !textile_description || !textile_location) {
+      alert("กรุณากรอกข้อมูลให้ครบ");
+      return;
+    }
+
+    await $axios.post("/product", {
+      textile_name,
+      textile_description,
+      textile_location,
+    });
+
+    // เคลียร์ฟอร์ม
+    newTextile.value = {
+      textile_name: "",
+      textile_description: "",
+      textile_location: "",
+    };
+
+    getTextiles();
+    alert("✅ เพิ่มผ้าเรียบร้อยแล้ว");
+  } catch (error) {
+    console.error("เพิ่มผ้าล้มเหลว:", error);
+    alert("❌ ไม่สามารถเพิ่มผ้าได้");
+  }
+};
 const updateTextile = async (updatedItem) => {
   try {
     const { textile_id, textile_name, textile_description, textile_location } =
@@ -54,6 +90,46 @@ onMounted(() => {
 </script>
 <template>
   <NavbarBasenavbar />
+  <div class="max-w-3xl mx-auto mb-10 bg-white shadow p-6 rounded-2xl">
+  <h2 class="text-2xl font-bold mb-4 text-green-900">เพิ่มผ้าใหม่</h2>
+  <form @submit.prevent="createTextile" class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">ชื่อผ้า</label>
+      <input
+        v-model="newTextile.textile_name"
+        type="text"
+        class="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+        placeholder="กรอกชื่อผ้า"
+      />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">รายละเอียด</label>
+      <textarea
+        v-model="newTextile.textile_description"
+        class="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+        placeholder="กรอกรายละเอียด"
+      ></textarea>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">สถานที่ผลิต</label>
+      <input
+        v-model="newTextile.textile_location"
+        type="text"
+        class="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+        placeholder="เช่น จังหวัดเชียงใหม่"
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+    >
+      ➕ เพิ่มผ้า
+    </button>
+  </form>
+</div>
 
   <div class="min-h-screen bg-slate-50 py-12 px-4">
     <div class="max-w-5xl mx-auto">
