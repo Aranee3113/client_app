@@ -5,7 +5,7 @@ const { $axios } = useNuxtApp();
 const router = useRouter();
 
 definePageMeta({
-  layouts: "default", // ✅ Fixed typo
+  layout: "default", 
 });
 
 const error = ref("");
@@ -16,73 +16,64 @@ const formData = ref({
 
 async function login() {
   try {
-    console.log(formData.value);
     const response = await $axios.post("/auth/login", formData.value);
-    console.log(response.data);
     if (response.status === 200) {
       const token = response.data.token;
       const tokenCookie = useCookie("token");
       tokenCookie.value = token;
-
-      console.log("Login success", response.data);
-      // ✅ Redirect to homepage or dashboard
-      router.push("/editor/home");
+      router.push("/admin/dashboard");
     }
   } catch (err) {
     error.value = "รหัสผ่านหรืออีเมลไม่ถูกต้อง!";
-    console.log(err);
+    console.error(err);
   }
 }
 </script>
 
 <template>
-  <div class="flex justify-center h-screen items-center mx-auto">
-    <div
-      class="bg-white shadow-gray-500 p-8 rounded-4xl shadow-md w-full max-w-md"
-    >
-      <h1 class="text-4xl font-bold mb-6 text-center">Mai Khmer</h1>
-      <h2 class="text-2xl mb-4 text-center">เข้าสู่ระบบ</h2>
+  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center px-4">
+    <div class="bg-white/80 backdrop-blur-sm border border-white/30 shadow-2xl rounded-2xl w-full max-w-md p-8">
+      <h1 class="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text">
+        Mai Khmer
+      </h1>
+      <h2 class="text-xl text-center text-gray-600 mb-6">เข้าสู่ระบบ</h2>
 
-      <form @submit.prevent="login" class="flex flex-col gap-5">
-        <!-- ✅ Fix className -->
-        <div class="mb-4">
-          <label for="email" class="block text-gray-700">Email</label>
+      <form @submit.prevent="login" class="space-y-5">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Email</label>
           <input
             v-model="formData.user_username"
             type="email"
-            class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-300 focus:outline-none"
             required
           />
         </div>
 
-        <div class="mb-6">
-          <label for="password" class="block text-gray-700">Password</label>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Password</label>
           <input
             v-model="formData.user_password"
             type="password"
-            class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-300 focus:outline-none"
             required
           />
         </div>
 
         <button
           type="submit"
-          class="w-full bg-[#593f5d] text-white p-2 rounded-md hover:bg-white hover:text-[#8E1616] transition border-2 text-xl"
+          class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-2 rounded-lg shadow-md transition-all transform hover:scale-105"
         >
           เข้าสู่ระบบ
         </button>
 
-        <label class="text-gray-500 p-2 text-sm text-center w-full">
+        <p class="text-center text-sm text-gray-600">
           ยังไม่มีบัญชีใช่ไหม?
-          <NuxtLink
-            href="/register"
-            class="text-red-500 font-bold hover:underline ml-1"
-          >
+          <NuxtLink to="/register" class="text-pink-600 hover:underline font-semibold">
             ลงทะเบียนฟรี
           </NuxtLink>
-        </label>
+        </p>
 
-        <p v-if="error" class="text-red-500 mt-4 text-center">{{ error }}</p>
+        <p v-if="error" class="text-center text-red-500 text-sm mt-2">{{ error }}</p>
       </form>
     </div>
   </div>

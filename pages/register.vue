@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useCookie } from "#app";
 
+
 definePageMeta({
   layout: "default",
 });
@@ -33,11 +34,11 @@ async function register() {
       user_password: formData.value.user_password,
     };
 
-    const response = await $axios.post("/auth/register", payload);
+    const response = await $axios.post("/user", payload);
 
     if (response.status === 201) {
-      // optional: save token / cookie if backend returns it
-      router.push("/login"); 
+      alert("ลงทะเบียนสำเร็จ!");
+      router.push("/admin/dashboard");
     }
   } catch (err) {
     console.error("Registration error:", err);
@@ -47,76 +48,69 @@ async function register() {
 </script>
 
 <template>
-  <div class="flex justify-center h-screen items-center mx-auto">
-    <div
-      class="bg-white shadow-gray-500 p-8 rounded-4xl shadow-md w-full max-w-md"
-    >
-      <h1 class="text-4xl font-bold mb-6 text-center">Mai Khmer</h1>
-      <h2 class="text-2xl mb-4 text-center">ลงทะเบียน</h2>
+  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center px-4">
+    <div class="bg-white/80 backdrop-blur-sm border border-white/30 shadow-2xl rounded-2xl w-full max-w-md p-8">
+      <h1 class="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text">
+        Mai Khmer
+      </h1>
+      <h2 class="text-xl text-center text-gray-600 mb-6">ลงทะเบียน</h2>
 
-      <form @submit.prevent="register" class="flex flex-col gap-5">
-        <div class="mb-4">
-          <label class="block text-gray-700">ชื่อ-นามสกุล</label>
+      <form @submit.prevent="register" class="space-y-5">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">ชื่อ-นามสกุล</label>
           <input
             v-model="formData.user_name"
             type="text"
-            placeholder="ชื่อ-นามสกุล"
-            class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-300 focus:outline-none"
             required
           />
         </div>
 
-        <div class="mb-4">
-          <label class="block text-gray-700">ชื่อผู้ใช้</label>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">อีเมลผู้ใช้</label>
           <input
             v-model="formData.user_username"
             type="text"
-            placeholder="ชื่อผู้ใช้"
-            class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-300 focus:outline-none"
             required
           />
         </div>
 
-        <div class="mb-4">
-          <label class="block text-gray-700">รหัสผ่าน</label>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">รหัสผ่าน</label>
           <input
             v-model="formData.user_password"
             type="password"
-            placeholder="รหัสผ่าน"
-            class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-300 focus:outline-none"
             required
           />
         </div>
 
-        <div class="mb-4">
-          <label class="block text-gray-700">ยืนยันรหัสผ่าน</label>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">ยืนยันรหัสผ่าน</label>
           <input
             v-model="formData.confirmPassword"
             type="password"
-            placeholder="ยืนยันรหัสผ่าน"
-            class="mt-1 w-full border border-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-300 focus:outline-none"
             required
           />
         </div>
 
         <button
           type="submit"
-          class="w-full bg-[#593f5d] text-white p-2 rounded-md hover:bg-white hover:text-[#8E1616] transition border-2 text-xl"
+          class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-2 rounded-lg shadow-md transition transform hover:scale-105"
         >
           ลงทะเบียน
         </button>
 
-        <label class="text-gray-500 p-2 text-sm text-center w-full">
+        <p class="text-center text-sm text-gray-600">
           มีบัญชีอยู่แล้ว?
-          <NuxtLink
-            href="/"
-            class="text-red-500 font-bold hover:underline ml-1"
-          >
+          <NuxtLink to="/" class="text-pink-600 hover:underline font-semibold">
             เข้าสู่ระบบ
           </NuxtLink>
-        </label>
+        </p>
 
-        <p v-if="error" class="text-red-500 mt-4 text-center">{{ error }}</p>
+        <p v-if="error" class="text-red-500 text-sm text-center mt-2">{{ error }}</p>
       </form>
     </div>
   </div>
