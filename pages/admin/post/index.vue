@@ -86,10 +86,14 @@ onMounted(() => {
                     @deleted="fetchPosts"
                   />
                   <CommonButtonApprovebutton
-                    text="โพสต์"
-                    color="bg-green-800 text-white"
+                    :text="post.is_active == 1 ? 'อนุมัติ' : 'ยังไม่อนุมัติ'"
+                    :color="[
+                      'text-white',
+                      post.is_active == 1 ? 'bg-green-600' : 'bg-red-500',
+                    ]"
                     path="/admin/post"
                     :params="post.post_id"
+                    @fetchOn="fetchPosts"
                   />
                 </div>
               </td>

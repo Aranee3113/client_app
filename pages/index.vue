@@ -21,7 +21,17 @@ async function login() {
       const token = response.data.token;
       const tokenCookie = useCookie("token");
       tokenCookie.value = token;
-      router.push("/admin/dashboard");
+
+      console.log(response.data.data.is_admin);
+      const isAdmin = response.data.data.is_admin;
+      if (isAdmin === 0) {
+        router.push("/member/homeindex");
+      }
+      else
+      if (isAdmin === 1) {
+        router.push("/admin/dashboard");
+      }
+      // router.push("/admin/dashboard");
     }
   } catch (err) {
     error.value = "รหัสผ่านหรืออีเมลไม่ถูกต้อง!";

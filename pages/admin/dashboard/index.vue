@@ -73,30 +73,6 @@ onMounted(() => {
               <p class="text-gray-600 text-sm">Dashboard Control Panel</p>
             </div>
           </div>
-          <button
-            @click="goToPostPage"
-            class="group relative px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 overflow-hidden"
-          >
-            <span class="relative z-10 flex items-center space-x-2">
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-              <span>จัดการโพสต์</span>
-            </span>
-            <div
-              class="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            ></div>
-          </button>
         </div>
 
         <!-- Main Title -->

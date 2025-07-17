@@ -6,23 +6,19 @@ import { Check, X } from "lucide-vue-next";
 const props = defineProps({
   text: String,
   params: Number, // ใช้ post_id
+  color: String,
 });
-
+const emit = defineEmits(["fetchOn"]);
 const { $axios } = useNuxtApp();
-const approved = ref(false); // เริ่มต้นคือยังไม่อนุมัติ
+const approved = ref(false);
 
 const handleApprove = async () => {
-  if (approved.value) return;
-
-  const confirmApprove = confirm(`คุณต้องการอนุมัติ ${props.text} หรือไม่?`);
-  if (!confirmApprove) return;
-
   try {
     const response = await $axios.put(`/post/active/${props.params}`);
 
     if (response.status === 200) {
-      alert(`${props.text} ได้รับการอนุมัติแล้ว`);
       approved.value = true;
+      emit("fetchOn");
     }
   } catch (error) {
     console.error("เกิดข้อผิดพลาด:", error);
@@ -34,10 +30,11 @@ const handleApprove = async () => {
 <template>
   <button
     @click="handleApprove"
-    class="w-10 h-10 flex items-center justify-center rounded-none transition-all"
-    :class="approved ? 'bg-green-800 text-white' : 'bg-red-800 text-white'"
-    :title="approved ? 'อนุมัติแล้ว' : 'ยังไม่อนุมัติ'"
+    :class="[
+      'w-10 h-10 flex items-center justify-center text-xs text-nowrap  px-3 transition-all min-w-[100px] rounded',
+      color,
+    ]"
   >
-    <component :is="approved ? Check : X" class="w-5 h-5" />
+    {{ text }}
   </button>
 </template>

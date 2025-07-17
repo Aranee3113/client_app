@@ -35,7 +35,7 @@ onBeforeUnmount(() => {
 
 <template>
   <nav
-    class="backdrop-blur-md bg-white/80 shadow-gray-300 z-50 border-b border-gray-200"
+    class="backdrop-blur-md bg-white/80 shadow-gray-300 z-50 border-b border-gray-200 "
   >
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-20 items-center justify-between space-x-6">
@@ -54,19 +54,14 @@ onBeforeUnmount(() => {
             >หน้าหลัก</NuxtLink
           >
           <NuxtLink
-            to="/admin/information"
+            to="/member/information"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
-            >จัดการข้อมูลผ้า</NuxtLink
+            >ชุมชนผ้าทอ</NuxtLink
           >
           <NuxtLink
-            to="/admin/post"
+            to="/member/post"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
-            >จัดการโพสต์</NuxtLink
-          >
-          <NuxtLink
-            to="/admin/user"
-            class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
-            >จัดการรายชื่อผู้ใช้</NuxtLink
+            >โพสต์</NuxtLink
           >
         </div>
 
@@ -98,7 +93,7 @@ onBeforeUnmount(() => {
             >
               <div class="py-2">
                 <NuxtLink
-                  to="/admin/user"
+                  to="/editor/manageuser"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   แก้ไขข้อมูลผู้ใช้
