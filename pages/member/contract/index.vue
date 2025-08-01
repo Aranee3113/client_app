@@ -1,9 +1,13 @@
+<script setup>
+definePageMeta({
+  layout: "member",
+});
+</script>
+
 <template>
   <div>
-    หน้าโพสต์
+    หน้าแชท
   </div>
 </template>
 
-<script setup>
-// คุณสามารถเริ่มเขียนโค้ดที่นี่
-</script>
+

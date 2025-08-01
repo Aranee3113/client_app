@@ -22,6 +22,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <CommonButtonBack />
   <div class="max-w-3xl mx-auto py-12 px-6">
     <div v-if="post" class="bg-white p-6 shadow-md rounded-xl">
       <h1 class="text-2xl font-bold text-orange-600 mb-4">{{ post.post_name }}</h1>

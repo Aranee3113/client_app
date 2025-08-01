@@ -70,7 +70,7 @@ onMounted(() => {
               >
                 ระบบจัดการแอดมิน
               </h1>
-              <p class="text-gray-600 text-sm">Dashboard Control Panel</p>
+              <p class="text-gray-600">ภาพรวมข้อมูลทั้งหมดในระบบ</p>
             </div>
           </div>
         </div>

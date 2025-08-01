@@ -49,19 +49,24 @@ onBeforeUnmount(() => {
             <span>Mai Khmer</span>
           </NuxtLink>
           <NuxtLink
-            to="/admin/dashboard"
+            to="/member/homeindex"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
             >หน้าหลัก</NuxtLink
           >
           <NuxtLink
-            to="/member/information"
+            to="/member/information_list"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
             >ชุมชนผ้าทอ</NuxtLink
           >
           <NuxtLink
-            to="/member/post"
+            to="/member/post_list"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
             >โพสต์</NuxtLink
+          >
+          <NuxtLink
+            to="/member/contract"
+            class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
+            >แชท</NuxtLink
           >
         </div>
 
@@ -93,7 +98,7 @@ onBeforeUnmount(() => {
             >
               <div class="py-2">
                 <NuxtLink
-                  to="/editor/manageuser"
+                  to="/member/profile"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   แก้ไขข้อมูลผู้ใช้

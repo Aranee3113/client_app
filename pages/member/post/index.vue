@@ -1,4 +1,7 @@
 <script setup>
+definePageMeta({
+  layout: "member",
+});
 import { ref, onMounted } from "vue";
 const { $axios } = useNuxtApp();
 const posts = ref([]);
@@ -25,7 +28,7 @@ onMounted(() => {
   >
     <div class="max-w-6xl mx-auto">
       <h2
-        class="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent"
+        class="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-purple-700 to-red-500 bg-clip-text text-transparent"
       >
         รายการโพสต์
       </h2>
