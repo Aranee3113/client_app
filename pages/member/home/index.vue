@@ -84,7 +84,7 @@ onMounted(() => {
             class="bg-white/90 dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition p-6 border border-gray-200 dark:border-gray-700"
           >
             <NuxtLink
-              :to="`/member/${id}/information_list/${item.textile_id}`"
+              :to="`/member/information_list/${item.textile_id}`"
               class="text-xl font-semibold text-purple-800 hover:text-pink-800 transition"
             >
               {{ item.textile_name }}
@@ -122,7 +122,7 @@ onMounted(() => {
             class="bg-white/90 dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition p-6 border border-gray-200 dark:border-gray-700"
           >
             <NuxtLink
-              :to="`/member/${id}/post/${post.post_id}`"
+              :to="`/member/post/${post.post_id}`"
               class="text-xl font-semibold text-pink-500 hover:text-purple-600 transition"
             >
               {{ post.post_name }}

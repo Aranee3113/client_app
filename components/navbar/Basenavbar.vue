@@ -2,11 +2,14 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import { Shirt, Search, ShieldUser } from "lucide-vue-next";
+import { decodeJwt } from "jose";
 
 const showNotifications = ref(false);
 const dropdownRef = ref(null);
 const router = useRouter();
 const id = ref<string>("");
+
+const token = useCookie("token").value;
 
 const toggleNotifications = () => {
   showNotifications.value = !showNotifications.value;
@@ -28,11 +31,19 @@ const logout = () => {
 
 onMounted(() => {
   document.addEventListener("click", handleClickOutside);
+
+  // ดึง user_id จาก token
+  if (token) {
+    const decoded: any = decodeJwt(token);
+    id.value = String(decoded.user_id);
+  }
 });
+
 onBeforeUnmount(() => {
   document.removeEventListener("click", handleClickOutside);
 });
 </script>
+
 
 <template>
   <nav
@@ -50,22 +61,22 @@ onBeforeUnmount(() => {
             <span>Mai Khmer</span>
           </NuxtLink>
           <NuxtLink
-            :to="`/admin/${id}/dashboard`"
+            :to="`/admin/dashboard`"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
             >หน้าหลัก</NuxtLink
           >
           <NuxtLink
-            :to="`/admin/${id}/information`"
+            :to="`/admin/information`"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
             >จัดการข้อมูลผ้า</NuxtLink
           >
           <NuxtLink
-            :to="`/admin/${id}/post`"
+            :to="`/admin/post`"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
             >จัดการโพสต์</NuxtLink
           >
           <NuxtLink
-            :to="`/admin/${id}/user`"
+            :to="`/admin/user`"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
             >จัดการรายชื่อผู้ใช้</NuxtLink
           >
@@ -99,7 +110,7 @@ onBeforeUnmount(() => {
             >
               <div class="py-2">
                 <NuxtLink
-                  :to="`/admin/${id}/user`"
+                  :to="`/admin/user`"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   แก้ไขข้อมูลผู้ใช้

@@ -60,10 +60,10 @@ const logout = () => {
             <Shirt />
             <span>Mai Khmer</span>
           </NuxtLink>
-          <NuxtLink :to="`/member/${id}/home`" class="text-sm text-gray-700 hover:text-[#ff5a5f] transition">หน้าหลัก</NuxtLink>
-          <NuxtLink :to="`/member/${id}/information_list`" class="text-sm text-gray-700 hover:text-[#ff5a5f] transition">ชุมชนผ้าทอ</NuxtLink>
-          <NuxtLink :to="`/member/${id}/post_list`" class="text-sm text-gray-700 hover:text-[#ff5a5f] transition">โพสต์</NuxtLink>
-          <NuxtLink :to="`/member/${id}/contract`" class="text-sm text-gray-700 hover:text-[#ff5a5f] transition">แชท</NuxtLink>
+          <NuxtLink :to="`/member/home`" class="text-sm text-gray-700 hover:text-[#ff5a5f] transition">หน้าหลัก</NuxtLink>
+          <NuxtLink :to="`/member/information_list`" class="text-sm text-gray-700 hover:text-[#ff5a5f] transition">ชุมชนผ้าทอ</NuxtLink>
+          <NuxtLink :to="`/member/post_list`" class="text-sm text-gray-700 hover:text-[#ff5a5f] transition">โพสต์</NuxtLink>
+          <NuxtLink :to="`/member/contract`" class="text-sm text-gray-700 hover:text-[#ff5a5f] transition">แชท</NuxtLink>
         </div>
 
         <!-- เมนูด้านขวา -->
@@ -97,7 +97,7 @@ const logout = () => {
               <div class="py-2">
                 <template v-if="id">
                   <NuxtLink
-                    :to="`/member/${id}/profile`"
+                    :to="`/member/profile`"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     แก้ไขข้อมูลผู้ใช้
