@@ -8,6 +8,9 @@ const router = useRouter();
 const { $axios } = useNuxtApp();
 const products = ref([]);
 
+// ปรับ baseURL สำหรับเรียก path รูปภาพใน public/uploads
+const baseURL = ""; 
+
 const fetchProducts = async () => {
   try {
     const res = await $axios.get("/product");
@@ -26,25 +29,21 @@ onMounted(() => {
 
 <template>
   <CommonButtonBack />
-  <div
-    class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6"
-  >
+  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6">
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
-        <h2
-          class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
-        >
+        <h2 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
           รายการข้อมูลผ้า
         </h2>
         <div class="flex flex-col items-end space-y-2">
           <NuxtLink
-            :to="`/admin/information/add`"
+            to="/admin/information/add"
             class="inline-flex items-center px-5 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
           >
             + เพิ่มข้อมูลผ้า
           </NuxtLink>
           <NuxtLink
-            :to="`/admin/dashboard`"
+            to="/admin/dashboard"
             class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition transform hover:scale-105 shadow-md"
           >
             ย้อนกลับ
@@ -52,17 +51,14 @@ onMounted(() => {
         </div>
       </div>
 
-      <div
-        class="overflow-x-auto rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20"
-      >
+      <div class="overflow-x-auto rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20">
         <table class="min-w-full text-left text-sm">
-          <thead
-            class="bg-gradient-to-r from-purple-100 to-pink-100 text-gray-700"
-          >
+          <thead class="bg-gradient-to-r from-purple-100 to-pink-100 text-gray-700">
             <tr>
               <th class="py-3 px-4 text-center font-semibold">ID</th>
               <th class="py-3 px-4 font-semibold">ชื่อ</th>
               <th class="py-3 px-4 font-semibold">สถานที่</th>
+              <th class="py-3 px-4 font-semibold">รูปภาพ</th>
               <th class="py-3 px-4 font-semibold text-center">จัดการ</th>
             </tr>
           </thead>
@@ -75,6 +71,17 @@ onMounted(() => {
               <td class="py-3 px-4 text-center">{{ product.textile_id }}</td>
               <td class="py-3 px-4">{{ product.textile_name }}</td>
               <td class="py-3 px-4">{{ product.textile_location }}</td>
+
+              <td class="py-3 px-4 text-center">
+                <img
+                  v-if="product.images && product.images.length > 0"
+                  :src="baseURL + product.images[0].textile_image_path"
+                  alt="รูปผ้า"
+                  class="w-20 h-20 object-cover rounded-lg mx-auto border"
+                />
+                <span v-else class="text-gray-400 italic text-sm">ไม่มีรูป</span>
+              </td>
+
               <td class="py-3 px-4">
                 <div class="flex justify-center gap-2">
                   <CommonButtonEditbutton
@@ -92,7 +99,7 @@ onMounted(() => {
               </td>
             </tr>
             <tr v-if="products.length === 0">
-              <td colspan="4" class="text-center text-gray-400 py-6">
+              <td colspan="5" class="text-center text-gray-400 py-6">
                 ไม่มีข้อมูลผ้าในระบบ
               </td>
             </tr>

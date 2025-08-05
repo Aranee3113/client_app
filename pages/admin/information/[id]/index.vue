@@ -19,7 +19,18 @@ const form = ref({
   textile_name: "",
   textile_description: "",
   textile_location: "",
+  textile_images: [],
 });
+const handleFileChange = (event) => {
+  const files = event.target.files;
+  if (files.length > 0) {
+    const newFiles = Array.from(files);
+    form.value.textile_images = [
+      ...form.value.textile_images.filter((img) => typeof img === "string"),
+      ...newFiles,
+    ];
+  }
+};
 
 onMounted(async () => {
   if (isEditMode) {
@@ -27,10 +38,13 @@ onMounted(async () => {
     try {
       const res = await $axios.get(`/product/${id}`);
       if (res.status === 200 && res.data.data) {
+        const data = res.data.data;
         form.value = {
-          textile_name: res.data.data.textile_name,
-          textile_description: res.data.data.textile_description,
-          textile_location: res.data.data.textile_location,
+          textile_name: data.textile_name,
+          textile_description: data.textile_description,
+          textile_location: data.textile_location,
+          textile_images:
+            data.images?.map((img) => img.textile_image_path) || [],
         };
       }
     } catch (err) {
@@ -46,12 +60,21 @@ const handleSubmit = async () => {
   error.value = "";
   success.value = "";
 
+  const formData = new FormData();
+  formData.append("textile_name", form.value.textile_name);
+  formData.append("textile_description", form.value.textile_description);
+  formData.append("textile_location", form.value.textile_location);
+
+  for (const file of form.value.textile_images) {
+    formData.append("textile_images", file);
+  }
+
   try {
     if (isEditMode) {
-      await $axios.put(`/product/${id}`, form.value);
+      await $axios.put(`/product/${id}`, formData);
       success.value = "อัปเดตข้อมูลผ้าสำเร็จ";
     } else {
-      await $axios.post("/product", form.value);
+      await $axios.post("/product", formData);
       success.value = "เพิ่มข้อมูลผ้าสำเร็จ";
     }
 
@@ -67,13 +90,21 @@ const handleSubmit = async () => {
 
 <template>
   <CommonButtonBack />
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6">
-    <div class="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
-      <h1 class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+  <div
+    class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6"
+  >
+    <div
+      class="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20"
+    >
+      <h1
+        class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+      >
         {{ isEditMode ? "แก้ไขข้อมูลผ้า" : "เพิ่มข้อมูลผ้า" }}
       </h1>
 
       <form @submit.prevent="handleSubmit" class="space-y-5">
+
+        <!-- ชื่อผ้า -->
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">ชื่อผ้า</label>
           <input
@@ -84,6 +115,7 @@ const handleSubmit = async () => {
           />
         </div>
 
+        <!-- รายละเอียด -->
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">รายละเอียด</label>
           <textarea
@@ -94,6 +126,7 @@ const handleSubmit = async () => {
           />
         </div>
 
+        <!-- สถานที่ -->
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">สถานที่</label>
           <input
@@ -104,6 +137,37 @@ const handleSubmit = async () => {
           />
         </div>
 
+        <!-- แสดงรูปผ้า (ทั้งเดิม + ใหม่) -->
+        <div v-if="form.textile_images.length" class="mt-6">
+          <label class="block text-sm font-medium text-gray-700 mb-2">รูปภาพ</label>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div
+              v-for="(img, index) in form.textile_images"
+              :key="index"
+              class="relative border rounded overflow-hidden shadow-sm"
+            >
+              <img
+                :src="typeof img === 'string' ? img : URL.createObjectURL(img)"
+                alt="รูปผ้า"
+                class="w-full h-32 object-cover hover:scale-105 transition-transform duration-200"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- input เลือกรูป -->
+        <div class="mt-4">
+          <label class="block text-sm font-medium text-gray-700">อัปโหลดรูปใหม่</label>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            @change="handleFileChange"
+            class="mt-2"
+          />
+        </div>
+
+        <!-- ปุ่ม -->
         <div class="flex justify-between items-center mt-6">
           <button
             type="submit"
@@ -119,9 +183,12 @@ const handleSubmit = async () => {
             ย้อนกลับ
           </NuxtLink>
         </div>
+
         <p v-if="error" class="text-red-500 text-center text-sm mt-4">{{ error }}</p>
         <p v-if="success" class="text-green-600 text-center text-sm mt-4">{{ success }}</p>
       </form>
     </div>
   </div>
 </template>
+
+

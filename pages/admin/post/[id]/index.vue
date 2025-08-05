@@ -5,7 +5,6 @@ definePageMeta({
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { decodeJwt } from "jose";
-
 const { $axios } = useNuxtApp();
 const route = useRoute();
 const router = useRouter();
@@ -20,25 +19,20 @@ const form = ref({
   post_name: "",
   post_description: "",
   user_id: "",
-  images: [], // ใช้แสดงรูป preview
-  existingImages: [], // สำหรับรูปเดิมที่โหลดจาก backend
+  existingImages: [],
   keep_image_ids: [],
+  images: [],
 });
-const newImages = ref([]); // สำหรับอัปโหลดจริง
+const newImages = ref([]); 
 
 // จัดการตอนเลือกรูปใหม่
 const handleFileChange = (event) => {
   const files = event.target.files;
-  if (files.length > 0) {
-    newImages.value = Array.from(files);
-    form.value.images = Array.from(files).map((file) => ({
-      file,
-      url: URL.createObjectURL(file),
-    }));
-  } else {
-    newImages.value = [];
-    form.value.images = [];
-  }
+  newImages.value = Array.from(files);
+  form.value.images = newImages.value.map((file) => ({
+    file,
+    url: URL.createObjectURL(file),
+  }));
 };
 
 // โหลดข้อมูลโพสต์
@@ -50,10 +44,9 @@ onMounted(async () => {
   }
 
   if (isEditMode) {
-    loading.value = true;
     try {
       const res = await $axios.get(`/post/${id}`);
-      if (res.status === 200 && res.data.data) {
+      if (res.status === 200) {
         const data = res.data.data;
         form.value.post_name = data.post_name;
         form.value.post_description = data.post_description;
@@ -61,16 +54,12 @@ onMounted(async () => {
         form.value.existingImages = data.images || [];
         form.value.keep_image_ids = data.images?.map((img) => img.post_image_id) || [];
       }
-    } catch (err) {
-      console.error("โหลดข้อมูลโพสต์ล้มเหลว", err);
-      error.value = "ไม่สามารถโหลดข้อมูลโพสต์";
-    } finally {
-      loading.value = false;
+    } catch (e) {
+      error.value = "โหลดข้อมูลล้มเหลว";
     }
   }
 });
 
-// ส่งข้อมูลไป backend
 const handleSubmit = async () => {
   error.value = "";
   success.value = "";
@@ -80,15 +69,8 @@ const handleSubmit = async () => {
   payload.append("post_description", form.value.post_description);
   payload.append("user_id", form.value.user_id);
 
-  // แนบรูปภาพใหม่
-  newImages.value.forEach((file) => {
-    payload.append("post_images", file);
-  });
-
-  // แนบ id ของรูปเดิมที่ต้องการเก็บไว้
-  form.value.keep_image_ids.forEach((id) => {
-    payload.append("keep_image_ids", id.toString());
-  });
+  newImages.value.forEach((file) => payload.append("post_images", file));
+  form.value.keep_image_ids.forEach((id) => payload.append("keep_image_ids", id.toString()));
 
   try {
     if (isEditMode) {
@@ -107,12 +89,10 @@ const handleSubmit = async () => {
       router.push("/admin/post");
     }, 1000);
   } catch (err) {
-    console.error("error:", err);
     error.value = err?.response?.data?.message || "เกิดข้อผิดพลาด";
   }
 };
 </script>
-
 
 <template>
   <CommonButtonBack />

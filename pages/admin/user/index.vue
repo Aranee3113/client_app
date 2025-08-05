@@ -42,7 +42,7 @@ onMounted(() => {
             to="/admin/user/add"
             class="inline-flex items-center px-5 py-2 bg-gradient-to-r from-purple-800 to-pink-400 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
           >
-            + เพิ่มข้อมูลผ้า
+            + เพิ่มข้อมูลผู้ใช้
           </NuxtLink>
           <NuxtLink
             to="/admin/dashboard"
