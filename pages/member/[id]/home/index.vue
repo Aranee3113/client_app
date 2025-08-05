@@ -3,11 +3,15 @@ definePageMeta({
   layout: "member",
 });
 
+
 import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
 const { $axios } = useNuxtApp();
 
 const products = ref([]);
 const posts = ref([]);
+const route = useRoute();
+const userId = route.params.id;
 
 const fetchProducts = async () => {
   try {
@@ -22,7 +26,7 @@ const fetchProducts = async () => {
 
 const fetchPosts = async () => {
   try {
-    const res = await $axios.get("/post");
+    const res = await $axios.get(`/post/user/${userId}`); // <- เช่น /post/user/3
     if (res.status === 200) {
       posts.value = res.data.data;
     }
@@ -80,7 +84,7 @@ onMounted(() => {
             class="bg-white/90 dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition p-6 border border-gray-200 dark:border-gray-700"
           >
             <NuxtLink
-              :to="`/member/information_list/${item.textile_id}`"
+              :to="`/member/${id}/information_list/${item.textile_id}`"
               class="text-xl font-semibold text-purple-800 hover:text-pink-800 transition"
             >
               {{ item.textile_name }}
@@ -118,7 +122,7 @@ onMounted(() => {
             class="bg-white/90 dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition p-6 border border-gray-200 dark:border-gray-700"
           >
             <NuxtLink
-              :to="`/member/post/${post.post_id}`"
+              :to="`/member/${id}/post/${post.post_id}`"
               class="text-xl font-semibold text-pink-500 hover:text-purple-600 transition"
             >
               {{ post.post_name }}

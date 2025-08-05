@@ -25,11 +25,12 @@ async function login() {
       console.log(response.data.data.is_admin);
       const isAdmin = response.data.data.is_admin;
       if (isAdmin === 0) {
-        router.push("/member/homeindex");
+        const id = response.data.data.user_id;
+        router.push(`/member/${id}/home`);
       }
       else
       if (isAdmin === 1) {
-        router.push("/admin/dashboard");
+        router.push(`/admin/${id}/dashboard`);
       }
       // router.push("/admin/dashboard");
     }

@@ -6,6 +6,7 @@ import { Shirt, Search, ShieldUser } from "lucide-vue-next";
 const showNotifications = ref(false);
 const dropdownRef = ref(null);
 const router = useRouter();
+const id = ref<string>("");
 
 const toggleNotifications = () => {
   showNotifications.value = !showNotifications.value;
@@ -49,22 +50,22 @@ onBeforeUnmount(() => {
             <span>Mai Khmer</span>
           </NuxtLink>
           <NuxtLink
-            to="/admin/dashboard"
+            :to="`/admin/${id}/dashboard`"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
             >หน้าหลัก</NuxtLink
           >
           <NuxtLink
-            to="/admin/information"
+            :to="`/admin/${id}/information`"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
             >จัดการข้อมูลผ้า</NuxtLink
           >
           <NuxtLink
-            to="/admin/post"
+            :to="`/admin/${id}/post`"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
             >จัดการโพสต์</NuxtLink
           >
           <NuxtLink
-            to="/admin/user"
+            :to="`/admin/${id}/user`"
             class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
             >จัดการรายชื่อผู้ใช้</NuxtLink
           >
@@ -98,7 +99,7 @@ onBeforeUnmount(() => {
             >
               <div class="py-2">
                 <NuxtLink
-                  to="/admin/user"
+                  :to="`/admin/${id}/user`"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   แก้ไขข้อมูลผู้ใช้

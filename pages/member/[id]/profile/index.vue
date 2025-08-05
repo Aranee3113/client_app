@@ -3,11 +3,14 @@ definePageMeta({
   layout: "member",
 });
 
+
 import { ref, onMounted } from "vue";
 import { decodeJwt } from "jose";
+import { useRoute } from "vue-router";
 
 const { $axios } = useNuxtApp();
 const token = useCookie("token").value;
+const route = useRoute();
 
 const user = ref({
   user_id: "",
@@ -19,14 +22,16 @@ const user = ref({
 const loading = ref(true);
 
 const fetchUser = async () => {
-  if (!token) return;
-  const decoded = decodeJwt(token);
-  const id = decoded.user_id;
-
+  let id = route.params.id;
+  if (!id) {
+    if (!token) return;
+    const decoded = decodeJwt(token);
+    id = decoded.user_id;
+  }
   try {
     const res = await $axios.get(`/user/${id}`);
     if (res.status === 200) {
-      user.value = { ...res.data.data, user_password: "" }; // set password เป็นช่องว่าง (ไม่โหลดรหัสผ่านเดิม)
+      user.value = { ...res.data.data, user_password: "" };
     }
   } catch (err) {
     console.error("โหลดข้อมูลผู้ใช้ล้มเหลว", err);
