@@ -5,7 +5,7 @@ const { $axios } = useNuxtApp();
 const router = useRouter();
 
 definePageMeta({
-  layout: "default", 
+  layout: "default",
 });
 
 const error = ref("");
@@ -23,15 +23,14 @@ async function login() {
       tokenCookie.value = token;
 
       console.log(response.data.data.is_admin);
+
       const isAdmin = response.data.data.is_admin;
+
       if (isAdmin === 0) {
-        router.push("/member/homeindex");
+        router.push(`/member/home`);
+      } else if (isAdmin === 1) {
+        router.push(`/admin/dashboard`);
       }
-      else
-      if (isAdmin === 1) {
-        router.push("/admin/dashboard");
-      }
-      // router.push("/admin/dashboard");
     }
   } catch (err) {
     error.value = "รหัสผ่านหรืออีเมลไม่ถูกต้อง!";
@@ -41,9 +40,15 @@ async function login() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center px-4">
-    <div class="bg-white/80 backdrop-blur-sm border border-white/30 shadow-2xl rounded-2xl w-full max-w-md p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text">
+  <div
+    class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center px-4"
+  >
+    <div
+      class="bg-white/80 backdrop-blur-sm border border-white/30 shadow-2xl rounded-2xl w-full max-w-md p-8"
+    >
+      <h1
+        class="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text"
+      >
         Mai Khmer
       </h1>
       <h2 class="text-xl text-center text-gray-600 mb-6">เข้าสู่ระบบ</h2>
@@ -60,7 +65,9 @@ async function login() {
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700">Password</label>
+          <label class="block text-sm font-medium text-gray-700"
+            >Password</label
+          >
           <input
             v-model="formData.user_password"
             type="password"
@@ -78,12 +85,17 @@ async function login() {
 
         <p class="text-center text-sm text-gray-600">
           ยังไม่มีบัญชีใช่ไหม?
-          <NuxtLink to="/register" class="text-pink-600 hover:underline font-semibold">
+          <NuxtLink
+            to="/register"
+            class="text-pink-600 hover:underline font-semibold"
+          >
             ลงทะเบียนฟรี
           </NuxtLink>
         </p>
 
-        <p v-if="error" class="text-center text-red-500 text-sm mt-2">{{ error }}</p>
+        <p v-if="error" class="text-center text-red-500 text-sm mt-2">
+          {{ error }}
+        </p>
       </form>
     </div>
   </div>

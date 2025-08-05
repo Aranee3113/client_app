@@ -5,13 +5,25 @@ definePageMeta({
 
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { decodeJwt } from "jose"; // ใช้ decode token
 import CardDashboard from "~/components/card/dashboard.vue";
 
 const router = useRouter();
 const { $axios } = useNuxtApp();
+
 const products = ref([]);
 const posts = ref([]);
 const users = ref([]);
+
+const id = ref<string>(""); // เพิ่มตัวแปร id
+const token = useCookie("token").value;
+
+// ดึง user_id จาก token
+if (token) {
+  const decoded: any = decodeJwt(token);
+  id.value = String(decoded.user_id);
+}
+
 const fetchAllData = async () => {
   try {
     const [productRes, postRes, userRes] = await Promise.all([
@@ -26,13 +38,12 @@ const fetchAllData = async () => {
     console.error("โหลดข้อมูลไม่สำเร็จ", err);
   }
 };
-const goToPostPage = () => {
-  router.push("/admin/post");
-};
+
 onMounted(() => {
   fetchAllData();
 });
 </script>
+
 
 <template>
   <div
@@ -70,7 +81,7 @@ onMounted(() => {
               >
                 ระบบจัดการแอดมิน
               </h1>
-              <p class="text-gray-600 text-sm">Dashboard Control Panel</p>
+              <p class="text-gray-600">ภาพรวมข้อมูลทั้งหมดในระบบ</p>
             </div>
           </div>
         </div>
@@ -95,21 +106,21 @@ onMounted(() => {
         :data="{ count: products.length || 0 }"
         color="bg-green-500"
         text="text-white"
-        link="/admin/information"
+        :link="`/admin/information`" 
         title="รายการผ้าทั้งหมด"
       />
       <card-dashboard
         :data="{ count: posts.length || 0 }"
         color="bg-red-500"
         text="text-white"
-        link="/admin/post"
+        :link="`/admin/post`"
         title="รายการโพสต์ทั้งหมด"
       />
       <card-dashboard
         :data="{ count: users.length || 0 }"
         color="bg-yellow-500"
         text="text-white"
-        link="/admin/user"
+        :link="`/admin/user`"
         title="รายการผู้ใช้ทั้งหมด"
       />
     </div>

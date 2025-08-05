@@ -1,5 +1,5 @@
 <template>
-  <NavbarBasenavbar />
+  <navbar-membernavber/>
   <slot />
   <footer-Basefooter/>
 </template>

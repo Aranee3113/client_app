@@ -38,13 +38,13 @@ onMounted(() => {
         </h2>
         <div class="flex flex-col items-end space-y-2">
           <NuxtLink
-            to="/admin/information/add"
+            :to="`/admin/information/add`"
             class="inline-flex items-center px-5 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
           >
             + เพิ่มข้อมูลผ้า
           </NuxtLink>
           <NuxtLink
-            to="/admin/dashboard"
+            :to="`/admin/dashboard`"
             class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition transform hover:scale-105 shadow-md"
           >
             ย้อนกลับ
