@@ -19,19 +19,20 @@ const form = ref({
   user_name: "",
   user_username: "",
   user_password: "",
+  user_image: null,
+  user_image_path: "", // สำหรับ preview รูปภาพ
 });
 
+// โหลดข้อมูลตอนแก้ไข
 onMounted(async () => {
   if (isEditMode) {
     loading.value = true;
     try {
       const res = await $axios.get(`/user/${id}`);
       if (res.status === 200 && res.data.data) {
-        form.value = {
-          user_name: res.data.data.user_name,
-          user_username: res.data.data.user_username,
-          user_password: "",
-        };
+        form.value.user_name = res.data.data.user_name;
+        form.value.user_username = res.data.data.user_username;
+        form.value.user_image_path = res.data.data.user_image_path;
       }
     } catch (err) {
       console.error("โหลดข้อมูลล้มเหลว", err);
@@ -42,17 +43,36 @@ onMounted(async () => {
   }
 });
 
+// handle รูปภาพ
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    form.value.user_image = file;
+    form.value.user_image_path = URL.createObjectURL(file); // preview รูปใหม่
+  }
+};
 
+// submit
 const handleSubmit = async () => {
   error.value = "";
   success.value = "";
 
   try {
+    const formData = new FormData();
+    formData.append("user_name", form.value.user_name);
+    formData.append("user_username", form.value.user_username);
+    if (!isEditMode) {
+      formData.append("user_password", form.value.user_password);
+    }
+    if (form.value.user_image) {
+      formData.append("user_image", form.value.user_image);
+    }
+
     if (isEditMode) {
-      await $axios.put(`/user/${id}`, form.value);
+      await $axios.put(`/user/${id}`, formData);
       success.value = "อัปเดตข้อมูลผู้ใช้สำเร็จ";
     } else {
-      await $axios.post("/user", form.value);
+      await $axios.post("/user", formData);
       success.value = "เพิ่มผู้ใช้ใหม่สำเร็จ";
     }
 
@@ -64,7 +84,6 @@ const handleSubmit = async () => {
     error.value = err?.response?.data?.message || "เกิดข้อผิดพลาด";
   }
 };
-
 </script>
 
 <template>
@@ -75,48 +94,41 @@ const handleSubmit = async () => {
         {{ isEditMode ? "แก้ไขผู้ใช้" : "เพิ่มผู้ใช้" }}
       </h1>
 
-      <form @submit.prevent="handleSubmit" class="space-y-5">
+      <form @submit.prevent="handleSubmit" class="space-y-5" enctype="multipart/form-data">
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">ชื่อ-นามสกุล</label>
-          <input
-            v-model="form.user_name"
-            type="text"
-            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-300 focus:outline-none"
-            required
-          />
+          <input v-model="form.user_name" type="text" class="w-full px-4 py-2 border rounded-lg" required />
         </div>
 
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">ชื่อผู้ใช้</label>
-          <input
-            v-model="form.user_username"
-            type="text"
-            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-300 focus:outline-none"
-            required
-          />
+          <input v-model="form.user_username" type="text" class="w-full px-4 py-2 border rounded-lg" required />
         </div>
 
         <div v-if="!isEditMode">
           <label class="block mb-1 text-sm font-medium text-gray-700">รหัสผ่าน</label>
-          <input
-            v-model="form.user_password"
-            type="password"
-            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-300 focus:outline-none"
-            required
-          />
+          <input v-model="form.user_password" type="password" class="w-full px-4 py-2 border rounded-lg" required />
+        </div>
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">รูปภาพ</label>
+          <input type="file" @change="handleFileChange" accept="image/*" />
+          <div v-if="form.user_image_path" class="mt-2">
+            <img :src="form.user_image_path" alt="preview" class="w-24 h-24 rounded-full object-cover border" />
+          </div>
         </div>
 
         <div class="flex justify-between items-center mt-6">
           <button
             type="submit"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 transition transform hover:scale-105 shadow-md"
+            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 shadow-md"
           >
             {{ isEditMode ? "บันทึกการแก้ไข" : "เพิ่มผู้ใช้" }}
           </button>
 
           <NuxtLink
             to="/admin/user"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 transition transform hover:scale-105 shadow-md"
+            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 shadow-md"
           >
             ย้อนกลับ
           </NuxtLink>
