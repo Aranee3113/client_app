@@ -19,7 +19,20 @@ const form = ref({
   textile_name: "",
   textile_description: "",
   textile_location: "",
+  textile_images: [],
+  keep_image_ids: [],
+  existingImages: [],
+  newImages: [],
 });
+const handleFileChange = (event) => {
+  const files = event.target.files;
+  if (files.length > 0) {
+    form.value.newImages = Array.from(files).map((file) => ({
+      file,
+      url: URL.createObjectURL(file),
+    }));
+  }
+};
 
 onMounted(async () => {
   if (isEditMode) {
@@ -27,11 +40,13 @@ onMounted(async () => {
     try {
       const res = await $axios.get(`/product/${id}`);
       if (res.status === 200 && res.data.data) {
-        form.value = {
-          textile_name: res.data.data.textile_name,
-          textile_description: res.data.data.textile_description,
-          textile_location: res.data.data.textile_location,
-        };
+        const data = res.data.data;
+        form.value.textile_name = data.textile_name;
+        form.value.textile_description = data.textile_description;
+        form.value.textile_location = data.textile_location;
+        form.value.existingImages = data.images || [];
+        form.value.keep_image_ids =
+          data.images?.map((img) => img.textile_image_id) || [];
       }
     } catch (err) {
       console.error("โหลดข้อมูลผ้าไม่สำเร็จ", err);
@@ -46,12 +61,27 @@ const handleSubmit = async () => {
   error.value = "";
   success.value = "";
 
+  const formData = new FormData();
+  formData.append("textile_name", form.value.textile_name);
+  formData.append("textile_description", form.value.textile_description);
+  formData.append("textile_location", form.value.textile_location);
+
+  // แนบ id ของภาพเดิมที่ต้องการเก็บไว้
+  form.value.keep_image_ids.forEach((id) => {
+    formData.append("keep_image_ids", id);
+  });
+
+  // แนบไฟล์ใหม่
+  form.value.newImages.forEach((img) => {
+    formData.append("textile_images", img.file);
+  });
+
   try {
     if (isEditMode) {
-      await $axios.put(`/product/${id}`, form.value);
+      await $axios.put(`/product/${id}`, formData);
       success.value = "อัปเดตข้อมูลผ้าสำเร็จ";
     } else {
-      await $axios.post("/product", form.value);
+      await $axios.post("/product", formData);
       success.value = "เพิ่มข้อมูลผ้าสำเร็จ";
     }
 
@@ -67,15 +97,24 @@ const handleSubmit = async () => {
 
 <template>
   <CommonButtonBack />
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6">
-    <div class="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
-      <h1 class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+  <div
+    class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6"
+  >
+    <div
+      class="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20"
+    >
+      <h1
+        class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+      >
         {{ isEditMode ? "แก้ไขข้อมูลผ้า" : "เพิ่มข้อมูลผ้า" }}
       </h1>
 
       <form @submit.prevent="handleSubmit" class="space-y-5">
+        <!-- ชื่อผ้า -->
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">ชื่อผ้า</label>
+          <label class="block mb-1 text-sm font-medium text-gray-700"
+            >ชื่อผ้า</label
+          >
           <input
             v-model="form.textile_name"
             type="text"
@@ -84,8 +123,11 @@ const handleSubmit = async () => {
           />
         </div>
 
+        <!-- รายละเอียด -->
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">รายละเอียด</label>
+          <label class="block mb-1 text-sm font-medium text-gray-700"
+            >รายละเอียด</label
+          >
           <textarea
             v-model="form.textile_description"
             rows="4"
@@ -94,8 +136,11 @@ const handleSubmit = async () => {
           />
         </div>
 
+        <!-- สถานที่ -->
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">สถานที่</label>
+          <label class="block mb-1 text-sm font-medium text-gray-700"
+            >สถานที่</label
+          >
           <input
             v-model="form.textile_location"
             type="text"
@@ -104,6 +149,66 @@ const handleSubmit = async () => {
           />
         </div>
 
+        <!-- แสดงรูปเดิม -->
+        <div v-if="form.existingImages.length" class="mt-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >รูปภาพเดิม</label
+          >
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div
+              v-for="img in form.existingImages"
+              :key="img.textile_image_id"
+              class="relative border rounded overflow-hidden"
+            >
+              <img
+                :src="img.textile_image_path"
+                class="w-full h-32 object-cover"
+              />
+              <label
+                class="absolute top-1 right-1 bg-white text-xs p-1 rounded shadow"
+              >
+                <input
+                  type="checkbox"
+                  v-model="form.keep_image_ids"
+                  :value="img.textile_image_id"
+                />
+                เก็บไว้
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- แสดงรูปใหม่ที่เลือก -->
+        <div v-if="form.newImages.length" class="mt-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >รูปภาพใหม่</label
+          >
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div
+              v-for="img in form.newImages"
+              :key="img.url"
+              class="border rounded overflow-hidden"
+            >
+              <img :src="img.url" class="w-full h-32 object-cover" />
+            </div>
+          </div>
+        </div>
+
+        <!-- input เลือกรูป -->
+        <div class="mt-4">
+          <label class="block text-sm font-medium text-gray-700"
+            >อัปโหลดรูปใหม่</label
+          >
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            @change="handleFileChange"
+            class="mt-2"
+          />
+        </div>
+
+        <!-- ปุ่ม -->
         <div class="flex justify-between items-center mt-6">
           <button
             type="submit"
@@ -119,8 +224,13 @@ const handleSubmit = async () => {
             ย้อนกลับ
           </NuxtLink>
         </div>
-        <p v-if="error" class="text-red-500 text-center text-sm mt-4">{{ error }}</p>
-        <p v-if="success" class="text-green-600 text-center text-sm mt-4">{{ success }}</p>
+
+        <p v-if="error" class="text-red-500 text-center text-sm mt-4">
+          {{ error }}
+        </p>
+        <p v-if="success" class="text-green-600 text-center text-sm mt-4">
+          {{ success }}
+        </p>
       </form>
     </div>
   </div>

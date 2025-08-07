@@ -6,6 +6,9 @@ import { ref, onMounted } from "vue";
 const { $axios } = useNuxtApp();
 const posts = ref([]);
 
+
+
+
 const fetchPosts = async () => {
   try {
     const res = await $axios.get("/post");
@@ -16,6 +19,7 @@ const fetchPosts = async () => {
     console.error("โหลดข้อมูลโพสต์ล้มเหลว", error);
   }
 };
+
 
 onMounted(() => {
   fetchPosts();
@@ -61,6 +65,7 @@ onMounted(() => {
             <tr>
               <th class="py-3 px-4 font-semibold text-center">Post ID</th>
               <th class="py-3 px-4 font-semibold">ชื่อโพสต์</th>
+              <th class="py-3 px-4 font-semibold text-center">รูปภาพ</th>
               <th class="py-3 px-4 font-semibold text-center">จัดการ</th>
             </tr>
           </thead>
@@ -72,6 +77,17 @@ onMounted(() => {
             >
               <td class="py-3 px-4 text-center">{{ post.post_id }}</td>
               <td class="py-3 px-4">{{ post.post_name }}</td>
+              <td class="py-3 px-4">
+                <div class="flex justify-center">
+                  <img
+                    v-if="post.images && post.images.length > 0"
+                    :src="post.images[0].image_url"
+                    alt="Post Image"
+                    class="w-16 h-16 object-cover rounded-lg shadow-md"
+                  />
+                  <span v-else class="text-gray-400">ไม่มีรูปภาพ</span>
+                </div>  
+              </td>
               <td class="py-3 px-4">
                 <div class="flex justify-center gap-2">
                   <CommonButtonEditbutton
