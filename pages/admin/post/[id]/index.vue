@@ -164,7 +164,7 @@ const handleSubmit = async () => {
         <!-- รูปใหม่ที่เลือก -->
         <div v-if="form.images.length" class="mt-4">
           <label class="block text-sm font-medium text-gray-700 mb-2"
-            >รูปภาพใหม่</label
+            >รูปภาพ</label
           >
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
             <div
@@ -180,7 +180,7 @@ const handleSubmit = async () => {
         <!-- Input เลือกรูป -->
         <div class="mt-4">
           <label class="block text-sm font-medium text-gray-700 mb-1"
-            >อัปโหลดรูปใหม่</label
+            >อัปโหลดรูป</label
           >
           <input
             type="file"

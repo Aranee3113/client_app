@@ -9,7 +9,7 @@ const { $axios } = useNuxtApp();
 const products = ref([]);
 
 // ปรับ baseURL สำหรับเรียก path รูปภาพใน public/uploads
-const baseURL = ""; 
+const baseURL = "/";
 
 const fetchProducts = async () => {
   try {
@@ -25,14 +25,22 @@ const fetchProducts = async () => {
 onMounted(() => {
   fetchProducts();
 });
+
+watch(products, () => {
+  console.log("loaded image path:", products.value.map(p => p.images?.[0]?.textile_image_path));
+});
 </script>
 
 <template>
   <CommonButtonBack />
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6">
+  <div
+    class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6"
+  >
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
-        <h2 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+        <h2
+          class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+        >
           รายการข้อมูลผ้า
         </h2>
         <div class="flex flex-col items-end space-y-2">
@@ -51,9 +59,13 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="overflow-x-auto rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20">
+      <div
+        class="overflow-x-auto rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20"
+      >
         <table class="min-w-full text-left text-sm">
-          <thead class="bg-gradient-to-r from-purple-100 to-pink-100 text-gray-700">
+          <thead
+            class="bg-gradient-to-r from-purple-100 to-pink-100 text-gray-700"
+          >
             <tr>
               <th class="py-3 px-4 text-center font-semibold">ID</th>
               <th class="py-3 px-4 font-semibold">ชื่อ</th>
@@ -79,7 +91,9 @@ onMounted(() => {
                   alt="รูปผ้า"
                   class="w-20 h-20 object-cover rounded-lg mx-auto border"
                 />
-                <span v-else class="text-gray-400 italic text-sm">ไม่มีรูป</span>
+                <span v-else class="text-gray-400 italic text-sm"
+                  >ไม่มีรูป</span
+                >
               </td>
 
               <td class="py-3 px-4">
