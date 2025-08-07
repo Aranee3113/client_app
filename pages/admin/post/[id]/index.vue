@@ -132,6 +132,7 @@ const handleSubmit = async () => {
             required
           />
         </div>
+        
         <!-- รูปภาพเดิม -->
         <div v-if="form.existingImages.length" class="mt-4">
           <label class="block text-sm font-medium text-gray-700 mb-2"
@@ -164,7 +165,7 @@ const handleSubmit = async () => {
         <!-- รูปใหม่ที่เลือก -->
         <div v-if="form.images.length" class="mt-4">
           <label class="block text-sm font-medium text-gray-700 mb-2"
-            >รูปภาพ</label
+            >รูปภาพใหม่</label
           >
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
             <div
@@ -187,6 +188,7 @@ const handleSubmit = async () => {
             multiple
             accept="image/*"
             @change="handleFileChange"
+            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-300 focus:outline-none"
           />
         </div>
 

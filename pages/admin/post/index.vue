@@ -6,9 +6,6 @@ import { ref, onMounted } from "vue";
 const { $axios } = useNuxtApp();
 const posts = ref([]);
 
-
-
-
 const fetchPosts = async () => {
   try {
     const res = await $axios.get("/post");
@@ -19,7 +16,6 @@ const fetchPosts = async () => {
     console.error("โหลดข้อมูลโพสต์ล้มเหลว", error);
   }
 };
-
 
 onMounted(() => {
   fetchPosts();
@@ -81,7 +77,7 @@ onMounted(() => {
                 <div class="flex justify-center">
                   <img
                     v-if="post.images && post.images.length > 0"
-                    :src="post.images[0].image_url"
+                    :src="post.images[0].post_image_path"
                     alt="Post Image"
                     class="w-16 h-16 object-cover rounded-lg shadow-md"
                   />
@@ -115,7 +111,7 @@ onMounted(() => {
               </td>
             </tr>
             <tr v-if="posts.length === 0">
-              <td colspan="3" class="text-center text-gray-400 py-6">
+              <td colspan="4" class="text-center text-gray-400 py-6">
                 ไม่มีโพสต์ในระบบ
               </td>
             </tr>
