@@ -20,6 +20,7 @@ const fetchUsers = async () => {
   }
 };
 
+
 onMounted(() => {
   fetchUsers();
 });
@@ -62,6 +63,7 @@ onMounted(() => {
           >
             <tr>
               <th class="py-3 px-4 font-semibold text-center">User ID</th>
+              <th class="py-3 px-4 font-semibold">รูปภาพ</th>
               <th class="py-3 px-4 font-semibold">Username</th>
               <th class="py-3 px-4 font-semibold text-center">จัดการ</th>
             </tr>
@@ -73,7 +75,19 @@ onMounted(() => {
               class="hover:bg-gray-50 transition"
             >
               <td class="py-3 px-4 text-center">{{ user.user_id }}</td>
+
+              <td class="py-3 px-4">
+                <img
+                  v-if="user.user_image_path"
+                  :src="user.user_image_path"
+                  alt="user image"
+                  class="w-12 h-12 rounded-full object-cover border"
+                />
+                <span v-else class="text-gray-400">ไม่มีรูป</span>
+              </td>
+
               <td class="py-3 px-4">{{ user.user_username }}</td>
+
               <td class="py-3 px-4">
                 <div class="flex justify-center gap-2">
                   <CommonButtonEditbutton
@@ -91,7 +105,7 @@ onMounted(() => {
               </td>
             </tr>
             <tr v-if="users.length === 0">
-              <td colspan="3" class="text-center text-gray-400 py-6">
+              <td colspan="4" class="text-center text-gray-400 py-6">
                 ไม่มีข้อมูลผู้ใช้ในระบบ
               </td>
             </tr>
@@ -101,3 +115,4 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
