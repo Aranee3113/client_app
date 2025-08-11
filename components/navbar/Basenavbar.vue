@@ -110,7 +110,7 @@ onBeforeUnmount(() => {
             >
               <div class="py-2">
                 <NuxtLink
-                  :to="`/admin/user`"
+                  :to="`/admin/profile`"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   แก้ไขข้อมูลผู้ใช้

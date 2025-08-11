@@ -1,10 +1,11 @@
-<script setup>
-definePageMeta({
-  layout: "admin",
-});
-import { ref, onMounted } from "vue";
+<script setup lang="ts">
+definePageMeta({ layout: "admin" });
+
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
+
 const { $axios } = useNuxtApp();
+const config = useRuntimeConfig();
 
 const route = useRoute();
 const router = useRouter();
@@ -15,42 +16,78 @@ const loading = ref(false);
 const error = ref("");
 const success = ref("");
 
+// เก็บ URL พรีวิวล่าสุดไว้เพื่อ revoke ตอนเปลี่ยนไฟล์/ออกจากหน้า
+let lastPreviewUrl: string | null = null;
+
 const form = ref({
   user_name: "",
   user_username: "",
   user_password: "",
-  user_image: null,
-  user_image_path: "", // สำหรับ preview รูปภาพ
+  user_image: null as File | null,
+  user_image_path: "", // แสดงพรีวิว (ถ้าเป็นรูปใหม่ = objectURL, ถ้าเป็นรูปเก่า = URL เต็ม)
 });
+
+// ---- helpers ----
+const getFileBase = () =>
+  (config?.public?.fileBase ||
+    (config?.public?.apiBase || "").replace(/\/api\/?$/, "")) || "";
+
+const getImageUrl = (path?: string | null) => {
+  if (!path) return "";
+  if (path.startsWith("http")) return path;
+  const base = getFileBase();
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${p}`;
+};
 
 // โหลดข้อมูลตอนแก้ไข
 onMounted(async () => {
-  if (isEditMode) {
-    loading.value = true;
-    try {
-      const res = await $axios.get(`/user/${id}`);
-      if (res.status === 200 && res.data.data) {
-        form.value.user_name = res.data.data.user_name;
-        form.value.user_username = res.data.data.user_username;
-        form.value.user_image_path = res.data.data.user_image_path;
-      }
-    } catch (err) {
-      console.error("โหลดข้อมูลล้มเหลว", err);
-      error.value = "ไม่สามารถโหลดข้อมูลผู้ใช้";
-    } finally {
-      loading.value = false;
+  if (!isEditMode) return;
+
+  loading.value = true;
+  try {
+    const res = await $axios.get(`/user/${id}`);
+    if (res.status === 200 && res.data?.data) {
+      const u = res.data.data;
+      form.value.user_name = u.user_name || "";
+      form.value.user_username = u.user_username || "";
+      // ใช้ URL เต็มของรูปเก่า
+      form.value.user_image_path = u.user_image_path ? getImageUrl(u.user_image_path) : "";
     }
+  } catch (err) {
+    console.error("โหลดข้อมูลล้มเหลว", err);
+    error.value = "ไม่สามารถโหลดข้อมูลผู้ใช้";
+  } finally {
+    loading.value = false;
   }
 });
 
-// handle รูปภาพ
-const handleFileChange = (event) => {
-  const file = event.target.files[0];
+// handle รูปภาพ (พรีวิวรูปใหม่)
+const handleFileChange = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const file = (input.files && input.files[0]) || null;
+
+  // เคลียร์พรีวิวเดิม
+  if (lastPreviewUrl) {
+    URL.revokeObjectURL(lastPreviewUrl);
+    lastPreviewUrl = null;
+  }
+
+  form.value.user_image = file;
   if (file) {
-    form.value.user_image = file;
-    form.value.user_image_path = URL.createObjectURL(file); // preview รูปใหม่
+    const url = URL.createObjectURL(file);
+    lastPreviewUrl = url;
+    form.value.user_image_path = url; // แสดงพรีวิวใหม่
+  } else {
+    // ถ้าเอาไฟล์ออก ให้กลับไปใช้รูปเดิม (ถ้ามี) หรือเคลียร์
+    // หมายเหตุ: ในกรณีนี้เราไม่มี path เดิมเก็บแยกไว้ จึงปล่อยเป็นค่าว่าง
+    form.value.user_image_path = "";
   }
 };
+
+onBeforeUnmount(() => {
+  if (lastPreviewUrl) URL.revokeObjectURL(lastPreviewUrl);
+});
 
 // submit
 const handleSubmit = async () => {
@@ -78,8 +115,8 @@ const handleSubmit = async () => {
 
     setTimeout(() => {
       router.push("/admin/user");
-    }, 1000);
-  } catch (err) {
+    }, 800);
+  } catch (err: any) {
     console.error("error:", err);
     error.value = err?.response?.data?.message || "เกิดข้อผิดพลาด";
   }
@@ -114,7 +151,7 @@ const handleSubmit = async () => {
           <label class="block mb-1 text-sm font-medium text-gray-700">รูปภาพ</label>
           <input type="file" @change="handleFileChange" accept="image/*" />
           <div v-if="form.user_image_path" class="mt-2">
-            <img :src="form.user_image_path" alt="preview" class="w-24 h-24 rounded-full object-cover border" />
+            <img :src="form.user_image_path" alt="preview" class="w-24 h-24 rounded-full object-cover border bg-white" />
           </div>
         </div>
 
@@ -122,6 +159,7 @@ const handleSubmit = async () => {
           <button
             type="submit"
             class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 shadow-md"
+            :disabled="loading"
           >
             {{ isEditMode ? "บันทึกการแก้ไข" : "เพิ่มผู้ใช้" }}
           </button>

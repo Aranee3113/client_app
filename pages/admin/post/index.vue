@@ -1,38 +1,72 @@
 <script setup>
-definePageMeta({
-  layout: "admin",
-});
+definePageMeta({ layout: "admin" });
+
 import { ref, onMounted } from "vue";
 const { $axios } = useNuxtApp();
-const posts = ref([]);
+const config = useRuntimeConfig();
 
-const fetchPosts = async () => {
+const posts = ref([]);
+const loading = ref(true);
+const error = ref("");
+
+// ---- helpers ----
+const getFileBase = () =>
+  (config?.public?.fileBase ||
+    (config?.public?.apiBase || "").replace(/\/api\/?$/, "")) || "";
+
+const getImageUrl = (path) => {
+  if (!path) return "";
+  if (typeof path !== "string") return "";
+  if (path.startsWith("http")) return path;
+  const base = getFileBase();
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${p}`;
+};
+
+// images อาจเป็น array หรือ JSON string จาก JSON_ARRAYAGG
+const normalizeImages = (raw) => {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
   try {
-    const res = await $axios.get("/post");
-    if (res.status === 200) {
-      posts.value = res.data.data;
-    }
-  } catch (error) {
-    console.error("โหลดข้อมูลโพสต์ล้มเหลว", error);
+    const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
   }
 };
 
-onMounted(() => {
-  fetchPosts();
-});
+const fetchPosts = async () => {
+  loading.value = true;
+  error.value = "";
+  try {
+    const res = await $axios.get("/post");
+    if (res.status === 200) {
+      const rows = res.data?.data || [];
+      posts.value = rows.map((p) => ({
+        ...p,
+        images: normalizeImages(p.images),
+      }));
+    } else {
+      posts.value = [];
+    }
+  } catch (e) {
+    console.error("โหลดข้อมูลโพสต์ล้มเหลว", e);
+    error.value = "ไม่สามารถโหลดโพสต์ได้";
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(fetchPosts);
 </script>
 
 <template>
   <CommonButtonBack />
 
-  <div
-    class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6"
-  >
+  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6">
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
-        <h2
-          class="text-3xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent"
-        >
+        <h2 class="text-3xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
           รายการโพสต์
         </h2>
         <div class="flex flex-col items-end space-y-2">
@@ -51,13 +85,9 @@ onMounted(() => {
         </div>
       </div>
 
-      <div
-        class="overflow-x-auto rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20"
-      >
+      <div class="overflow-x-auto rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20">
         <table class="min-w-full text-left text-sm">
-          <thead
-            class="bg-gradient-to-r from-orange-100 to-red-100 text-gray-700"
-          >
+          <thead class="bg-gradient-to-r from-orange-100 to-red-100 text-gray-700">
             <tr>
               <th class="py-3 px-4 font-semibold text-center">Post ID</th>
               <th class="py-3 px-4 font-semibold">ชื่อโพสต์</th>
@@ -65,8 +95,17 @@ onMounted(() => {
               <th class="py-3 px-4 font-semibold text-center">จัดการ</th>
             </tr>
           </thead>
+
           <tbody>
+            <tr v-if="loading">
+              <td colspan="4" class="py-6 text-center text-gray-500">กำลังโหลดข้อมูล...</td>
+            </tr>
+            <tr v-else-if="error">
+              <td colspan="4" class="py-6 text-center text-red-500">{{ error }}</td>
+            </tr>
+
             <tr
+              v-else
               v-for="post in posts"
               :key="post.post_id"
               class="hover:bg-gray-50 transition"
@@ -77,12 +116,13 @@ onMounted(() => {
                 <div class="flex justify-center">
                   <img
                     v-if="post.images && post.images.length > 0"
-                    :src="post.images[0].post_image_path"
+                    :src="getImageUrl(post.images[0].post_image_path)"
                     alt="Post Image"
-                    class="w-16 h-16 object-cover rounded-lg shadow-md"
+                    class="w-16 h-16 object-cover rounded-lg shadow-md border"
+                    loading="lazy"
                   />
                   <span v-else class="text-gray-400">ไม่มีรูปภาพ</span>
-                </div>  
+                </div>
               </td>
               <td class="py-3 px-4">
                 <div class="flex justify-center gap-2">
@@ -99,10 +139,7 @@ onMounted(() => {
                   />
                   <CommonButtonApprovebutton
                     :text="post.is_active == 1 ? 'อนุมัติ' : 'ยังไม่อนุมัติ'"
-                    :color="[
-                      'text-white',
-                      post.is_active == 1 ? 'bg-green-600' : 'bg-red-500',
-                    ]"
+                    :color="['text-white', post.is_active == 1 ? 'bg-green-600' : 'bg-red-500']"
                     path="/admin/post"
                     :params="post.post_id"
                     @fetchOn="fetchPosts"
@@ -110,10 +147,9 @@ onMounted(() => {
                 </div>
               </td>
             </tr>
-            <tr v-if="posts.length === 0">
-              <td colspan="4" class="text-center text-gray-400 py-6">
-                ไม่มีโพสต์ในระบบ
-              </td>
+
+            <tr v-if="!loading && !error && posts.length === 0">
+              <td colspan="4" class="text-center text-gray-400 py-6">ไม่มีโพสต์ในระบบ</td>
             </tr>
           </tbody>
         </table>
