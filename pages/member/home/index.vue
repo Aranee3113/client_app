@@ -3,15 +3,28 @@ definePageMeta({
   layout: "member",
 });
 
-
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-const { $axios } = useNuxtApp();
+const { $axios, $config } = useNuxtApp();
 
 const products = ref([]);
 const posts = ref([]);
 const route = useRoute();
+const loading = ref(true);
+const error = ref("");
 const userId = route.params.id;
+
+const getImageUrl = (path) => {
+  if (!path) return null;
+  if (path.startsWith("http")) return path;
+
+  // ถ้ามี fileBase ให้ใช้ก่อน, ถ้าไม่มีให้ตัด /api ออกจาก apiBase อัตโนมัติ
+  const apiBase = $config?.public?.apiBase || "";
+  const fileBase =
+    $config?.public?.fileBase || apiBase.replace(/\/api\/?$/, "");
+
+  return `${fileBase}${path}`;
+};
 
 const fetchProducts = async () => {
   try {
@@ -25,13 +38,31 @@ const fetchProducts = async () => {
 };
 
 const fetchPosts = async () => {
+  loading.value = true;
+  error.value = "";
   try {
-    const res = await $axios.get(`/post/user/${userId}`); // <- เช่น /post/user/3
-    if (res.status === 200) {
-      posts.value = res.data.data;
-    }
-  } catch (error) {
-    console.error("โหลดข้อมูลโพสต์ล้มเหลว", error);
+    const res = await $axios.get("/post"); // backend คืนเฉพาะ is_active = 1
+    const rows = res.data?.data || [];
+    posts.value = rows.map((p) => ({
+      ...p,
+      images: normalizeImages(p.images),
+    }));
+  } catch (e) {
+    console.error("โหลดข้อมูลโพสต์ล้มเหลว", e);
+    error.value = "ไม่สามารถโหลดโพสต์ได้";
+  } finally {
+    loading.value = false;
+  }
+};
+
+const normalizeImages = (raw) => {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  try {
+    const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
   }
 };
 
@@ -57,14 +88,16 @@ onMounted(() => {
           ภูมิปัญญาผ้าทอ กลุ่มชาติพันธุ์เขมรจังหวัดบุรีรัมย์
         </h2>
         <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
-          ยินดีต้อนรับสู่ชุมชนของเรา! ที่นี่คุณจะได้พบกับข้อมูลผ้าทอและโพสต์ต่างๆ
-          ที่เกี่ยวข้องกับภูมิปัญญาผ้าทอของกลุ่มชาติพันธุ์เขมรในจังหวัดบุรีรัมย์ 
+          ยินดีต้อนรับสู่ชุมชนของเรา!
+          ที่นี่คุณจะได้พบกับข้อมูลผ้าทอและโพสต์ต่างๆ
+          ที่เกี่ยวข้องกับภูมิปัญญาผ้าทอของกลุ่มชาติพันธุ์เขมรในจังหวัดบุรีรัมย์
           เราหวังว่าคุณจะสนุกกับการสำรวจและเรียนรู้เกี่ยวกับวัฒนธรรมผ้าทอของเรา
         </p>
-        <p class="text-2xl font-extrabold text-purple-800 dark:text-white tracking-tight">
-         10 พื้นที่ ใน 7 อำเภอที่มีกลุ่มชาติพันธุ์เขมรอาศัยอยู่ได้แก่
+        <p
+          class="text-2xl font-extrabold text-purple-800 dark:text-white tracking-tight"
+        >
+          10 พื้นที่ ใน 7 อำเภอที่มีกลุ่มชาติพันธุ์เขมรอาศัยอยู่ได้แก่
         </p>
-        
       </div>
 
       <!-- รายการข้อมูลผ้า -->
@@ -83,6 +116,14 @@ onMounted(() => {
             :key="item.textile_id"
             class="bg-white/90 dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition p-6 border border-gray-200 dark:border-gray-700"
           >
+            <!-- รูปผ้า: แสดงรูปแรกถ้ามี -->
+            <img
+              v-if="item.images && item.images.length > 0"
+              :src="getImageUrl(item.images[0].textile_image_path)"
+              alt="textile"
+              class="w-full h-48 object-cover rounded-lg mb-4"
+            />
+
             <NuxtLink
               :to="`/member/information_list/${item.textile_id}`"
               class="text-xl font-semibold text-purple-800 hover:text-pink-800 transition"
@@ -104,7 +145,7 @@ onMounted(() => {
         </div>
       </section>
 
-      <!-- รายการโพสต์ -->
+      <!-- รายการโพสต์ (ดูอย่างเดียว) -->
       <section>
         <h2
           class="text-3xl font-bold text-center mb-10 bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent"
@@ -112,36 +153,57 @@ onMounted(() => {
           โพสต์ผ้าทอ
         </h2>
 
-        <div
-          v-if="posts.length > 0"
-          class="grid grid-cols-1 md:grid-cols-1 gap-8"
-        >
-          <div
-            v-for="post in posts"
-            :key="post.post_id"
-            class="bg-white/90 dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition p-6 border border-gray-200 dark:border-gray-700"
-          >
-            <NuxtLink
-              :to="`/member/post/${post.post_id}`"
-              class="text-xl font-semibold text-pink-500 hover:text-purple-600 transition"
-            >
-              {{ post.post_name }}
-            </NuxtLink>
-
-            <p class="text-gray-700 dark:text-gray-300 mt-2 line-clamp-2">
-              {{ post.post_description }}
-            </p>
-
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-              โพสต์เมื่อ: {{ new Date(post.post_timestamp).toLocaleString()
-              }}<br />
-              โดย {{ post.user_name }} ({{ post.user_username }})
-            </p>
-          </div>
+        <!-- สถานะโหลด/ผิดพลาด -->
+        <div v-if="loading" class="text-center text-gray-500">
+          กำลังโหลดข้อมูล...
+        </div>
+        <div v-else-if="error" class="text-center text-red-500">
+          {{ error }}
         </div>
 
-        <div v-else class="text-center text-gray-500 mt-12 text-lg">
-          ไม่มีโพสต์ที่เปิดใช้งาน
+        <!-- รายการ -->
+        <div v-else>
+          <div v-if="posts.length > 0" class="space-y-6">
+            <div
+              v-for="post in posts"
+              :key="post.post_id"
+              class="bg-white/90 dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition p-6 border border-gray-200 dark:border-gray-700"
+            >
+              <!-- รูปปก (รูปแรก ถ้ามี) -->
+              <div v-if="post.images && post.images.length" class="mb-4">
+                <img
+                  :src="getImageUrl(post.images[0].post_image_path)"
+                  alt="post cover"
+                  class="w-full h-56 object-cover rounded-lg shadow"
+                  loading="lazy"
+                />
+              </div>
+
+              <!-- ชื่อโพสต์ (ลิงก์ไปหน้ารายละเอียด) -->
+              <NuxtLink
+                :to="`/member/post/${post.post_id}`"
+                class="text-xl font-semibold text-blue-600 hover:underline"
+              >
+                {{ post.post_name }}
+              </NuxtLink>
+
+              <!-- รายละเอียดย่อ -->
+              <p class="text-gray-700 mt-2 line-clamp-2">
+                {{ post.post_description }}
+              </p>
+
+              <!-- เมตา -->
+              <p class="text-sm text-gray-400 mt-1">
+                โพสต์เมื่อ: {{ new Date(post.post_timestamp).toLocaleString()
+                }}<br />
+                โดย {{ post.user_name }} ({{ post.user_username }})
+              </p>
+            </div>
+          </div>
+
+          <div v-else class="text-center text-gray-500 mt-12 text-lg">
+            ไม่มีโพสต์ที่เปิดใช้งาน
+          </div>
         </div>
       </section>
     </div>
