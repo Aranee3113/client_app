@@ -124,7 +124,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-10 px-4">
+  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad]">
     <h1 class="text-2xl font-bold text-center text-purple-700 mb-8">
       จัดการข้อมูลผู้ใช้ (ผู้ดูแลระบบ)
     </h1>

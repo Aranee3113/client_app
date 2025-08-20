@@ -57,16 +57,16 @@ onMounted(() => {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6"
+    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 px-6"
   >
     <div class="max-w-6xl mx-auto">
       <h2
-        class="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent"
+        class="text-3xl font-bold text-center mb-8 bg-gradient-to-r bg-purple-800 bg-clip-text text-transparent"
       >
         รายการข้อมูลผ้า
       </h2>
 
-      <div v-if="products.length > 0" class="space-y-6">
+      <div v-if="products.length > 0" class="space-y-6 ">
         <div
           v-for="item in products"
           :key="item.textile_id"
@@ -121,8 +121,6 @@ onMounted(() => {
               />
             </div>
           </div>
-
-          <!-- กรณีไม่มีรูป -->
           <div
             v-else-if="!item.images || item.images.length === 0"
             class="mt-4 text-sm text-gray-500 italic"

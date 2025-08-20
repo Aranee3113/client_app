@@ -125,9 +125,9 @@ const handleSubmit = async () => {
 
 <template>
   <CommonButtonBack />
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6">
+  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 px-6">
     <div class="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
-      <h1 class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-purple-500 to-indigo-500 bg-clip-text text-transparent">
+      <h1 class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
         {{ isEditMode ? "แก้ไขผู้ใช้" : "เพิ่มผู้ใช้" }}
       </h1>
 
@@ -158,7 +158,7 @@ const handleSubmit = async () => {
         <div class="flex justify-between items-center mt-6">
           <button
             type="submit"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 shadow-md"
+            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 shadow-md"
             :disabled="loading"
           >
             {{ isEditMode ? "บันทึกการแก้ไข" : "เพิ่มผู้ใช้" }}
@@ -166,7 +166,7 @@ const handleSubmit = async () => {
 
           <NuxtLink
             to="/admin/user"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 shadow-md"
+            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 shadow-md"
           >
             ย้อนกลับ
           </NuxtLink>

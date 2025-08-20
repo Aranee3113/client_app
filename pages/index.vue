@@ -41,13 +41,13 @@ async function login() {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center px-4"
+    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] flex items-center justify-center px-4"
   >
     <div
-      class="bg-white/80 backdrop-blur-sm border border-white/30 shadow-2xl rounded-2xl w-full max-w-md p-8"
+      class="bg-white/80 backdrop-blur-sm border border-white/50 shadow-2xl rounded-2xl w-full max-w-md p-8"
     >
       <h1
-        class="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text"
+        class="text-4xl font-bold text-center mb-2 text-purple-600"
       >
         Mai Khmer
       </h1>
@@ -78,7 +78,7 @@ async function login() {
 
         <button
           type="submit"
-          class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-2 rounded-lg shadow-md transition-all transform hover:scale-105"
+          class="w-full bg-gradient-to-r from-purple-600 to-purple-300 text-white font-semibold py-2 rounded-lg shadow-md transition-all transform hover:scale-105"
         >
           เข้าสู่ระบบ
         </button>
@@ -87,7 +87,7 @@ async function login() {
           ยังไม่มีบัญชีใช่ไหม?
           <NuxtLink
             to="/register"
-            class="text-pink-600 hover:underline font-semibold"
+            class="text-purple-600 hover:underline font-semibold"
           >
             ลงทะเบียนฟรี
           </NuxtLink>

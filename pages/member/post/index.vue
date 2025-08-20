@@ -2,6 +2,9 @@
 definePageMeta({ layout: "member" });
 
 import { ref, onMounted } from "vue";
+// คอมเมนต์
+import CommentBox from "~/components/comment/commentBox.vue";
+import CommentList from "~/components/comment/commentList.vue";
 
 const { $axios } = useNuxtApp();
 const config = useRuntimeConfig();
@@ -10,6 +13,12 @@ const posts = ref([]);
 const loading = ref(true);
 const error = ref("");
 
+// ---- ใช้บังคับรีเฟรชรายการคอมเมนต์รายโพสต์ ----
+const listKeys = ref({});
+const bumpListKey = (postId) => {
+  listKeys.value[postId] = (listKeys.value[postId] || 0) + 1;
+};
+
 // ---- helpers ----
 const getFileBase = () =>
   (config?.public?.fileBase ||
@@ -17,6 +26,7 @@ const getFileBase = () =>
 
 const getImageUrl = (imagePath) => {
   if (!imagePath) return "";
+  if (typeof imagePath !== "string") return "";
   if (imagePath.startsWith("http")) return imagePath;
   const base = getFileBase();
   const path = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;
@@ -58,7 +68,7 @@ onMounted(fetchPosts);
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6">
+  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] px-6">
     <div class="max-w-6xl mx-auto">
       <h2 class="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-purple-700 to-red-500 bg-clip-text text-transparent">
         รายการโพสต์
@@ -87,7 +97,7 @@ onMounted(fetchPosts);
             <!-- ชื่อโพสต์ (ลิงก์ไปหน้ารายละเอียด/อ่านอย่างเดียว) -->
             <NuxtLink
               :to="`/member/post/${post.post_id}`"
-              class="text-xl font-semibold text-blue-600 hover:underline"
+              class="text-xl font-semibold text-purple-800 hover:underline"
             >
               {{ post.post_name }}
             </NuxtLink>
@@ -102,6 +112,19 @@ onMounted(fetchPosts);
               โพสต์เมื่อ: {{ new Date(post.post_timestamp).toLocaleString() }}<br />
               โดย {{ post.user_name }} ({{ post.user_username }})
             </p>
+
+            <!-- คอมเมนต์ -->
+            <div class="mt-6 border-t pt-4">
+              <CommentBox
+                :postId="post.post_id"
+                @commentAdded="bumpListKey(post.post_id)"
+              />
+              <CommentList
+                :key="listKeys[post.post_id] || 0"
+                :postId="post.post_id"
+                class="mt-4"
+              />
+            </div>
           </div>
         </div>
 

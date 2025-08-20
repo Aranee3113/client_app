@@ -46,22 +46,22 @@ onMounted(fetchUsers);
 
 <template>
   <CommonButtonBack />
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6">
+  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad]">
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
-        <h2 class="text-3xl font-bold bg-gradient-to-r from-purple-500 to-indigo-500 bg-clip-text text-transparent">
+        <h2 class="text-3xl font-bold text-purple-800">
           รายชื่อผู้ใช้
         </h2>
         <div class="flex flex-col items-end space-y-2">
           <NuxtLink
             to="/admin/user/add"
-            class="inline-flex items-center px-5 py-2 bg-gradient-to-r from-purple-800 to-pink-400 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
+            class="inline-flex items-center px-5 py-2 bg-purple-400 text-white rounded-lg font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
           >
             + เพิ่มข้อมูลผู้ใช้
           </NuxtLink>
           <NuxtLink
             to="/admin/dashboard"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-800 to-pink-400 hover:from-purple-600 hover:to-pink-600 transition transform hover:scale-105 shadow-md"
+            class="px-6 py-2 rounded-lg text-white font-medium bg-purple-400 transition transform hover:scale-105 shadow-md"
           >
             ย้อนกลับ
           </NuxtLink>

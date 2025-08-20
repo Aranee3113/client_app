@@ -55,15 +55,15 @@ const logout = () => {
         <div class="flex items-center space-x-6">
           <NuxtLink
             to="/"
-            class="text-3xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text flex items-center space-x-2"
+            class="text-3xl font-bold  bg-gradient-to-r  text-purple-600  bg-clip-text flex items-center space-x-2"
           >
             <Shirt />
             <span>Mai Khmer</span>
           </NuxtLink>
-          <NuxtLink :to="`/member/home`" class="text-sm text-gray-700 hover:text-[#ff5a5f] transition">หน้าหลัก</NuxtLink>
-          <NuxtLink :to="`/member/information_list`" class="text-sm text-gray-700 hover:text-[#ff5a5f] transition">ชุมชนผ้าทอ</NuxtLink>
-          <NuxtLink :to="`/member/post_list`" class="text-sm text-gray-700 hover:text-[#ff5a5f] transition">โพสต์</NuxtLink>
-          <NuxtLink :to="`/member/contract`" class="text-sm text-gray-700 hover:text-[#ff5a5f] transition">แชท</NuxtLink>
+          <NuxtLink :to="`/member/home`" class="text-sm text-gray-700 hover:text-orange-600 transition">หน้าหลัก</NuxtLink>
+          <NuxtLink :to="`/member/information_list`" class="text-sm text-gray-700 hover:text-orange-600 transition">ชุมชนผ้าทอ</NuxtLink>
+          <NuxtLink :to="`/member/post_list`" class="text-sm text-gray-700 hover:text-orange-600 transition">โพสต์</NuxtLink>
+          <NuxtLink :to="`/member/contract`" class="text-sm text-gray-700 hover:text-orange-600 transition">แชท</NuxtLink>
         </div>
 
         <!-- เมนูด้านขวา -->
@@ -75,7 +75,7 @@ const logout = () => {
               placeholder="ค้นหา..."
               class="rounded-l-md border border-gray-300 py-1.5 px-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#ff5a5f]"
             />
-            <button class="bg-gradient-to-r from-pink-500 to-orange-500 text-white px-3 py-1.5 hover:from-pink-600 hover:to-orange-600">
+            <button class="bg-gradient-to-r from-orange-600 to-orange-300 text-white px-3 py-1.5 hover:from-orange-300 hover:to-orange-600 cursor-pointer">
               <Search class="w-4 h-4" />
             </button>
           </div>
@@ -84,7 +84,7 @@ const logout = () => {
           <div ref="dropdownRef" class="relative">
             <button
               @click="toggleNotifications"
-              class="rounded-full bg-white border border-gray-300 p-2 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white transition"
+              class="rounded-full bg-white border border-gray-300 p-2 hover:bg-gradient-to-r hover:from-slate-600 hover:text-white transition cursor-pointer"
             >
               <ShieldUser class="w-6 h-6" />
             </button>
