@@ -20,9 +20,9 @@ const form = ref({
   textile_name: "",
   textile_description: "",
   textile_location: "",
-  keep_image_ids: [],   // number[]
-  existingImages: [],   // { textile_image_id, textile_image_path }[]
-  newImages: [],        // { file: File, url: string }[]
+  keep_image_ids: [],   
+  existingImages: [],
+  newImages: [],        
 });
 
 // ---------- helpers ----------
@@ -134,12 +134,11 @@ const handleSubmit = async () => {
 
 <template>
   <CommonButtonBack />
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6">
+  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 px-6">
     <div class="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
-      <h1 class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+      <h1 class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
         {{ isEditMode ? "แก้ไขข้อมูลผ้า" : "เพิ่มข้อมูลผ้า" }}
       </h1>
-
       <form @submit.prevent="handleSubmit" class="space-y-5" :aria-busy="loading">
         <!-- ชื่อผ้า -->
         <div>
@@ -232,7 +231,7 @@ const handleSubmit = async () => {
         <div class="flex justify-between items-center mt-6">
           <button
             type="submit"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition transform hover:scale-105 shadow-md"
+            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition transform hover:scale-105 shadow-md"
             :disabled="loading"
           >
             {{ isEditMode ? "บันทึกการแก้ไข" : "เพิ่มข้อมูลผ้า" }}
@@ -240,7 +239,7 @@ const handleSubmit = async () => {
 
           <NuxtLink
             to="/admin/information"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition transform hover:scale-105 shadow-md"
+            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition transform hover:scale-105 shadow-md"
           >
             ย้อนกลับ
           </NuxtLink>

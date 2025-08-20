@@ -69,7 +69,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-10 px-4">
+  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-10 px-4">
     <h1 class="text-2xl font-bold text-center text-purple-700 mb-8">ข้อมูลส่วนตัว</h1>
 
     <div v-if="loading" class="text-center text-gray-500 py-10">กำลังโหลดข้อมูลผู้ใช้...</div>

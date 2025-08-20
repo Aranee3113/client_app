@@ -26,7 +26,7 @@ async function handleNavigate() {
     @click="handleNavigate"
     :class="[
       'w-10 items-center justify-center text-white transition',
-      'bg-amber-500 hover:bg-amber-600 shadow-md',
+      'bg-amber-400 hover:bg-amber-700 shadow-md ',
     ]"
   >
     <icon name="uil:wrench" />

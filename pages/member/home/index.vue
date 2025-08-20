@@ -5,6 +5,11 @@ definePageMeta({
 
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
+
+// ✅ เพิ่มคอมโพเนนต์คอมเมนต์
+import CommentBox from "~/components/comment/commentBox.vue";
+import CommentList from "~/components/comment/commentList.vue";
+
 const { $axios, $config } = useNuxtApp();
 
 const products = ref([]);
@@ -13,6 +18,12 @@ const route = useRoute();
 const loading = ref(true);
 const error = ref("");
 const userId = route.params.id;
+
+// ✅ state สำหรับบังคับรีเฟรช CommentList รายโพสต์
+const listKeys = ref({});
+const bumpListKey = (postId) => {
+  listKeys.value[postId] = (listKeys.value[postId] || 0) + 1;
+};
 
 const getImageUrl = (path) => {
   if (!path) return null;
@@ -37,6 +48,17 @@ const fetchProducts = async () => {
   }
 };
 
+const normalizeImages = (raw) => {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  try {
+    const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
 const fetchPosts = async () => {
   loading.value = true;
   error.value = "";
@@ -55,17 +77,6 @@ const fetchPosts = async () => {
   }
 };
 
-const normalizeImages = (raw) => {
-  if (!raw) return [];
-  if (Array.isArray(raw)) return raw;
-  try {
-    const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-};
-
 onMounted(() => {
   fetchProducts();
   fetchPosts();
@@ -74,7 +85,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-100 py-16 px-4 sm:px-6 lg:px-8"
+    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-16 px-4 sm:px-6 lg:px-8"
   >
     <div class="max-w-6xl mx-auto">
       <!-- BaseCard -->
@@ -182,7 +193,7 @@ onMounted(() => {
               <!-- ชื่อโพสต์ (ลิงก์ไปหน้ารายละเอียด) -->
               <NuxtLink
                 :to="`/member/post/${post.post_id}`"
-                class="text-xl font-semibold text-blue-600 hover:underline"
+                class="text-xl font-semibold text-purple-800 hover:underline"
               >
                 {{ post.post_name }}
               </NuxtLink>
@@ -194,10 +205,22 @@ onMounted(() => {
 
               <!-- เมตา -->
               <p class="text-sm text-gray-400 mt-1">
-                โพสต์เมื่อ: {{ new Date(post.post_timestamp).toLocaleString()
-                }}<br />
+                โพสต์เมื่อ: {{ new Date(post.post_timestamp).toLocaleString() }}<br />
                 โดย {{ post.user_name }} ({{ post.user_username }})
               </p>
+
+              <!-- ✅ คอมเมนต์ -->
+              <div class="mt-6 border-t pt-4">
+                <CommentBox
+                  :postId="post.post_id"
+                  @commentAdded="bumpListKey(post.post_id)"
+                />
+                <CommentList
+                  :key="listKeys[post.post_id] || 0"
+                  :postId="post.post_id"
+                  class="mt-4"
+                />
+              </div>
             </div>
           </div>
 

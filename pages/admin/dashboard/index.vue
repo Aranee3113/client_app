@@ -5,7 +5,7 @@ definePageMeta({
 
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { decodeJwt } from "jose"; // ใช้ decode token
+import { decodeJwt } from "jose";
 import CardDashboard from "~/components/card/dashboard.vue";
 
 const router = useRouter();
@@ -14,11 +14,11 @@ const { $axios } = useNuxtApp();
 const products = ref([]);
 const posts = ref([]);
 const users = ref([]);
+const comments = ref([]);
 
-const id = ref<string>(""); // เพิ่มตัวแปร id
+const id = ref<string>("");
 const token = useCookie("token").value;
 
-// ดึง user_id จาก token
 if (token) {
   const decoded: any = decodeJwt(token);
   id.value = String(decoded.user_id);
@@ -26,14 +26,16 @@ if (token) {
 
 const fetchAllData = async () => {
   try {
-    const [productRes, postRes, userRes] = await Promise.all([
+    const [productRes, postRes, userRes, commentRes] = await Promise.all([
       $axios.get("/product"),
       $axios.get("/post"),
       $axios.get("/user"),
+      $axios.get("/comment"),
     ]);
     if (productRes.status === 200) products.value = productRes.data.data;
     if (postRes.status === 200) posts.value = postRes.data.data;
     if (userRes.status === 200) users.value = userRes.data.data;
+    if (commentRes.status === 200) comments.value = commentRes.data.data || [];
   } catch (err) {
     console.error("โหลดข้อมูลไม่สำเร็จ", err);
   }
@@ -44,12 +46,10 @@ onMounted(() => {
 });
 </script>
 
-
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50"
+    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad]"
   >
-    <!-- Header Section -->
     <div class="relative overflow-hidden">
       <div
         class="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-pink-600/10 to-orange-600/10"
@@ -59,7 +59,7 @@ onMounted(() => {
         <div class="flex justify-between items-center mb-8">
           <div class="flex items-center space-x-4">
             <div
-              class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg"
+              class="w-12 h-12 bg-gradient-to-br from-purple-800 to-orange-500 rounded-xl flex items-center justify-center shadow-lg"
             >
               <svg
                 class="w-6 h-6 text-white"
@@ -76,9 +76,7 @@ onMounted(() => {
               </svg>
             </div>
             <div>
-              <h1
-                class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
-              >
+              <h1 class="text-4xl font-bold text-center mb-2 text-purple-800">
                 ระบบจัดการแอดมิน
               </h1>
               <p class="text-gray-600">ภาพรวมข้อมูลทั้งหมดในระบบ</p>
@@ -86,14 +84,12 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Main Title -->
         <div class="text-center mb-12">
           <h2
-            class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent mb-4"
+            class="text-xl md:text-3xl font-bold bg-gradient-to-r from-orange-700 to-pink-500 bg-clip-text text-transparent mb-4"
           >
-            ระบบจัดการ
+            ระบบสารสนเทศภูมิปัญญาผ้าทอกลุ่มชาติพันธุ์เขมรจังหวัดบุรีรัมย์
           </h2>
-          <p class="text-gray-600 text-lg">ภาพรวมข้อมูลทั้งหมดในระบบ</p>
           <div
             class="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mx-auto mt-4"
           ></div>
@@ -101,24 +97,31 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="p-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div class="p-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
       <card-dashboard
         :data="{ count: products.length || 0 }"
-        color="bg-green-500"
+        color="bg-gradient-to-r from-purple-600 to-pink-300"
         text="text-white"
-        :link="`/admin/information`" 
+        :link="`/admin/information`"
         title="รายการผ้าทั้งหมด"
       />
       <card-dashboard
         :data="{ count: posts.length || 0 }"
-        color="bg-red-500"
+        color="bg-gradient-to-r from-red-600 to-rose-300"
         text="text-white"
         :link="`/admin/post`"
         title="รายการโพสต์ทั้งหมด"
       />
       <card-dashboard
+        :data="{ count: comments.length || 0 }"
+        color="bg-gradient-to-r from-pink-600 to-purple-300"
+        text="text-white"
+        :link="`/admin/comment`"
+        title="รายการความคิดเห็นทั้งหมด"
+      />
+      <card-dashboard
         :data="{ count: users.length || 0 }"
-        color="bg-yellow-500"
+        color="bg-gradient-to-r from-orange-600 to-amber-300"
         text="text-white"
         :link="`/admin/user`"
         title="รายการผู้ใช้ทั้งหมด"

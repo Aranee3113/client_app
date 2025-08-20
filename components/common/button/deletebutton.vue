@@ -28,8 +28,8 @@ async function Handledelete() {
   <button
     @click="Handledelete"
     :class="[
-      'w-10   items-center justify-center text-white transition',
-      'bg-red-500 hover:bg-red-600 shadow-md',
+      'w-10   items-center justify-center text-white transition ',
+      'bg-red-400 hover:bg-red-600 shadow-md ',
     ]"
   >
     <icon name="solar:archive-down-bold" />

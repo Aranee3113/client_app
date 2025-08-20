@@ -51,35 +51,41 @@ onBeforeUnmount(() => {
   >
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-20 items-center justify-between space-x-6">
-        <!-- ซ้าย: โลโก้ + เมนู -->
+        
         <div class="flex items-center space-x-6">
           <NuxtLink
             to="/"
-            class="text-3xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text flex items-center space-x-2"
+            class="text-3xl font-bold bg-gradient-to-r text-purple-600  flex items-center space-x-2"
           >
             <Shirt />
             <span>Mai Khmer</span>
           </NuxtLink>
           <NuxtLink
             :to="`/admin/dashboard`"
-            class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
+            class="text-lg text-gray-700 hover:text-orange-600 transition"
             >หน้าหลัก</NuxtLink
           >
           <NuxtLink
             :to="`/admin/information`"
-            class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
+            class="text-lg text-gray-700 hover:text-orange-600 transition"
             >จัดการข้อมูลผ้า</NuxtLink
           >
           <NuxtLink
             :to="`/admin/post`"
-            class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
+            class="text-lg text-gray-700 hover:text-orange-600 transition"
             >จัดการโพสต์</NuxtLink
           >
           <NuxtLink
+            :to="`/admin/comment`"
+            class="text-lg text-gray-700 hover:text-orange-600 transition"
+            >จัดการความคิดเห็น</NuxtLink
+          >
+          <NuxtLink
             :to="`/admin/user`"
-            class="text-sm text-gray-700 hover:text-[#ff5a5f] transition"
+            class="text-lg text-gray-700 hover:text-orange-600  transition"
             >จัดการรายชื่อผู้ใช้</NuxtLink
           >
+          
         </div>
 
         <div class="flex items-center space-x-3">
@@ -90,7 +96,7 @@ onBeforeUnmount(() => {
               class="rounded-l-md border border-gray-300 py-1.5 px-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#ff5a5f]"
             />
             <button
-              class="bg-gradient-to-r from-pink-500 to-orange-500 text-white px-3 py-1.5 hover:from-pink-600 hover:to-orange-600"
+              class="bg-gradient-to-r from-orange-600 to-orange-300 text-white px-3 py-1.5 hover:from-orange-300 hover:to-orange-600 cursor-pointer"
             >
               <Search class="w-4 h-4" />
             </button>
@@ -99,7 +105,7 @@ onBeforeUnmount(() => {
           <div ref="dropdownRef" class="relative">
             <button
               @click="toggleNotifications"
-              class="rounded-full bg-white border border-gray-300 p-2 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white transition"
+              class="rounded-full bg-white border border-gray-300 p-2 hover:bg-gradient-to-r hover:from-slate-600 hover:text-white transition cursor-pointer"
             >
               <ShieldUser class="w-6 h-6" />
             </button>

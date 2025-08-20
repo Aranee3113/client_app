@@ -63,22 +63,22 @@ onMounted(fetchPosts);
 <template>
   <CommonButtonBack />
 
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6">
+  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad]">
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
-        <h2 class="text-3xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+        <h2 class="text-3xl font-bold text-purple-800 ">
           รายการโพสต์
         </h2>
         <div class="flex flex-col items-end space-y-2">
           <NuxtLink
             to="/admin/post/add"
-            class="inline-flex items-center px-5 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white rounded-lg font-medium hover:from-yellow-500 hover:to-yellow-600 shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
+            class="inline-flex items-center px-5 py-2 bg-purple-400 text-white rounded-lg font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
           >
             + เพิ่มโพสต์
           </NuxtLink>
           <NuxtLink
             to="/admin/dashboard"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 transition transform hover:scale-105 shadow-md"
+            class="px-6 py-2 rounded-lg text-white font-medium bg-purple-400 transition transform hover:scale-105 shadow-md"
           >
             ย้อนกลับ
           </NuxtLink>
