@@ -5,10 +5,10 @@ import { ref, onMounted } from "vue";
 import { useCookie } from "#app";
 import { decodeJwt } from "jose";
 
+
 // คอมเมนต์
 import CommentBox from "~/components/comment/commentBox.vue";
 import CommentList from "~/components/comment/commentList.vue";
-
 const { $axios } = useNuxtApp();
 const config = useRuntimeConfig();
 
@@ -97,7 +97,6 @@ const onSubmit = async () => {
   fd.append("post_description", form.value.post_description);
   fd.append("user_id", String(form.value.user_id));
   newFiles.value.forEach((file) => fd.append("post_images", file));
-
   let res;
   if (form.value.post_id) {
     res = await $axios.put(`/post/${form.value.post_id}`, fd);
@@ -106,6 +105,8 @@ const onSubmit = async () => {
   }
 
   const created = res?.data?.data || null;
+  console.log(res?.data);
+  
   resetForm();
 
   if (created) {
@@ -169,7 +170,7 @@ onMounted(async () => {
       <form @submit.prevent="onSubmit" class="space-y-5">
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700"
-            >โพสต์เรื่อง</label
+            >โพสต์เรื่อง </label
           >
           <input
             v-model="form.post_name"
