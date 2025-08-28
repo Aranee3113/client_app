@@ -1,17 +1,13 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useCookie } from "#app";
 
+definePageMeta({ layout: "default" });
 
-definePageMeta({
-  layout: "default",
-});
-
-const { $axios } = useNuxtApp();
 const router = useRouter();
-
 const error = ref("");
+const loading = ref(false);
+
 const formData = ref({
   user_name: "",
   user_username: "",
@@ -28,21 +24,31 @@ async function register() {
   }
 
   try {
+    loading.value = true;
+
     const payload = {
-      user_name: formData.value.user_name,
-      user_username: formData.value.user_username,
+      user_name: formData.value.user_name.trim(),
+      user_username: formData.value.user_username.trim().toLowerCase(),
       user_password: formData.value.user_password,
     };
 
-    const response = await $axios.post("/user", payload);
+    // << เปลี่ยนตรงนี้จาก /user → /api/auth/register >>
+    await $fetch("http://localhost:8008/api/auth/register", {
+      method: "POST",
+      body: payload,
+    });
 
-    if (response.status === 201) {
-      alert("ลงทะเบียนสำเร็จ!");
-      router.push("/admin/dashboard");
-    }
+    alert("ลงทะเบียนสำเร็จ!");
+    router.push("/");
   } catch (err) {
+    // @ts-ignore
+    const status = err?.response?.status;
+    // @ts-ignore
+    const msg = err?.data?.message || "เกิดข้อผิดพลาดในการลงทะเบียน";
+    error.value = status === 409 ? "อีเมลนี้ถูกใช้แล้ว" : msg;
     console.error("Registration error:", err);
-    error.value = "เกิดข้อผิดพลาดในการลงทะเบียน";
+  } finally {
+    loading.value = false;
   }
 }
 </script>
@@ -76,7 +82,7 @@ async function register() {
             <label class="block text-sm font-medium text-gray-700">อีเมลผู้ใช้</label>
             <input
               v-model="formData.user_username"
-              type="text"
+              type="email"
               class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-300 focus:outline-none"
               required
             />
@@ -104,9 +110,10 @@ async function register() {
 
           <button
             type="submit"
-            class="w-full bg-gradient-to-r from-purple-600 to-purple-300 text-white font-semibold py-2 rounded-lg shadow-md transition-all transform hover:scale-105"
+            :disabled="loading"
+            class="w-full bg-gradient-to-r from-purple-600 to-purple-300 text-white font-semibold py-2 rounded-lg shadow-md transition-all transform hover:scale-105 disabled:opacity-60"
           >
-            ลงทะเบียน
+            {{ loading ? "กำลังลงทะเบียน..." : "ลงทะเบียน" }}
           </button>
 
           <p class="text-center text-sm text-gray-600">
@@ -131,4 +138,3 @@ async function register() {
     </div>
   </div>
 </template>
-
