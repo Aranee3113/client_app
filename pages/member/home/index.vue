@@ -6,7 +6,6 @@ definePageMeta({
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
-// ✅ เพิ่มคอมโพเนนต์คอมเมนต์
 import CommentBox from "~/components/comment/commentBox.vue";
 import CommentList from "~/components/comment/commentList.vue";
 

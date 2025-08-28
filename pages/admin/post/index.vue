@@ -11,8 +11,9 @@ const error = ref("");
 
 // ---- helpers ----
 const getFileBase = () =>
-  (config?.public?.fileBase ||
-    (config?.public?.apiBase || "").replace(/\/api\/?$/, "")) || "";
+  config?.public?.fileBase ||
+  (config?.public?.apiBase || "").replace(/\/api\/?$/, "") ||
+  "";
 
 const getImageUrl = (path) => {
   if (!path) return "";
@@ -63,12 +64,12 @@ onMounted(fetchPosts);
 <template>
   <CommonButtonBack />
 
-  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad]">
+  <div
+    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad]"
+  >
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
-        <h2 class="text-3xl font-bold text-purple-800 ">
-          รายการโพสต์
-        </h2>
+        <h2 class="text-3xl font-bold text-purple-800">รายการโพสต์</h2>
         <div class="flex flex-col items-end space-y-2">
           <NuxtLink
             to="/admin/post/add"
@@ -85,9 +86,13 @@ onMounted(fetchPosts);
         </div>
       </div>
 
-      <div class="overflow-x-auto rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20">
+      <div
+        class="overflow-x-auto rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20"
+      >
         <table class="min-w-full text-left text-sm">
-          <thead class="bg-gradient-to-r from-orange-100 to-red-100 text-gray-700">
+          <thead
+            class="bg-gradient-to-r from-orange-100 to-red-100 text-gray-700"
+          >
             <tr>
               <th class="py-3 px-4 font-semibold text-center">Post ID</th>
               <th class="py-3 px-4 font-semibold">ชื่อโพสต์</th>
@@ -98,10 +103,14 @@ onMounted(fetchPosts);
 
           <tbody>
             <tr v-if="loading">
-              <td colspan="4" class="py-6 text-center text-gray-500">กำลังโหลดข้อมูล...</td>
+              <td colspan="4" class="py-6 text-center text-gray-500">
+                กำลังโหลดข้อมูล...
+              </td>
             </tr>
             <tr v-else-if="error">
-              <td colspan="4" class="py-6 text-center text-red-500">{{ error }}</td>
+              <td colspan="4" class="py-6 text-center text-red-500">
+                {{ error }}
+              </td>
             </tr>
 
             <tr
@@ -138,18 +147,19 @@ onMounted(fetchPosts);
                     @deleted="fetchPosts"
                   />
                   <CommonButtonApprovebutton
-                    :text="post.is_active == 1 ? 'อนุมัติ' : 'ยังไม่อนุมัติ'"
-                    :color="['text-white', post.is_active == 1 ? 'bg-green-600' : 'bg-red-500']"
-                    path="/admin/post"
+                    @fetchPost="fetchPosts"
+                    path="post"
                     :params="post.post_id"
-                    @fetchOn="fetchPosts"
+                    :status="post.is_active === 1 ? 0 : 1"
                   />
                 </div>
               </td>
             </tr>
 
             <tr v-if="!loading && !error && posts.length === 0">
-              <td colspan="4" class="text-center text-gray-400 py-6">ไม่มีโพสต์ในระบบ</td>
+              <td colspan="4" class="text-center text-gray-400 py-6">
+                ไม่มีโพสต์ในระบบ
+              </td>
             </tr>
           </tbody>
         </table>

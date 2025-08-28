@@ -15,8 +15,7 @@ const getFileBase = () =>
     (config?.public?.apiBase || "").replace(/\/api\/?$/, "")) || "";
 
 const getImageUrl = (path) => {
-  if (!path) return "";
-  if (typeof path !== "string") return "";
+  if (!path || typeof path !== "string") return "";
   if (path.startsWith("http")) return path;
   const base = getFileBase();
   const p = path.startsWith("/") ? path : `/${path}`;
@@ -46,11 +45,8 @@ onMounted(fetchComments);
   <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad]">
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
-        <h2 class="text-3xl font-bold text-purple-800">
-          จัดการความคิดเห็น
-        </h2>
+        <h2 class="text-3xl font-bold text-purple-800">จัดการความคิดเห็น</h2>
         <div class="flex flex-col items-end space-y-2">
-          
           <NuxtLink
             to="/admin/comment/add"
             class="inline-flex items-center px-5 py-2 bg-purple-400 text-white rounded-lg font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
@@ -72,7 +68,6 @@ onMounted(fetchComments);
             <tr>
               <th class="py-3 px-4 font-semibold text-center">ID</th>
               <th class="py-3 px-4 font-semibold">ผู้ใช้</th>
-              <!-- *** ตัดคอลัมน์ “บนโพสต์” ออกตามที่ขอ *** -->
               <th class="py-3 px-4 font-semibold">ข้อความ</th>
               <th class="py-3 px-4 font-semibold text-center">รูปภาพ</th>
               <th class="py-3 px-4 font-semibold">เวลา</th>
@@ -85,6 +80,7 @@ onMounted(fetchComments);
             <tr v-if="loading">
               <td colspan="7" class="py-6 text-center text-gray-500">กำลังโหลดข้อมูล...</td>
             </tr>
+
             <tr v-else-if="error">
               <td colspan="7" class="py-6 text-center text-red-500">{{ error }}</td>
             </tr>
@@ -126,25 +122,27 @@ onMounted(fetchComments);
                 {{ new Date(c.comment_timestamp).toLocaleString() }}
               </td>
 
+              <!-- สถานะ -->
               <td class="py-3 px-4 text-center">
                 <span
                   class="inline-flex items-center px-2 py-1 rounded text-xs font-medium"
                   :class="c.is_active === 1 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
                 >
-                  {{ c.is_active === 1 ? 'อนุมัติแล้ว' : 'รอตรวจ' }}
+                  {{ c.is_active === 1 ? 'อนุมัติแล้ว' : 'ยังไม่อนุมัติ' }}
                 </span>
               </td>
 
+              <!-- จัดการ -->
               <td class="py-3 px-4">
                 <div class="flex justify-center gap-2">
-                  <!-- ปุ่มแก้ไข -->
+                  <!-- ปุ่มแก้ไข (เส้นทางในแอดมิน) -->
                   <CommonButtonEditbutton
                     type="edit"
                     path="/admin/comment"
                     :params="c.comment_id"
                   />
 
-                  <!-- ปุ่มลบ -->
+                  <!-- ปุ่มลบ เรียก API /comment/:id -->
                   <CommonButtonDeletebutton
                     type="comment"
                     path="comment"
@@ -152,11 +150,11 @@ onMounted(fetchComments);
                     @deleted="fetchComments"
                   />
 
-                  <!-- ปุ่มอนุมัติ/ยกเลิกอนุมัติ -->
+                  <!-- ปุ่มอนุมัติ/ยกเลิกอนุมัติ เรียก API /comment/active/:id -->
                   <CommonButtonApprovebutton
-                    :text="c.is_active == 1 ? 'อนุมัติ' : 'ยังไม่อนุมัติ'"
-                    :color="['text-white', c.is_active == 1 ? 'bg-green-600' : 'bg-red-500']"
-                    path="/admin/comment"
+                    :text="c.is_active == 1 ? 'ยกเลิกอนุมัติ' : 'อนุมัติ'"
+                    :color="['text-white', c.is_active == 1 ? 'bg-red-500' : 'bg-green-600']"
+                    path="comment"
                     :params="c.comment_id"
                     @fetchOn="fetchComments"
                   />
