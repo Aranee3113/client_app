@@ -255,10 +255,10 @@ onMounted(async () => {
 
             <!-- คอมเมนต์ -->
             <div class="mt-6 border-t pt-4">
-              <CommentBox
+              <!-- <CommentBox
                 :postId="post.post_id"
                 @commentAdded="bumpListKey(post.post_id)"
-              />
+              /> -->
               <CommentList
                 :key="listKeys[post.post_id] || 0"
                 :postId="post.post_id"
