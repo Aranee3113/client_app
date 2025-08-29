@@ -27,9 +27,9 @@ async function login() {
       const isAdmin = response.data.data.is_admin;
 
       if (isAdmin === 0) {
-        router.push(`/member/home`);
+        router.push(`/member`);
       } else if (isAdmin === 1) {
-        router.push(`/admin/dashboard`);
+        router.push(`/admin`);
       }
     }
   } catch (err) {
