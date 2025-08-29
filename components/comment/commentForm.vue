@@ -14,15 +14,11 @@ const sending = ref(false);
 const message = ref("");
 
 const token = useCookie("token").value;
-const currentUserId = computed(() => {
-  try {
-    if (!token) return "";
-    const decoded: any = decodeJwt(token);
-    return decoded?.user_id ? String(decoded.user_id) : "";
-  } catch {
-    return "";
-  }
-});
+//
+const decoded = decodeJwt(token);
+
+const currentUserId = decoded?.userId;
+console.log(currentUserId);
 
 const onFileChange = (e: Event) => {
   const input = e.target as HTMLInputElement;
@@ -41,7 +37,7 @@ const resetForm = () => {
 
 const submitComment = async () => {
   message.value = "";
-  if (!currentUserId.value) {
+  if (!currentUserId) {
     message.value = "กรุณาเข้าสู่ระบบก่อนแสดงความคิดเห็น";
     return;
   }
@@ -52,7 +48,7 @@ const submitComment = async () => {
 
   const fd = new FormData();
   fd.append("post_id", String(props.postId));
-  fd.append("user_id", String(currentUserId.value));
+  fd.append("user_id", String(currentUserId));
   fd.append("comment_text", commentText.value.trim());
   if (file.value) fd.append("comment_image", file.value);
 
@@ -94,7 +90,10 @@ const submitComment = async () => {
     </div>
 
     <div class="flex items-center justify-between">
-      <span class="text-sm" :class="message.includes('รอตรวจ') ? 'text-green-600' : 'text-red-600'">
+      <span
+        class="text-sm"
+        :class="message.includes('รอตรวจ') ? 'text-green-600' : 'text-red-600'"
+      >
         {{ message }}
       </span>
       <button
@@ -102,7 +101,7 @@ const submitComment = async () => {
         :disabled="sending"
         @click="submitComment"
       >
-        {{ sending ? 'กำลังส่ง…' : 'ส่งความคิดเห็น' }}
+        {{ sending ? "กำลังส่ง…" : "ส่งความคิดเห็น" }}
       </button>
     </div>
   </div>
