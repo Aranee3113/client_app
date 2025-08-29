@@ -54,14 +54,14 @@ onBeforeUnmount(() => {
         
         <div class="flex items-center space-x-6">
           <NuxtLink
-            to="/"
+            to="/admin"
             class="text-3xl font-bold bg-gradient-to-r text-purple-600  flex items-center space-x-2"
           >
             <Shirt />
             <span>Mai Khmer</span>
           </NuxtLink>
           <NuxtLink
-            :to="`/admin/dashboard`"
+            :to="`/admin`"
             class="text-lg text-gray-700 hover:text-orange-600 transition"
             >หน้าหลัก</NuxtLink
           >

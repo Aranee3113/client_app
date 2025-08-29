@@ -54,13 +54,13 @@ const logout = () => {
         <!-- เมนูด้านซ้าย -->
         <div class="flex items-center space-x-6">
           <NuxtLink
-            to="/"
+            to="/member"
             class="text-3xl font-bold  bg-gradient-to-r  text-purple-600  bg-clip-text flex items-center space-x-2"
           >
             <Shirt />
             <span>Mai Khmer</span>
           </NuxtLink>
-          <NuxtLink :to="`/member/home`" class="text-sm text-gray-700 hover:text-orange-600 transition">หน้าหลัก</NuxtLink>
+          <NuxtLink :to="`/member`" class="text-sm text-gray-700 hover:text-orange-600 transition">หน้าหลัก</NuxtLink>
           <NuxtLink :to="`/member/information_list`" class="text-sm text-gray-700 hover:text-orange-600 transition">ชุมชนผ้าทอ</NuxtLink>
           <NuxtLink :to="`/member/post_list`" class="text-sm text-gray-700 hover:text-orange-600 transition">โพสต์</NuxtLink>
           <NuxtLink :to="`/member/contract`" class="text-sm text-gray-700 hover:text-orange-600 transition">แชท</NuxtLink>

@@ -8,7 +8,6 @@ import { decodeJwt } from "jose";
 // คอมเมนต์
 import CommentBox from "~/components/comment/commentBox.vue";
 import CommentList from "~/components/comment/commentList.vue";
-
 const { $axios } = useNuxtApp();
 const config = useRuntimeConfig();
 
@@ -97,7 +96,6 @@ const onSubmit = async () => {
   fd.append("post_description", form.value.post_description);
   fd.append("user_id", String(form.value.user_id));
   newFiles.value.forEach((file) => fd.append("post_images", file));
-
   let res;
   if (form.value.post_id) {
     res = await $axios.put(`/post/${form.value.post_id}`, fd);
@@ -106,6 +104,8 @@ const onSubmit = async () => {
   }
 
   const created = res?.data?.data || null;
+  console.log(res?.data);
+
   resetForm();
 
   if (created) {
@@ -166,90 +166,12 @@ onMounted(async () => {
       </h1>
 
       <!-- ฟอร์มเพิ่ม/แก้ไขโพสต์ -->
-      <form @submit.prevent="onSubmit" class="space-y-5">
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700"
-            >โพสต์เรื่อง</label
-          >
-          <input
-            v-model="form.post_name"
-            type="text"
-            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-300 focus:outline-none"
-            required
-          />
-        </div>
-
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700"
-            >รายละเอียดโพสต์</label
-          >
-          <textarea
-            v-model="form.post_description"
-            rows="4"
-            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-300 focus:outline-none"
-            required
-          />
-        </div>
-
-        <!-- อัปโหลดรูป -->
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700"
-            >รูปภาพ (เลือกได้หลายรูป)</label
-          >
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            @change="handleFileChange"
-            class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
-          />
-          <!-- พรีวิวรูปใหม่ -->
-          <div
-            v-if="newFilePreviews.length"
-            class="mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"
-          >
-            <div
-              v-for="(url, idx) in newFilePreviews"
-              :key="idx"
-              class="relative aspect-square rounded-lg overflow-hidden border"
-            >
-              <img
-                :src="url"
-                alt="preview"
-                class="w-full h-full object-cover"
-              />
-              <button
-                type="button"
-                @click="removeNewFileAt(idx)"
-                class="absolute top-1 right-1 bg-black/60 text-white text-xs px-2 py-1 rounded"
-                aria-label="ลบรูปนี้"
-              >
-                ลบ
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- ไม่ให้เลือก user_id เอง -->
-        <input type="hidden" v-model="form.user_id" />
-
-        <div class="flex gap-3 justify-between items-center mt-6">
-          <button
-            type="submit"
-            class="flex-1 px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-700 to-red-500 transition transform hover:scale-105 shadow-md"
-          >
-            {{ form.post_id ? "อัปเดตโพสต์" : "เพิ่มโพสต์" }}
-          </button>
-          <button
-            v-if="form.post_id"
-            type="button"
-            @click="resetForm"
-            class="flex-1 px-6 py-2 rounded-lg text-white font-medium bg-pink-600 hover:bg-gray-500 transition transform hover:scale-105 shadow-md"
-          >
-            ยกเลิก
-          </button>
-        </div>
-      </form>
+      <NuxtLink
+        :to="to ?? '/member/post_list/add'"
+        class="flex-1 block rounded-full px-5 py-3 bg-gray-200 text-gray-600 shadow-inner hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-orange-300 transition"
+      >
+        คุณกำลังคิดอะไรอยู่
+      </NuxtLink>
 
       <!-- แสดงรายการโพสต์ -->
       <div class="mt-8">
@@ -318,7 +240,7 @@ onMounted(async () => {
                         class="w-full h-31 md:h-36 object-cover rounded-lg"
                         loading="lazy"
                       />
-                      
+
                       <div
                         v-if="(post.images?.length || 0) - 3 > 0"
                         class="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 text-white text-xl font-semibold"
