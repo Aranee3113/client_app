@@ -90,12 +90,12 @@ const submitComment = async () => {
     </div>
 
     <div class="flex items-center justify-between">
-      <span
+      <!-- <span
         class="text-sm"
         :class="message.includes('รอตรวจ') ? 'text-green-600' : 'text-red-600'"
       >
         {{ message }}
-      </span>
+      </span> -->
       <button
         class="px-4 py-2 rounded-lg text-white bg-purple-600 disabled:opacity-60"
         :disabled="sending"
