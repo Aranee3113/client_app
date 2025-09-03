@@ -112,7 +112,7 @@ onBeforeUnmount(() => {
 
             <div
               v-if="showNotifications"
-              class="absolute right-0 mt-3 w-56 bg-white/90 backdrop-blur-sm shadow-xl rounded-xl ring-1 ring-gray-200 z-50"
+              class="absolute right-0 mt-3 w-35 bg-white/90 backdrop-blur-sm shadow-xl rounded-xl ring-1 ring-gray-200 z-50"
             >
               <div class="py-2">
                 <NuxtLink
@@ -123,7 +123,7 @@ onBeforeUnmount(() => {
                 </NuxtLink>
                 <button
                   @click="logout"
-                  class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer"
                 >
                   ออกจากระบบ
                 </button>

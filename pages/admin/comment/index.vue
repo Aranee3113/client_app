@@ -71,7 +71,7 @@ onMounted(fetchComments);
               <th class="py-3 px-4 font-semibold">ข้อความ</th>
               <th class="py-3 px-4 font-semibold text-center">รูปภาพ</th>
               <th class="py-3 px-4 font-semibold">เวลา</th>
-              <th class="py-3 px-4 font-semibold text-center">สถานะ</th>
+              <!--<th class="py-3 px-4 font-semibold text-center">สถานะ</th>-->
               <th class="py-3 px-4 font-semibold text-center">จัดการ</th>
             </tr>
           </thead>
@@ -122,7 +122,7 @@ onMounted(fetchComments);
                 {{ new Date(c.comment_timestamp).toLocaleString() }}
               </td>
 
-              <!-- สถานะ -->
+              <!-- สถานะ 
               <td class="py-3 px-4 text-center">
                 <span
                   class="inline-flex items-center px-2 py-1 rounded text-xs font-medium"
@@ -130,7 +130,7 @@ onMounted(fetchComments);
                 >
                   {{ c.is_active === 1 ? 'อนุมัติแล้ว' : 'ยังไม่อนุมัติ' }}
                 </span>
-              </td>
+              </td>-->
 
               <!-- จัดการ -->
               <td class="py-3 px-4">
@@ -150,14 +150,14 @@ onMounted(fetchComments);
                     @deleted="fetchComments"
                   />
 
-                  <!-- ปุ่มอนุมัติ/ยกเลิกอนุมัติ เรียก API /comment/active/:id -->
+                  <!-- ปุ่มอนุมัติ/ยกเลิกอนุมัติ เรียก API /comment/active/:id 
                   <CommonButtonApprovebutton
                     :text="c.is_active == 1 ? 'ยกเลิกอนุมัติ' : 'อนุมัติ'"
                     :color="['text-white', c.is_active == 1 ? 'bg-red-500' : 'bg-green-600']"
                     path="comment"
                     :params="c.comment_id"
                     @fetchOn="fetchComments"
-                  />
+                  />-->
                 </div>
               </td>
             </tr>

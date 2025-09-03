@@ -214,7 +214,7 @@ const handleSubmit = async () => {
             </div>
           </div>
         </div>
-
+        
         <!-- input เลือกรูป -->
         <div class="mt-4">
           <label class="block text-sm font-medium text-gray-700">อัปโหลดรูปใหม่</label>
@@ -228,10 +228,10 @@ const handleSubmit = async () => {
         </div>
 
         <!-- ปุ่ม -->
-        <div class="flex justify-between items-center mt-6">
+        <div class="flex justify-between items-center mt-6 ">
           <button
             type="submit"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition transform hover:scale-105 shadow-md"
+            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition transform hover:scale-105 shadow-md "
             :disabled="loading"
           >
             {{ isEditMode ? "บันทึกการแก้ไข" : "เพิ่มข้อมูลผ้า" }}

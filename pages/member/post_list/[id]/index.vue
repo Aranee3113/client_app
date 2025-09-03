@@ -151,7 +151,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-6">
+  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-16 px-4 sm:px-6 lg:px-8">
     <div class="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
       <h1 class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
         {{ isEditMode ? "แก้ไขโพสต์" : "เพิ่มโพสต์" }}
@@ -176,7 +176,7 @@ onMounted(() => {
             multiple
             accept="image/*"
             @change="handleFileChange"
-            class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
+            class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 "
           />
 
           <!-- พรีวิวรูปใหม่ -->
@@ -190,7 +190,7 @@ onMounted(() => {
               <button
                 type="button"
                 @click="removeNewFileAt(idx)"
-                class="absolute top-1 right-1 bg-black/60 text-white text-xs px-2 py-1 rounded"
+                class="absolute top-1 right-1 bg-black/60 text-white text-xs px-2 py-1 rounded cursor-pointer"
               >
                 ลบ
               </button>
@@ -231,7 +231,7 @@ onMounted(() => {
         <div class="flex justify-between items-center mt-6">
           <button
             type="submit"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-orange-500 to-red-500"
+            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-orange-500 to-red-500 cursor-pointer"
           >
             {{ isEditMode ? "บันทึกการแก้ไข" : "เพิ่มโพสต์" }}
           </button>

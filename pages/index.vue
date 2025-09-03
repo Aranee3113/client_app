@@ -78,7 +78,7 @@ async function login() {
 
           <button
             type="submit"
-            class="w-full bg-gradient-to-r from-purple-600 to-purple-300 text-white font-semibold py-2 rounded-lg shadow-md transition-all transform hover:scale-105"
+            class="w-full bg-gradient-to-r from-purple-600 to-purple-300 text-white font-semibold py-2 rounded-lg shadow-md transition-all transform hover:scale-105 cursor-pointer"
           >
             เข้าสู่ระบบ
           </button>
