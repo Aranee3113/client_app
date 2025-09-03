@@ -35,7 +35,7 @@ const fetchAllData = async () => {
     if (productRes.status === 200) products.value = productRes.data.data;
     if (postRes.status === 200) posts.value = postRes.data.data;
     if (userRes.status === 200) users.value = userRes.data.data;
-    if (commentRes.status === 200) comments.value = commentRes.data.data || [];
+    if (commentRes.status === 200) comments.value = commentRes.data.data;
   } catch (err) {
     console.error("โหลดข้อมูลไม่สำเร็จ", err);
   }
