@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
-import { Shirt, Search, ShieldUser } from "lucide-vue-next";
+import { Shirt, Search, ShieldUser, ChevronDown  } from "lucide-vue-next";
 import { decodeJwt } from "jose";
+
 
 // เตรียมตัวแปร reactive
 const id = ref<string>("");
+const router = useRouter();
+const searchTerm = ref("");
+
+const doSearch = () => {
+  const q = searchTerm.value.trim();
+  if (!q) return;
+  router.push({ path: "/member/search", query: { q } });
+};
 
 onMounted(() => {
   // ดึง token และ decode
@@ -27,7 +36,7 @@ const showProcess = ref(false);
 const showCommunity = ref(false);
 const showNotifications = ref(false);
 const dropdownRef = ref(null);
-const router = useRouter();
+
 
 const toggleNotifications = () => {
   showNotifications.value = !showNotifications.value;
@@ -50,7 +59,7 @@ const logout = () => {
 
 <template>
   <nav
-    class="backdrop-blur-md bg-white/80 shadow-gray-300 z-50 border-b border-gray-200"
+    class="relative z-[9999] backdrop-blur-md bg-white/80 shadow-gray-300 border-b border-gray-200"
   >
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-20 items-center justify-between space-x-6">
@@ -68,6 +77,7 @@ const logout = () => {
             class="text-sm text-gray-700 hover:text-orange-600 transition"
             >หน้าหลัก</NuxtLink
           >
+
           <!-- Dropdown เมนูกระบวนการทอผ้า -->
           <div class="relative">
             <button
@@ -84,7 +94,7 @@ const logout = () => {
             <!-- dropdown list -->
             <div
               v-if="showProcess"
-              class="absolute left-0 mt-2 w-35 bg-white shadow-lg rounded-xl border border-gray-200 z-50 cursor-pointer"
+              class="absolute left-0 mt-2 w-35 bg-white shadow-lg rounded-xl border border-gray-200 z-[10000] cursor-pointer"
             >
               <NuxtLink
                 to="/member/information_list/33"
@@ -126,7 +136,7 @@ const logout = () => {
             <!-- dropdown list -->
             <div
               v-if="showCommunity"
-              class="absolute left-0 mt-2 w-50 bg-white shadow-lg rounded-xl border border-gray-200 z-50 cursor-pointer"
+              class="absolute left-0 mt-2 w-50 bg-white shadow-lg rounded-xl border border-gray-200 z-[10000] cursor-pointer"
             >
               <NuxtLink
                 to="/member/information_list/28"
@@ -160,6 +170,7 @@ const logout = () => {
               </NuxtLink>
             </div>
           </div>
+
           <NuxtLink
             :to="`/member/post_list`"
             class="text-sm text-gray-700 hover:text-orange-600 transition"
@@ -170,19 +181,27 @@ const logout = () => {
             class="text-sm text-gray-700 hover:text-orange-600 transition"
             >แชท</NuxtLink
           >
+          <NuxtLink
+            :to="`/member/popularity`"
+            class="text-sm text-gray-700 hover:text-orange-600 transition"
+            >ความนิยม</NuxtLink
+          >
         </div>
 
         <!-- เมนูด้านขวา -->
         <div class="flex items-center space-x-3">
           <!-- ค้นหา -->
           <div class="flex rounded-md overflow-hidden shadow">
-            <input
+            <<input
+              v-model="searchTerm"
               type="text"
               placeholder="ค้นหา..."
               class="rounded-l-md border border-gray-300 py-1.5 px-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#ff5a5f]"
+              @keydown.enter="doSearch"
             />
             <button
               class="bg-gradient-to-r from-orange-600 to-orange-300 text-white px-3 py-1.5 hover:from-orange-300 hover:to-orange-600 cursor-pointer"
+              @click="doSearch"
             >
               <Search class="w-4 h-4" />
             </button>
@@ -200,7 +219,7 @@ const logout = () => {
             <!-- เมนู dropdown -->
             <div
               v-if="showNotifications"
-              class="absolute right-0 mt-3 w-35 bg-white/90 backdrop-blur-sm shadow-xl rounded-xl ring-1 ring-gray-200 z-50"
+              class="absolute right-0 mt-3 w-35 bg-white/90 backdrop-blur-sm shadow-xl rounded-xl ring-1 ring-gray-200 z-[10000]"
             >
               <div class="py-2">
                 <template v-if="id">

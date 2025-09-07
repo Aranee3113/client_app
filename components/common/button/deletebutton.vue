@@ -29,7 +29,7 @@ async function Handledelete() {
     @click="Handledelete"
     :class="[
       'w-10   items-center justify-center text-white transition ',
-      'bg-red-400 hover:bg-red-600 shadow-md ',
+      'bg-red-400 hover:bg-red-600 shadow-md cursor-pointer',
     ]"
   >
     <icon name="solar:archive-down-bold" />

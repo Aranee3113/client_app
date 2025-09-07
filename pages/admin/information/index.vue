@@ -40,6 +40,7 @@ const normalizeImages = (raw) => {
 const fetchProducts = async () => {
   try {
     const res = await $axios.get("/product");
+    console.log("fetch products:", res);
     if (res.status === 200) {
       const rows = res.data?.data || [];
       products.value = rows.map((p) => ({

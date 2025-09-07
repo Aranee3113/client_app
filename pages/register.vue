@@ -130,7 +130,7 @@ async function register() {
       <!-- รูปภาพ -->
       <div class="hidden md:flex items-center justify-center p-6">
         <img
-          src="/assetts/css/image/03.JPG"
+          src="/assetts/css/image/MTMA1214.JPG"
           alt="Register Illustration"
           class="rounded-r-2xl object-cover w-full h-full"
         />
