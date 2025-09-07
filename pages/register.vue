@@ -111,7 +111,7 @@ async function register() {
           <button
             type="submit"
             :disabled="loading"
-            class="w-full bg-gradient-to-r from-purple-600 to-purple-300 text-white font-semibold py-2 rounded-lg shadow-md transition-all transform hover:scale-105 disabled:opacity-60"
+            class="w-full bg-gradient-to-r from-purple-600 to-purple-300 text-white font-semibold py-2 rounded-lg shadow-md transition-all transform hover:scale-105 disabled:opacity-60 cursor-pointer"
           >
             {{ loading ? "กำลังลงทะเบียน..." : "ลงทะเบียน" }}
           </button>
@@ -130,7 +130,7 @@ async function register() {
       <!-- รูปภาพ -->
       <div class="hidden md:flex items-center justify-center p-6">
         <img
-          src="/assetts/css/image/03.JPG"
+          src="/assetts/css/image/MTMA1214.JPG"
           alt="Register Illustration"
           class="rounded-r-2xl object-cover w-full h-full"
         />

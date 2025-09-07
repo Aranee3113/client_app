@@ -40,6 +40,7 @@ const normalizeImages = (raw) => {
 const fetchProducts = async () => {
   try {
     const res = await $axios.get("/product");
+    console.log("fetch products:", res);
     if (res.status === 200) {
       const rows = res.data?.data || [];
       products.value = rows.map((p) => ({
@@ -70,10 +71,10 @@ watch(products, () => {
         <h2 class="text-3xl font-bold text-purple-800">
           รายการข้อมูลผ้า
         </h2>
-        <div class="flex flex-col items-end space-y-2">
+        <div class="flex flex-col items-end space-y-2 ">
           <NuxtLink
             to="/admin/information/add"
-            class="inline-flex items-center px-5 py-2  bg-purple-400 text-white rounded-lg font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
+            class="inline-flex items-center px-5 py-2  bg-purple-400 text-white rounded-lg font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all "
           >
             + เพิ่มข้อมูลผ้า
           </NuxtLink>

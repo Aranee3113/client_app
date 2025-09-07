@@ -57,7 +57,6 @@ const fetchPosts = async () => {
     loading.value = false;
   }
 };
-
 onMounted(fetchPosts);
 </script>
 
@@ -97,6 +96,7 @@ onMounted(fetchPosts);
               <th class="py-3 px-4 font-semibold text-center">Post ID</th>
               <th class="py-3 px-4 font-semibold">ชื่อโพสต์</th>
               <th class="py-3 px-4 font-semibold text-center">รูปภาพ</th>
+              <th class="py-3 px-4 font-semibold">เวลา</th>
               <th class="py-3 px-4 font-semibold text-center">จัดการ</th>
             </tr>
           </thead>
@@ -133,6 +133,11 @@ onMounted(fetchPosts);
                   <span v-else class="text-gray-400">ไม่มีรูปภาพ</span>
                 </div>
               </td>
+              
+              <td class="py-3 px-4">
+                {{ new Date(post.post_timestamp).toLocaleString() }}
+              </td>
+
               <td class="py-3 px-4">
                 <div class="flex justify-center gap-2">
                   <CommonButtonEditbutton

@@ -11,8 +11,9 @@ const loading = ref(true);
 
 // ใช้ fileBase ถ้ามี; ถ้าไม่มีให้ตัด /api ออกจาก apiBase อัตโนมัติ
 const getFileBase = () =>
-  (config?.public?.fileBase ||
-    (config?.public?.apiBase || "").replace(/\/api\/?$/, "")) || "";
+  config?.public?.fileBase ||
+  (config?.public?.apiBase || "").replace(/\/api\/?$/, "") ||
+  "";
 
 const getImageUrl = (path) => {
   if (!path) return "";
@@ -54,58 +55,49 @@ onMounted(fetchPost);
 </script>
 
 <template>
-  <CommonButtonBack />
-  <div class="max-w-3xl mx-auto py-12 px-6">
-    <div v-if="!loading && post" class="bg-white p-6 shadow-md rounded-xl">
-      <h1 class="text-2xl font-bold text-orange-600 mb-4">
-        {{ post.post_name }}
-      </h1>
-
-      <!-- รูปปก (รูปแรก) -->
-      <div v-if="post.images && post.images.length" class="mb-4">
-        <img
-          :src="getImageUrl(post.images[0].post_image_path)"
-          alt="post cover"
-          class="w-full h-72 object-cover rounded-lg border"
-          loading="lazy"
-        />
-      </div>
-
-      <p class="text-gray-700 mb-4 whitespace-pre-line">
-        {{ post.post_description }}
-      </p>
-      <p class="text-sm text-gray-400">
-        โพสต์เมื่อ: {{ new Date(post.post_timestamp).toLocaleString() }}
-      </p>
-
-      <!-- แกลเลอรี (ถ้ามีหลายรูป) -->
-      <div
-        v-if="post.images && post.images.length > 1"
-        class="mt-5 grid grid-cols-2 sm:grid-cols-3 gap-3"
-      >
+  <div
+    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-8 px-4 lg:px-8"
+  >
+    <CommonButtonBack />
+    <div class="max-w-3xl mx-auto py-12 px-6">
+      <div v-if="!loading && post" class="bg-white p-6 shadow-md rounded-xl">
+        <h1 class="text-2xl font-bold text-orange-600 mb-4">
+          {{ post.post_name }}
+        </h1>
+        <p class="text-gray-700 mb-4 whitespace-pre-line">
+          {{ post.post_description }}
+        </p>
+        <p class="text-sm text-gray-400">
+          โพสต์เมื่อ: {{ new Date(post.post_timestamp).toLocaleString() }}
+        </p>
+        <!-- รูปภาพ -->
         <div
-          v-for="img in post.images"
-          :key="img.post_image_id || img.post_image_path"
-          class="aspect-square rounded-lg overflow-hidden border"
+          v-if="post.images && post.images.length > 0"
+          class="mt-5 space-y-3"
         >
-          <img
-            :src="getImageUrl(img.post_image_path)"
-            alt="post image"
-            class="w-full h-full object-cover"
-            loading="lazy"
-          />
+          <div
+            v-for="img in post.images.slice(0)"
+            :key="img.post_image_id || img.post_image_path"
+            class="rounded-lg overflow-hidden border"
+          >
+            <img
+              :src="getImageUrl(img.post_image_path)"
+              alt="post image"
+              class="w-full object-contain"
+              loading="lazy"
+            />
+          </div>
+        </div>
+        <!-- ไม่มีรูป -->
+        <div
+          v-else-if="!post.images || post.images.length === 0"
+          class="mt-4 text-sm text-gray-500 italic"
+        >
+          ไม่มีรูปภาพ
         </div>
       </div>
 
-      <!-- ไม่มีรูป -->
-      <div
-        v-else-if="!post.images || post.images.length === 0"
-        class="mt-4 text-sm text-gray-500 italic"
-      >
-        ไม่มีรูปภาพ
-      </div>
+      <div v-else class="text-center text-gray-500">กำลังโหลดข้อมูล...</div>
     </div>
-
-    <div v-else class="text-center text-gray-500">กำลังโหลดข้อมูล...</div>
   </div>
 </template>
