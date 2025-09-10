@@ -74,7 +74,7 @@ const logout = () => {
           </NuxtLink>
           <NuxtLink
             :to="`/member`"
-            class="text-sm text-gray-700 hover:text-orange-600 transition"
+            class="text-l text-gray-700 hover:text-orange-600 transition"
             >หน้าหลัก</NuxtLink
           >
 
@@ -82,7 +82,7 @@ const logout = () => {
           <div class="relative">
             <button
               @click="showProcess = !showProcess"
-              class="text-sm text-gray-700 hover:text-orange-600 transition flex items-center space-x-1 cursor-pointer"
+              class="text-l text-gray-700 hover:text-orange-600 transition flex items-center space-x-1 cursor-pointer"
             >
               <span>กระบวนการทอผ้า</span>
               <ChevronDown
@@ -97,34 +97,33 @@ const logout = () => {
               class="absolute left-0 mt-2 w-35 bg-white shadow-lg rounded-xl border border-gray-200 z-[10000] cursor-pointer"
             >
               <NuxtLink
-                to="/member/information_list/33"
+                to="/member/information_list/process"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 @click="showProcess = false"
               >
                 กระบวนการผลิต
               </NuxtLink>
               <NuxtLink
-                to="/member/information_list/34"
+                to="/member/information_list/tools"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 @click="showProcess = false"
               >
                 อุปกรณ์การทอ
               </NuxtLink>
-              <NuxtLink
-                to="/member/information_list/35"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                @click="showProcess = false"
-              >
-                อัตลักษณ์ผ้าเขมร
-              </NuxtLink>
+
             </div>
           </div>
+          <NuxtLink
+            :to="`/member/information_list/Identity`"
+            class="text-l text-gray-700 hover:text-orange-600 transition"
+            >อัตลักษณ์ผ้าเขมร</NuxtLink
+          >
 
           <!-- Dropdown เมนูชุมชนผ้าทอ -->
           <div class="relative">
             <button
               @click="showCommunity = !showCommunity"
-              class="text-sm text-gray-700 hover:text-orange-600 transition flex items-center space-x-1 cursor-pointer"
+              class="text-l text-gray-700 hover:text-orange-600 transition flex items-center space-x-1 cursor-pointer"
             >
               <span>ลวดลายผ้า</span>
               <ChevronDown
@@ -139,31 +138,31 @@ const logout = () => {
               class="absolute left-0 mt-2 w-50 bg-white shadow-lg rounded-xl border border-gray-200 z-[10000] cursor-pointer"
             >
               <NuxtLink
-                to="/member/information_list/28"
+                to="/member/information_list/cloth1"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 ผ้าหางกระรอก
               </NuxtLink>
               <NuxtLink
-                to="/member/information_list/29"
+                to="/member/information_list/cloth2"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 ผ้าโสร่ง
               </NuxtLink>
               <NuxtLink
-                to="/member/information_list/30"
+                to="/member/information_list/cloth3"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 ผ้าซิ่นหมี่และโฮลเปราะห์
               </NuxtLink>
               <NuxtLink
-                to="/member/information_list/31"
+                to="/member/information_list/cloth4"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 ผ้ายกดอกและผ้าสไบยกดอก
               </NuxtLink>
               <NuxtLink
-                to="/member/information_list/32"
+                to="/member/information_list/cloth5"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 ผ้าขาวม้ายกขิด ผ้าสไบยกขิด
@@ -173,17 +172,17 @@ const logout = () => {
 
           <NuxtLink
             :to="`/member/post_list`"
-            class="text-sm text-gray-700 hover:text-orange-600 transition"
+            class="text-l text-gray-700 hover:text-orange-600 transition"
             >โพสต์</NuxtLink
           >
           <NuxtLink
             :to="`/member/contract`"
-            class="text-sm text-gray-700 hover:text-orange-600 transition"
+            class="text-l text-gray-700 hover:text-orange-600 transition"
             >แชท</NuxtLink
           >
           <NuxtLink
             :to="`/member/popularity`"
-            class="text-sm text-gray-700 hover:text-orange-600 transition"
+            class="text-l text-gray-700 hover:text-orange-600 transition"
             >ความนิยม</NuxtLink
           >
         </div>
