@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useSession } from "~/composables/session";
 const { $axios } = useNuxtApp();
 const router = useRouter();
 
@@ -9,6 +10,7 @@ definePageMeta({
 });
 
 const error = ref("");
+
 const formData = ref({
   user_username: "",
   user_password: "",
@@ -21,11 +23,9 @@ async function login() {
       const token = response.data.token;
       const tokenCookie = useCookie("token");
       tokenCookie.value = token;
-
       console.log(response.data.data.is_admin);
-
+      useSession().currentUser.value = response.data.data;
       const isAdmin = response.data.data.is_admin;
-
       if (isAdmin === 0) {
         router.push(`/member`);
       } else if (isAdmin === 1) {
