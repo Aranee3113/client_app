@@ -1,93 +1,108 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { Users, Shirt, Star } from "lucide-vue-next"
+import { ref, onMounted, onUnmounted } from "vue";
 
-const images = [
-  "https://inspiredthailand.com/wp-content/uploads/2020/04/%E0%B8%9C%E0%B9%89%E0%B8%B2%E0%B8%97%E0%B8%AD%E0%B8%A5%E0%B8%A7%E0%B8%94%E0%B8%A5%E0%B8%B2%E0%B8%A2%E0%B8%9E%E0%B8%B7%E0%B9%89%E0%B8%99%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%992-3-%E0%B8%AD.%E0%B9%80%E0%B8%82%E0%B8%B2%E0%B8%89%E0%B8%81%E0%B8%A3%E0%B8%A3%E0%B8%88%E0%B9%8C-%E0%B8%88.%E0%B8%AA%E0%B8%A3%E0%B8%B0%E0%B9%81%E0%B8%81%E0%B9%89%E0%B8%A7-ADM42786.%E0%B8%AD%E0%B8%94%E0%B8%B8%E0%B8%A5-%E0%B8%95%E0%B8%B1%E0%B8%93%E0%B8%91%E0%B9%82%E0%B8%81%E0%B8%A8%E0%B8%B1%E0%B8%A2-%E0%B8%A0%E0%B8%B2%E0%B8%9E-1024x683.jpg",
-  "https://burirambta.wordpress.com/wp-content/uploads/2013/03/5840.jpg",
-  "https://media.readthecloud.co/wp-content/uploads/2022/08/29095532/wasin-thai-textile-23-750x500.jpg"
-]
-
-const currentIndex = ref(0)
-let intervalId = null
+const currentIndex = ref(0);
+let intervalId = null;
 
 const startAutoSlide = () => {
   intervalId = setInterval(() => {
-    nextImage()
-  }, 3000)
-}
+    nextImage();
+  }, 3000);
+};
 
 const stopAutoSlide = () => {
-  clearInterval(intervalId)
-}
+  clearInterval(intervalId);
+};
 
 const nextImage = () => {
-  currentIndex.value = (currentIndex.value + 1) % images.length
-}
+  currentIndex.value = (currentIndex.value + 1) % images.length;
+};
 
 const prevImage = () => {
-  currentIndex.value = (currentIndex.value - 1 + images.length) % images.length
-}
+  currentIndex.value = (currentIndex.value - 1 + images.length) % images.length;
+};
 
 const manualChange = (direction) => {
-  stopAutoSlide()
-  direction === 'next' ? nextImage() : prevImage()
-  startAutoSlide() // เริ่มใหม่หลังหยุด
-}
+  stopAutoSlide();
+  direction === "next" ? nextImage() : prevImage();
+  startAutoSlide();
+};
 
 onMounted(() => {
-  startAutoSlide()
-})
+  startAutoSlide();
+});
 
 onUnmounted(() => {
-  stopAutoSlide()
-})
+  stopAutoSlide();
+});
 </script>
 
 <template>
-  <div
-    class="p-5 bg-gradient-to-br from-pink-100 via-white to-purple-100 dark:from-gray-900 dark:to-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl transition max-w-4xl mx-auto overflow-visible relative"
-  >
-    <!-- ภาพ -->
-    <div class="relative w-full h-60 md:h-80 overflow-hidden rounded-xl">
-      <img
-        :src="images[currentIndex]"
-        alt="ผ้าทอ"
-        class="object-cover w-full h-full rounded-xl transition-opacity duration-700 ease-in-out shadow-inner"
-      />
+  <section class="w-full min-h-[100svh] bg-[#2f0d48] dark:bg-gray-900">
+    <div class="grid grid-cols-1 md:grid-cols-2 min-h-[100svh]">
+      
+      <!-- รูป: มือถืออยู่บน, เดสก์ท็อปอยู่ขวา -->
+      <div class="relative order-1 md:order-2 w-full aspect-[16/9] md:aspect-auto md:min-h-[100svh]">
+        <img
+          src="/assetts/css/image/ปก.jpg"
+          alt="cover"
+          class="absolute inset-0 w-full h-full object-cover"
+          decoding="async"
+          fetchpriority="high"
+        />
+        <!-- ไล่เฉดเฉพาะมือถือ -->
+        <div class="md:hidden absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+      </div>
 
-      <!-- ปุ่มซ้าย -->
-      <button
-        @click="manualChange('prev')"
-        class="absolute top-1/2 left-3 transform -translate-y-1/2 bg-white/60 dark:bg-gray-600 hover:bg-pink-200 dark:hover:bg-gray-500 p-3 rounded-full shadow-lg z-10 transition"
-        aria-label="เลื่อนไปก่อนหน้า"
-      >
-        <span class="text-2xl font-bold text-gray-700 dark:text-white">←</span>
-      </button>
+      <!-- ข้อความ -->
+      <div class="order-2 md:order-1 flex flex-col justify-center px-8 md:px-16 lg:px-24 py-10 md:py-0">
+        <h1 class="font-extrabold text-white dark:text-white leading-tight text-[clamp(2rem,6vw,4.5rem)]">
+          ภูมิปัญญาผ้าทอ <br class="hidden md:block" />
+          กลุ่มชาติพันธุ์เขมร<br class="hidden md:block" />
+          จังหวัดบุรีรัมย์
+        </h1>
+        
+        <p class="mt-6 text-lg md:text-xl text-white dark:text-gray-300">
+          สัมผัสความงดงามแห่งลวดลาย ที่สามารถนำไปสร้างสรรค์บนผืนผ้า
+        </p>
 
-      <!-- ปุ่มขวา -->
-      <button
-        @click="manualChange('next')"
-        class="absolute top-1/2 right-3 transform -translate-y-1/2 bg-white/60 dark:bg-gray-600 hover:bg-pink-200 dark:hover:bg-gray-500 p-3 rounded-full shadow-lg z-10 transition"
-        aria-label="เลื่อนไปถัดไป"
-      >
-        <span class="text-2xl font-bold text-gray-700 dark:text-white">→</span>
-      </button>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <!-- ปุ่ม 1: โทนม่วง -->
+          <NuxtLink
+            to="/member/information_list/info1"
+            class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold 
+                   bg-gradient-to-r from-purple-700 to-purple-500 
+                   text-white hover:from-purple-800 hover:to-purple-600 transition"
+          >
+            <Users class="w-5 h-5" />
+            ชาติพันธุ์เขมรบุรีรัมย์
+          </NuxtLink>
+
+          <!-- ปุ่ม 2: โทนส้ม -->
+          <NuxtLink
+            to="/member/information_list/info2"
+            class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold 
+                   bg-gradient-to-r from-orange-600 to-orange-400 
+                   text-white hover:from-orange-800 hover:to-orange-600 transition"
+          >
+            <Shirt class="w-5 h-5" />
+            วัฒนธรรมผ้าทอมือ
+          </NuxtLink>
+
+          <!-- ปุ่ม 3: โทนกรมท่า (Navy Blue) -->
+          <NuxtLink
+            to="/member/popularity"
+            class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold 
+                   bg-gradient-to-r from-blue-950 via-blue-900 to-indigo-900
+                   text-white hover:from-blue-900 hover:via-blue-800 hover:to-indigo-800 transition"
+          >
+            <Star class="w-5 h-5" />
+            ความนิยม
+          </NuxtLink>
+        </div>
+      </div>
+
     </div>
-
-    <!-- จุดเลื่อน -->
-    <div class="flex justify-center mt-6 space-x-2">
-      <span
-        v-for="(img, index) in images"
-        :key="index"
-        class="w-3 h-3 rounded-full transition-all duration-300"
-        :class="{
-          'bg-pink-500 scale-125 shadow-md': currentIndex === index,
-          'bg-white/50 dark:bg-gray-400': currentIndex !== index
-        }"
-      ></span>
-    </div>
-  </div>
+  </section>
 </template>
-
-
-

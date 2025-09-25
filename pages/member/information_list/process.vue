@@ -1,20 +1,30 @@
-<script setup>
+<script setup lang="ts">
 definePageMeta({
   layout: "member",
 });
 
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive } from "vue";
 import { useRoute } from "vue-router";
+import { Star } from "lucide-vue-next";
 
-const { $axios, $config } = useNuxtApp();
+const { $axios } = useNuxtApp();
+const token = useCookie<string | null>("token");
 
-const products = ref([]);
-const posts = ref([]);
+const products = ref<any[]>([]);
+const posts = ref<any[]>([]);
 const route = useRoute();
 const loading = ref(true);
 const error = ref("");
 const userId = route.params.id;
 
+
+
+const pageRating = reactive<{ myStars: number | null; summary: any }>({
+  myStars: null,
+  summary: null,
+});
+
+/* ---------- fetch product ---------- */
 const fetchProducts = async () => {
   try {
     const res = await $axios.get("/product");
@@ -26,7 +36,8 @@ const fetchProducts = async () => {
   }
 };
 
-const normalizeImages = (raw) => {
+/* ---------- helper images ---------- */
+const normalizeImages = (raw: any) => {
   if (!raw) return [];
   if (Array.isArray(raw)) return raw;
   try {
@@ -37,15 +48,18 @@ const normalizeImages = (raw) => {
   }
 };
 
+/* ---------- fetch post ---------- */
 const fetchPosts = async () => {
   loading.value = true;
   error.value = "";
   try {
     const res = await $axios.get("/post");
     const rows = res.data?.data || [];
-    posts.value = rows.map((p) => ({
+    posts.value = rows.map((p: any) => ({
       ...p,
       images: normalizeImages(p.images),
+      myStars: null, // ค่าเริ่มต้นดาวของเรา
+      summary: null, // ค่าเฉลี่ย/จำนวนทั้งหมด
     }));
   } catch (e) {
     console.error("โหลดข้อมูลโพสต์ล้มเหลว", e);
@@ -55,22 +69,49 @@ const fetchPosts = async () => {
   }
 };
 
+/* ---------- rating ---------- */
+async function fetchSummary(textileId: number, post: any) {
+  try {
+    const res = await $axios.get(`/textile-rating/${textileId}/summary`);
+    post.summary = res.data?.data;
+  } catch (e) {
+    console.error("โหลด summary ล้มเหลว", e);
+  }
+}
+
+async function rate(textileId: number, stars: number, post: any) {
+  if (!token.value) return alert("กรุณาเข้าสู่ระบบก่อน");
+  try {
+    await $axios.post(
+      `/textile-rating/${textileId}`,
+      { stars },
+      { headers: { Authorization: `Bearer ${token.value}` } }
+    );
+    post.myStars = stars;
+    await fetchSummary(textileId, post);
+  } catch (e) {
+    console.error("ให้ดาวไม่สำเร็จ", e);
+  }
+}
+
 onMounted(() => {
   fetchProducts();
   fetchPosts();
+  fetchSummary(1, pageRating);
 });
 </script>
 
+
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-16 px-4 sm:px-6 lg:px-8"
+    class="min-h-screen bg-gradient-to-br bg-[#ddcbe9] py-16 px-4 sm:px-6 lg:px-8"
   >
     <CommonButtonBack />
     <div class="max-w-6xl mx-auto">
       <!-- หัวข้อหลัก -->
       <div class="mb-8 text-center">
         <h2
-          class="text-4xl font-extrabold text-gray-800 dark:text-white tracking-tight"
+          class="text-4xl font-extrabold text-[#b14614] dark:text-white tracking-tight"
         >
           กระบวนการทอผ้าเขมรบุรีรัมย์
         </h2>
@@ -83,8 +124,8 @@ onMounted(() => {
           เทคโนโลยีและนวัตกรรมในการทอผ้า
         </p>
 
-        <p class="mb-4">
-            กระบวนการทอผ้าเขมรบุรีรัมย์
+        <p class="mb-4 text-justify indent-8">
+          กระบวนการทอผ้าเขมรบุรีรัมย์
           เทคโนโลยีและนวัตกรรมเป็นสิ่งที่เกิดขึ้นพร้อมกับกระบวนการทอผ้า
           และการเรียนรู้เรื่องการทอผ้า เป็นเทคโนโลยีที่เหมาะสมกับพื้นที่
           สิ่งแวดล้อม
@@ -99,33 +140,33 @@ onMounted(() => {
           >
           มีรายละเอียด ดังนี้
         </p>
-
         <!-- หัวข้อย่อย: ผลิตเส้นใย -->
         <p class="text-xl font-semibold text-purple-700 mt-6">
           เทคโนโลยีและนวัตกรรมในกระบวนการผลิตเส้นใย
         </p>
 
-        <p class="mb-4">
-          เป็นกระบวนการต้นน้ำ ชาวบ้านในจังหวัดบุรีรัมย์จะปลูกหม่อน เลี้ยงไหม
-          ซึ่งเป็นความรู้ที่ตกทอดกันมานานมาก ตั้งแต่บรรพบุรุษ
+        <p class="mb-4 text-justify indent-8 leading-relaxed">
+          เป็นกระบวนการต้นน้ำ ชาวบ้านในจังหวัดบุรีรัมย์จะปลูกหม่อน
+          เลี้ยงไหมซึ่งเป็นความรู้ที่ตกทอดกันมานานมากตั้งแต่บรรพบุรุษ
           เทคโนโลยีในการปลูกหม่อนเลี้ยงไหมเป็นเทคโนโลยีที่ไม่ซับซ้อน
           ใช้การสังเกตพฤติกรรม การใช้งานสร้างเทคโนโลยีขึ้นมา เช่น
           รังไหมสำหรับให้หนอนไหมชักใย ชาวบ้านจะนำกิ่งไม้ที่มีกิ่งก้านเล็ก ๆ
           ละเอียดมารวบหัวท้ายเข้าด้วยกัน
           มีไม้เป็นตะขอไว้เกาะกับราวเพื่อห้อยรังสำหรับให้หนอนไหมซักใย
-          ก่อนนำไปให้หนอนไหมชักใยต้องใช้ไม้ปั่นเส้นใยเล็ก ๆ ที่ติดอยู่ให้สะอาด
+          ก่อนนำไปให้หนอนไหมชักใย ต้องใช้ไม้ปั่นเส้นใยเล็ก ๆ ที่ติดอยู่ให้สะอาด
           นำไปผึ่งแดดจัดเพื่อฆ่าเชื้อโรค จึงนำมาให้หนอนไหมทำรังไหมได้
           ชาวบ้านจะระวังเรื่องความสะอาดอย่างมาก
           เนื่องจากหนอนไหมเป็นสัตว์ที่อ่อนแอมาก ชาวบ้านเรียกหนอนไหมว่า
           <span class="font-bold">“โกนเนียง”</span>
           <span class="font-bold">“โกน”</span> หมายถึง ลูก
-          <span class="font-bold">“เนียง”</span>
-          เป็นชื่อเรียกผู้หญิงอย่างสุภาพ หรือน่าเอ็นดู น่าทะนุถนอม “โกนเนียง”
-          จะแปลว่า “ลูกสาวที่ควรค่าแก่การทนุถนอม” คือ การปลูกหม่อนเลี้ยงไหม
-          ต้องใช้เทคโนโลยี หรือสร้างนวัตกรรมการเลี้ยงที่ประณีต น่ารัก
-          น่าทะนุถนอม
+          <span class="font-bold">“เนียง”</span> เป็นชื่อเรียกผู้หญิงอย่างสุภาพ
+          หรือน่าเอ็นดู น่าทะนุถนอม “โกนเนียง” จะแปลว่า
+          <span class="italic">“ลูกสาวที่ควรค่าแก่การทนุถนอม”</span>
+          คือการปลูกหม่อนเลี้ยงไหมต้องใช้เทคโนโลยีหรือนวัตกรรมการเลี้ยงที่ประณีต
+          น่ารัก และน่าทะนุถนอม
         </p>
-        <br>
+
+        <br />
         <!-- บรรทัดอ้างถึงภาพ เก็บเป็นข้อความตามต้นฉบับ -->
         <div class="flex justify-center gap-4">
           <div class="sm:col-span-3 text-center">
@@ -154,7 +195,7 @@ onMounted(() => {
           </div>
         </div>
         <br />
-        <p class="mb-4">
+        <p class="mb-4 text-justify indent-8">
           หลังจากเตรียมรังสำหรับหนอนไหมสะอาดเรียบร้อยแล้วจะโรยหนอนไหมที่สุกแล้วกระจายให้ทั่วถึง
           หนอนจะเลือกเกาะเกี่ยวกับกิ่งไม้ที่เหมาะ
           และจึงเริ่มชักใยจากด้านนอกเข้าหาตัวเองอย่างมีความสุขเป็นรังไหม
@@ -171,6 +212,16 @@ onMounted(() => {
             <p class="font-semibold">1.ส่วนของการเตรียมรังไหม มีดังนี้</p>
             <ol class="list-decimal ml-6 space-y-1">
               <li>ตากรังไหมให้เส้นใยฟู</li>
+              <div class="mt-4 flex justify-center gap-4">
+                <img
+                  src="/assetts/css/image/ตากรังไหม.png"
+                  alt="Home Illustration"
+                  class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto"
+                />
+              </div>
+              <p class="justify-center text-center italic">
+                ภาพที่ 4 ตากรังไหมให้เส้นใยฟู
+              </p>
               <li>ดึงสิ่งสกปรกออกจากรังไหมพักรอไว้</li>
             </ol>
             <div class="mt-4 flex justify-center gap-4">
@@ -181,7 +232,7 @@ onMounted(() => {
               />
             </div>
             <p class="justify-center text-center italic">
-              ภาพที่ 4 การดึงสิ่งสกปรกออกจากรังไหม
+              ภาพที่ 5 การดึงสิ่งสกปรกออกจากรังไหม
             </p>
           </div>
 
@@ -220,7 +271,7 @@ onMounted(() => {
                     class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto mx-auto"
                   />
                   <figcaption class="text-center italic mt-2">
-                    ภาพที่ 5 สาวเส้นใยใส่ตะกร้า
+                    ภาพที่ 6 สาวเส้นใยใส่ตะกร้า
                   </figcaption>
                 </figure>
               </li>
@@ -236,7 +287,10 @@ onMounted(() => {
                 <figure class="mt-4">
                   <video
                     src="/assetts/css/video/IMG_1560-new.mp4"
-                    controls
+                    autoplay
+                    muted
+                    playsinline
+                    loop
                     class="rounded-2xl shadow-lg max-w-md w-full h-auto mx-auto"
                   >
                     เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ
@@ -256,7 +310,7 @@ onMounted(() => {
                       class="rounded-2xl shadow-lg object-cover w-full h-auto"
                     />
                     <figcaption class="text-center italic mt-2">
-                      ภาพที่ 6 การนำเส้นใยไปผึ่งแดดให้แห้งสนิท
+                      ภาพที่ 7 การนำเส้นใยไปผึ่งแดดให้แห้งสนิท
                     </figcaption>
                   </figure>
                   <figure class="w-1/2">
@@ -266,7 +320,7 @@ onMounted(() => {
                       class="rounded-2xl shadow-lg object-cover w-full h-auto"
                     />
                     <figcaption class="text-center italic mt-2">
-                      ภาพที่ 7 ไหมพันธุ์พื้นบ้านชื่อ “นางน้อย”
+                      ภาพที่ 8 ไหมพันธุ์พื้นบ้านชื่อ “นางน้อย”
                     </figcaption>
                   </figure>
                 </div>
@@ -274,7 +328,29 @@ onMounted(() => {
             </ol>
           </div>
         </div>
+        <!-- ⭐ ส่วนเพิ่มใหม่: ระบบดาว -->
+      <div class="mt-6 flex flex-col items-center">
+        <div class="flex items-center gap-1 mb-2">
+          <button
+            v-for="n in 5"
+            :key="n"
+            @click="rate(1, n, pageRating)"  
+            class="focus:outline-none cursor-pointer"
+          >
+            <Star
+              :class="[
+                'w-8 h-8',
+                n <= (pageRating.myStars || 0) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'
+              ]"
+            />
+          </button>
+        </div>
+
+        <p v-if="pageRating.summary" class="text-sm text-gray-600">
+          เฉลี่ย {{ pageRating.summary.avg }} ดาว (จาก {{ pageRating.summary.count }} คน)
+        </p>
       </div>
+     </div> 
     </div>
   </div>
 </template>
