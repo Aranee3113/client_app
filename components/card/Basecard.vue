@@ -72,7 +72,7 @@ onUnmounted(() => {
           <NuxtLink
             to="/member/information_list/info1"
             class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold 
-                   bg-gradient-to-r from-purple-700 to-purple-500 
+                   bg-gradient-to-r from-purple-900 to-purple-500 
                    text-white hover:from-purple-800 hover:to-purple-600 transition"
           >
             <Users class="w-5 h-5" />
@@ -83,7 +83,7 @@ onUnmounted(() => {
           <NuxtLink
             to="/member/information_list/info2"
             class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold 
-                   bg-gradient-to-r from-orange-600 to-orange-400 
+                   bg-gradient-to-r from-amber-900 to-orange-600 
                    text-white hover:from-orange-800 hover:to-orange-600 transition"
           >
             <Shirt class="w-5 h-5" />
@@ -94,7 +94,7 @@ onUnmounted(() => {
           <NuxtLink
             to="/member/popularity"
             class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold 
-                   bg-gradient-to-r from-blue-950 via-blue-900 to-indigo-900
+                   bg-gradient-to-r from-blue-900 via-blue-900 to-indigo-900
                    text-white hover:from-blue-900 hover:via-blue-800 hover:to-indigo-800 transition"
           >
             <Star class="w-5 h-5" />

@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="bg-gradient-to-t from-[#c87032] via-[#dbd5d0] to-white 
+    class="bg-gradient-to-t from-[#e3dde4] via-[#e6e3e0] to-[#e7e6e5] 
            dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 
            shadow-inner rounded-t-2xl mt-10"
   >
@@ -14,7 +14,7 @@
           <div class="flex flex-col items-center md:items-start text-center md:text-left">
             <span
               class="text-3xl md:text-4xl font-extrabold 
-                     bg-gradient-to-r from-amber-900 via-amber-700 to-orange-600 
+                     bg-gradient-to-r from-purple-900 via-amber-700 to-amber-900 
                      bg-clip-text text-transparent"
             >
               KHMER WEAVE

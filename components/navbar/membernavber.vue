@@ -296,7 +296,7 @@ onBeforeUnmount(() => {
                 v-if="showIdentity"
                 class="absolute left-1/2 -translate-x-1/2 mt-2 w-60 bg-white shadow-lg rounded-xl border border-gray-200 z-[10000]"
               >
-                <ul class="py-2 text-sm text-gray-700">
+                <ul class="py-2 text-sm text-gray-900">
                   <li>
                     <NuxtLink
                       to="/member/information_list/Identity/Identity1"
@@ -460,7 +460,7 @@ onBeforeUnmount(() => {
                 <template v-if="id">
                   <NuxtLink
                     to="/member/profile"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100"
                     @click="showNotifications = false"
                   >
                     แก้ไขข้อมูลผู้ใช้
@@ -478,7 +478,7 @@ onBeforeUnmount(() => {
 
           <!-- Hamburger (มือถือ) -->
           <button
-            class="md:hidden inline-flex items-center justify-center rounded-md p-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-300"
+            class="md:hidden inline-flex items-center justify-center rounded-md p-2 border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-300"
             @click="showMobile = !showMobile"
             :aria-expanded="showMobile"
             aria-controls="mobile-menu"
@@ -519,25 +519,25 @@ onBeforeUnmount(() => {
       >
         <div v-if="showMobile" id="mobile-menu" class="md:hidden pb-4">
           <div
-            class="space-y-1 rounded-xl border border-gray-200 bg-white/90 backdrop-blur-sm p-2 shadow"
+            class="space-y-1 rounded-xl border border-gray-200 bg-[#ede5ed] backdrop-blur-sm p-2 shadow"
           >
             <NuxtLink
               to="/member"
-              class="block px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+              class="block px-3 py-2 rounded-md text-gray-900 hover:bg-gray-100"
               @click="showMobile = false"
             >
               หน้าหลัก
             </NuxtLink>
             <NuxtLink
               to="/member/information_list/info1"
-              class="block px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+              class="block px-3 py-2 rounded-md text-gray-900 hover:bg-gray-100"
               @click="showMobile = false"
             >
               ชาติพันธุ์เขมรบุรีรัมย์
             </NuxtLink>
             <NuxtLink
               to="/member/information_list/info2"
-              class="block px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+              class="block px-3 py-2 rounded-md text-gray-900 hover:bg-gray-100"
               @click="showMobile = false"
             >
               วัฒนธรรมผ้าทอมือ
@@ -546,7 +546,7 @@ onBeforeUnmount(() => {
             <!-- Accordion: กระบวนการทอผ้า -->
             <div class="px-2">
               <button
-                class="w-full flex items-center justify-between px-2 py-2 rounded-md hover:bg-gray-100 text-gray-700"
+                class="w-full flex items-center justify-between px-2 py-2 rounded-md hover:bg-gray-100 text-gray-900"
                 @click="mProcess = !mProcess"
                 :aria-expanded="mProcess"
                 aria-controls="m-process"
@@ -560,7 +560,7 @@ onBeforeUnmount(() => {
               <div v-if="mProcess" id="m-process" class="mt-1 ml-3 space-y-1">
                 <NuxtLink
                   to="/member/information_list/process"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   กระบวนการผลิต
@@ -568,7 +568,7 @@ onBeforeUnmount(() => {
 
                 <!-- Handmade sub-accordion -->
                 <button
-                  class="w-full flex items-center justify-between px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="w-full flex items-center justify-between px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="mHandmade = !mHandmade"
                   :aria-expanded="mHandmade"
                   aria-controls="m-handmade"
@@ -586,21 +586,21 @@ onBeforeUnmount(() => {
                 >
                   <NuxtLink
                     to="/member/information_list/info4"
-                    class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                    class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                     @click="showMobile = false"
                   >
                     เทคนิคการผลิตผ้าทอมือ
                   </NuxtLink>
                   <NuxtLink
                     to="/member/information_list/info41"
-                    class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                    class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                     @click="showMobile = false"
                   >
                     การย้อมสี
                   </NuxtLink>
                   <NuxtLink
                     to="/member/information_list/info42"
-                    class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                    class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                     @click="showMobile = false"
                   >
                     การตกแต่งเส้นด้ายยืนและเส้นด้ายพุ่ง
@@ -609,7 +609,7 @@ onBeforeUnmount(() => {
 
                 <NuxtLink
                   to="/member/information_list/tools"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   อุปกรณ์การทอ
@@ -619,7 +619,7 @@ onBeforeUnmount(() => {
 
             <div class="px-2">
               <button
-                class="w-full flex items-center justify-between px-2 py-2 rounded-md hover:bg-gray-100 text-gray-700"
+                class="w-full flex items-center justify-between px-2 py-2 rounded-md hover:bg-gray-100 text-gray-900"
                 @click="mIdentity = !mIdentity"
                 :aria-expanded="mIdentity"
                 aria-controls="m-process"
@@ -633,84 +633,84 @@ onBeforeUnmount(() => {
               <div v-if="mIdentity" id="m-process" class="mt-1 ml-3 space-y-1">
                 <NuxtLink
                   to="/member/information_list/Identity/Identity1"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   อัตลักษณ์ผ้าบรีรัมย์
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/Identity/Identity2"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   อัตลักษณ์ผ้าเขมร
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/Identity/Identity3"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าพื้น
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/Identity/Identity4"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าลายริ้ว
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/Identity/Identity5"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าลายตาราง
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/Identity/Identity6"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้ามัดหมี่
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/Identity/Identity7"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ลายจากรูปลักษณ์ของข้าวของเครื่องใช้
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/Identity/Identity8"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ลายจากงานสถาปัตยกรรม
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/Identity/Identity9"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ลายจากพืชพรรณธรรมชาติ
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/Identity/Identity10"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าลวดลายรูปคนและสัตว์
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/Identity/Identity11"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าลวดลายที่แสดงวิถีชีวิต
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/Identity/Identity12"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ลายประยุกต์ประสมประสาน
@@ -720,7 +720,7 @@ onBeforeUnmount(() => {
             <!-- Accordion: ลวดลายผ้า -->
             <div class="px-2">
               <button
-                class="w-full flex items-center justify-between px-2 py-2 rounded-md hover:bg-gray-100 text-gray-700"
+                class="w-full flex items-center justify-between px-2 py-2 rounded-md hover:bg-gray-100 text-gray-900"
                 @click="mCommunity = !mCommunity"
                 :aria-expanded="mCommunity"
                 aria-controls="m-community"
@@ -738,49 +738,49 @@ onBeforeUnmount(() => {
               >
                 <NuxtLink
                   to="/member/information_list/info3"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   การออกแบบลวดลายผ้าทอมือ
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/cloth1"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าหางกระรอก
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/cloth2"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าโสร่ง
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/cloth3"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าซิ่นหมี่
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/cloth6"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าโฮลเปราะห์
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/cloth4"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้ายกดอกและผ้าสไบยกดอก
                 </NuxtLink>
                 <NuxtLink
                   to="/member/information_list/cloth5"
-                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-700"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าขาวม้ายกขิด ผ้าสไบยกขิด
@@ -790,44 +790,26 @@ onBeforeUnmount(() => {
 
             <NuxtLink
               to="/member/post_list"
-              class="block px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+              class="block px-3 py-2 rounded-md text-gray-900 hover:bg-gray-100"
               @click="showMobile = false"
             >
               โพสต์
             </NuxtLink>
             <NuxtLink
               to="/member/contract"
-              class="block px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+              class="block px-3 py-2 rounded-md text-gray-900 hover:bg-gray-100"
               @click="showMobile = false"
             >
               แชท
             </NuxtLink>
             <NuxtLink
               to="/member/popularity"
-              class="block px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+              class="block px-3 py-2 rounded-md text-gray-900 hover:bg-gray-100"
               @click="showMobile = false"
             >
               ความนิยม
             </NuxtLink>
-
-            <!-- ปุ่มโปรไฟล์ในมือถือ -->
-            <div class="border-t border-gray-200 mt-2 pt-2 px-2">
-              <template v-if="id">
-                <NuxtLink
-                  to="/member/profile"
-                  class="block px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
-                  @click="showMobile = false"
-                >
-                  แก้ไขข้อมูลผู้ใช้
-                </NuxtLink>
-              </template>
-              <button
-                @click="logout"
-                class="w-full text-left px-3 py-2 rounded-md text-red-600 hover:bg-red-50"
-              >
-                ออกจากระบบ
-              </button>
-            </div>
+ 
           </div>
         </div>
       </transition>
