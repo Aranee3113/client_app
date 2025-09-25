@@ -11,7 +11,6 @@ import CardDashboard from "~/components/card/dashboard.vue";
 const router = useRouter();
 const { $axios } = useNuxtApp();
 
-const products = ref([]);
 const posts = ref([]);
 const users = ref([]);
 const comments = ref([]);
@@ -26,17 +25,15 @@ if (token) {
 
 const fetchAllData = async () => {
   try {
-    const [productRes, postRes, userRes, commentRes] = await Promise.all([
-      $axios.get("/product"),
+    const [postRes, userRes, commentRes] = await Promise.all([
       $axios.get("/post"),
       $axios.get("/user"),
       $axios.get("/comment"),
     ]);
-    console.log("Product Response:", productRes);
     console.log("Post Response:", postRes);
     console.log("User Response:", userRes);
     console.log("Comment Response:", commentRes);
-    if (productRes.status === 200) products.value = productRes.data.data;
+
     if (postRes.status === 200) posts.value = postRes.data.data;
     if (userRes.status === 200) users.value = userRes.data.data;
     if (commentRes.status === 200) comments.value = commentRes.data.data || [];
@@ -101,14 +98,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="p-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
-      <card-dashboard
-        :data="{ count: products.length || 0 }"
-        color="bg-gradient-to-r from-purple-600 to-pink-300"
-        text="text-white"
-        :link="`/admin/information`"
-        title="รายการผ้าทั้งหมด"
-      />
+    <div class="p-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
       <card-dashboard
         :data="{ count: posts.length || 0 }"
         color="bg-gradient-to-r from-red-600 to-rose-300"

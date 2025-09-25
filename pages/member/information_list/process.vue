@@ -3,9 +3,8 @@ definePageMeta({
   layout: "member",
 });
 
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { Star } from "lucide-vue-next";
 
 const { $axios } = useNuxtApp();
 const token = useCookie<string | null>("token");
@@ -16,13 +15,6 @@ const route = useRoute();
 const loading = ref(true);
 const error = ref("");
 const userId = route.params.id;
-
-
-
-const pageRating = reactive<{ myStars: number | null; summary: any }>({
-  myStars: null,
-  summary: null,
-});
 
 /* ---------- fetch product ---------- */
 const fetchProducts = async () => {
@@ -58,8 +50,6 @@ const fetchPosts = async () => {
     posts.value = rows.map((p: any) => ({
       ...p,
       images: normalizeImages(p.images),
-      myStars: null, // ค่าเริ่มต้นดาวของเรา
-      summary: null, // ค่าเฉลี่ย/จำนวนทั้งหมด
     }));
   } catch (e) {
     console.error("โหลดข้อมูลโพสต์ล้มเหลว", e);
@@ -69,35 +59,9 @@ const fetchPosts = async () => {
   }
 };
 
-/* ---------- rating ---------- */
-async function fetchSummary(textileId: number, post: any) {
-  try {
-    const res = await $axios.get(`/textile-rating/${textileId}/summary`);
-    post.summary = res.data?.data;
-  } catch (e) {
-    console.error("โหลด summary ล้มเหลว", e);
-  }
-}
-
-async function rate(textileId: number, stars: number, post: any) {
-  if (!token.value) return alert("กรุณาเข้าสู่ระบบก่อน");
-  try {
-    await $axios.post(
-      `/textile-rating/${textileId}`,
-      { stars },
-      { headers: { Authorization: `Bearer ${token.value}` } }
-    );
-    post.myStars = stars;
-    await fetchSummary(textileId, post);
-  } catch (e) {
-    console.error("ให้ดาวไม่สำเร็จ", e);
-  }
-}
-
 onMounted(() => {
   fetchProducts();
   fetchPosts();
-  fetchSummary(1, pageRating);
 });
 </script>
 
@@ -328,28 +292,7 @@ onMounted(() => {
             </ol>
           </div>
         </div>
-        <!-- ⭐ ส่วนเพิ่มใหม่: ระบบดาว -->
-      <div class="mt-6 flex flex-col items-center">
-        <div class="flex items-center gap-1 mb-2">
-          <button
-            v-for="n in 5"
-            :key="n"
-            @click="rate(1, n, pageRating)"  
-            class="focus:outline-none cursor-pointer"
-          >
-            <Star
-              :class="[
-                'w-8 h-8',
-                n <= (pageRating.myStars || 0) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'
-              ]"
-            />
-          </button>
-        </div>
-
-        <p v-if="pageRating.summary" class="text-sm text-gray-600">
-          เฉลี่ย {{ pageRating.summary.avg }} ดาว (จาก {{ pageRating.summary.count }} คน)
-        </p>
-      </div>
+        
      </div> 
     </div>
   </div>

@@ -414,11 +414,7 @@ onBeforeUnmount(() => {
               to="/member/post_list"
               >โพสต์</NuxtLink
             >
-            <NuxtLink
-              class="text-gray-800 hover:text-red-600"
-              to="/member/contract"
-              >แชท</NuxtLink
-            >
+            
           </nav>
         </div>
 
@@ -795,13 +791,7 @@ onBeforeUnmount(() => {
             >
               โพสต์
             </NuxtLink>
-            <NuxtLink
-              to="/member/contract"
-              class="block px-3 py-2 rounded-md text-gray-900 hover:bg-gray-100"
-              @click="showMobile = false"
-            >
-              แชท
-            </NuxtLink>
+            
             <NuxtLink
               to="/member/popularity"
               class="block px-3 py-2 rounded-md text-gray-900 hover:bg-gray-100"
