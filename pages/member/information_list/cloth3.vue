@@ -64,6 +64,7 @@ onMounted(() => {
 
 <template>
   <div
+  
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-16 px-4 sm:px-6 lg:px-8"
   >
     <CommonButtonBack />
@@ -367,5 +368,10 @@ onMounted(() => {
         </p>
       </div>
     </div>
+  </div>
+
+
+  <div class="">
+    aaa
   </div>
 </template>

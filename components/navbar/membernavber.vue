@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, onMounted, onBeforeUnmount, watch, computed } from "vue";
 import { useRouter, useRoute } from "vue-router"; // เพิ่ม useRoute
 import { Search, ShieldUser, ChevronDown, Menu, X } from "lucide-vue-next";
 import { decodeJwt } from "jose";
@@ -11,6 +11,9 @@ const route = useRoute();
 const id = ref<string>("");
 const router = useRouter();
 const searchTerm = ref("");
+
+const token = useCookie("token").value;
+                       
 
 // desktop dropdown
 const showProcess = ref(false);
@@ -109,9 +112,8 @@ const logout = () => {
 onMounted(() => {
   const token = useCookie<string | null>("token").value;
   if (token) {
-    const decoded = decodeJwt(token);
-    // @ts-ignore ปรับตาม payload จริง
-    id.value = String(decoded.user_id ?? "");
+    const decoded: any = decodeJwt(token);
+    id.value = String(decoded.user_id);
   }
 
   document.addEventListener("pointerdown", handleGlobalPointer);
