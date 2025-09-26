@@ -61,11 +61,12 @@ onMounted(fetchPosts);
 </script>
 
 <template>
-  <CommonButtonBack />
+  
 
   <div
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad]"
   >
+  <CommonButtonBack />
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
         <h2 class="text-3xl font-bold text-purple-800">รายการโพสต์</h2>
