@@ -70,8 +70,8 @@ onMounted(() => {
     <!-- BaseCard -->
     <card-basecard />
   </div>
-
-  <div class="min-h-screen bg-gradient-to-br bg-[#7d457e] py-16 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gradient-to-br bg-[#7d457e] py-16 px-4 sm:px-6 lg:px-8">
+  
     <div class="max-w-6xl mx-auto">
       <!-- ยินดีต้อนรับ -->
       <div class="text-center mt-10 mb-12">
