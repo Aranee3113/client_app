@@ -151,6 +151,7 @@ onUnmounted(() => {
   <div
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-10"
   >
+  <CommonButtonBack />
     <h1 class="text-2xl font-bold text-center text-purple-700 mb-8">
       จัดการข้อมูลผู้ใช้ (สมาชิก)
     </h1>

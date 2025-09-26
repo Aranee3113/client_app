@@ -139,24 +139,7 @@ watch(token, () => {
 
         <!-- Right: search + profile -->
         <div class="flex items-center gap-3">
-          <!-- Search (desktop) -->
-          <div class="hidden md:flex rounded-xl overflow-hidden shadow border border-gray-300 dark:border-gray-700">
-            <input
-              v-model="searchTerm"
-              @keyup.enter="doSearch"
-              type="search"
-              placeholder="ค้นหา..."
-              class="rounded-l-xl py-1.5 px-3 text-sm bg-white/70 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none"
-            />
-            <button
-              class="bg-gradient-to-r from-orange-600 to-orange-300 text-white px-3 py-1.5 hover:from-orange-500 hover:to-orange-400"
-              @click="doSearch"
-              aria-label="ค้นหา"
-            >
-              <Search class="w-4 h-4" />
-            </button>
-          </div>
-
+        
           <!-- Profile / dropdown -->
           <div ref="dropdownRef" class="relative">
             <button
@@ -202,24 +185,7 @@ watch(token, () => {
         class="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95"
       >
         <div class="px-3 py-3 space-y-2">
-          <!-- Search (mobile) -->
-          <div class="relative flex rounded-xl overflow-hidden shadow border border-gray-300 dark:border-gray-700">
-            <input
-              v-model="searchTerm"
-              @keyup.enter="doSearch"
-              type="search"
-              placeholder="ค้นหา..."
-              class="flex-1 py-2 px-3 text-sm bg-white/80 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none"
-            />
-            <button
-              class="px-3 bg-gradient-to-r from-orange-600 to-orange-300 text-white hover:from-orange-500 hover:to-orange-400"
-              @click="doSearch"
-              aria-label="ค้นหา"
-            >
-              <Search class="w-4 h-4" />
-            </button>
-          </div>
-
+          
           <!-- Links (mobile) -->
           <button
             class="w-full text-left block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200"
