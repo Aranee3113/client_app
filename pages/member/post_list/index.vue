@@ -5,9 +5,7 @@ import { ref, onMounted } from "vue";
 import { Star } from "lucide-vue-next"; // icon ดาว
 import { useCookie } from "#app";
 import { decodeJwt } from "jose";
-import { useRouter } from "vue-router";
 
-const route = useRouter();
 const { $axios } = useNuxtApp();
 const config = useRuntimeConfig();
 
@@ -213,12 +211,6 @@ const editPost = (post: any) => {
   navigateTo(`/member/post_list/${post.post_id}`);
 };
 
-const redirect = (params: any) => {
-  console.log("user conteact to:", params);
-  console.log("current user:", currentUser.value.user_id);
-  route.push("/member/contract?mesto=" + params);
-};
-
 onMounted(async () => {
   extractUserFromToken();
   await fetchPosts();
@@ -258,14 +250,6 @@ onMounted(async () => {
           >
             <div class="absolute top-3 right-3 flex gap-2">
               <!-- ปุ่มแก้ไข: แสดงเฉพาะเจ้าของ -->
-              <button
-                class="w-auto px-5 rounded bg-white text-gray-800 flex items-center justify-center cursor-pointer border border border-purple-300 hover:bg-purple-100"
-                @click="redirect(post.user_id)"
-                title="แก้ไข"
-              >
-                MESSAGE
-              </button>
-
               <button
                 v-if="isOwnerPost(post)"
                 class="h-9 w-9 rounded bg-purple-300 text-gray-800 flex items-center justify-center cursor-pointer hover:bg-purple-400"
@@ -379,7 +363,7 @@ onMounted(async () => {
                     />
                   </button>
                 </div>
-                <div class="text-sm text-gray-700">
+                <div class="text-sm text-gray-700  ">
                   ⭐
                   {{
                     (ratingSummaries[String(post.post_id)]?.avg ?? 0).toFixed(2)
