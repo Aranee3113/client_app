@@ -4,29 +4,15 @@ definePageMeta({
 });
 
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
 import { MapPin } from "lucide-vue-next";
 
-const { $axios, $config } = useNuxtApp();
+const { $axios } = useNuxtApp();
 
-const products = ref([]);
 const posts = ref([]);
-const route = useRoute();
 const loading = ref(true);
 const error = ref("");
-const userId = route.params.id;
 
-const fetchProducts = async () => {
-  try {
-    const res = await $axios.get("/product");
-    if (res.status === 200) {
-      products.value = res.data.data;
-    }
-  } catch (error) {
-    console.error("โหลดข้อมูลผ้าล้มเหลว", error);
-  }
-};
-
+// แปลง images ให้เป็นอาร์เรย์
 const normalizeImages = (raw) => {
   if (!raw) return [];
   if (Array.isArray(raw)) return raw;
@@ -57,7 +43,6 @@ const fetchPosts = async () => {
 };
 
 onMounted(() => {
-  fetchProducts();
   fetchPosts();
 });
 </script>

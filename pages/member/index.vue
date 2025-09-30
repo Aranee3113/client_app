@@ -4,32 +4,16 @@ definePageMeta({
 });
 
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
 
-const { $axios, $config } = useNuxtApp();
+const { $axios } = useNuxtApp();
 
-const products = ref([]);
+// state
 const posts = ref([]);
-const route = useRoute();
 const loading = ref(true);
 const error = ref("");
-const userId = route.params.id;
 const showTail = ref(false);
 
-
-
-
-const fetchProducts = async () => {
-  try {
-    const res = await $axios.get("/product");
-    if (res.status === 200) {
-      products.value = res.data.data;
-    }
-  } catch (error) {
-    console.error("โหลดข้อมูลผ้าล้มเหลว", error);
-  }
-};
-
+// utils
 const normalizeImages = (raw) => {
   if (!raw) return [];
   if (Array.isArray(raw)) return raw;
@@ -41,6 +25,7 @@ const normalizeImages = (raw) => {
   }
 };
 
+// fetch posts only
 const fetchPosts = async () => {
   loading.value = true;
   error.value = "";
@@ -60,10 +45,10 @@ const fetchPosts = async () => {
 };
 
 onMounted(() => {
-  fetchProducts();
   fetchPosts();
 });
 </script>
+
 
 <template>
   <div class="w-full mx-auto">
