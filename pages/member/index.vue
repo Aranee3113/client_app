@@ -94,7 +94,7 @@ onMounted(() => {
 
         <div class="mt-4 flex justify-center">
           <img
-            src="/assetts/css/image/Apsaraskirt.jpg"
+            src="/images/Apsaraskirt.jpg"
             alt="ผ้านุ่งอัปสรา"
             class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto"
           />
@@ -113,7 +113,7 @@ onMounted(() => {
 
         <div class="mt-4 flex justify-center">
           <img
-            src="/assetts/css/image/Naga.jpg"
+            src="/images/Naga.jpg"
             alt="การให้สีสันผ้าทอมือ ในประเพณีบวชนาคชาวเขมรบุรีรัมย์"
             class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto"
           />
