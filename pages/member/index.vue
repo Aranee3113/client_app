@@ -4,32 +4,16 @@ definePageMeta({
 });
 
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
 
-const { $axios, $config } = useNuxtApp();
+const { $axios } = useNuxtApp();
 
-const products = ref([]);
+// state
 const posts = ref([]);
-const route = useRoute();
 const loading = ref(true);
 const error = ref("");
-const userId = route.params.id;
 const showTail = ref(false);
 
-
-
-
-const fetchProducts = async () => {
-  try {
-    const res = await $axios.get("/product");
-    if (res.status === 200) {
-      products.value = res.data.data;
-    }
-  } catch (error) {
-    console.error("โหลดข้อมูลผ้าล้มเหลว", error);
-  }
-};
-
+// utils
 const normalizeImages = (raw) => {
   if (!raw) return [];
   if (Array.isArray(raw)) return raw;
@@ -41,6 +25,7 @@ const normalizeImages = (raw) => {
   }
 };
 
+// fetch posts only
 const fetchPosts = async () => {
   loading.value = true;
   error.value = "";
@@ -60,7 +45,6 @@ const fetchPosts = async () => {
 };
 
 onMounted(() => {
-  fetchProducts();
   fetchPosts();
 });
 </script>
@@ -70,28 +54,31 @@ onMounted(() => {
     <!-- BaseCard -->
     <card-basecard />
   </div>
-<div class="min-h-screen bg-gradient-to-br bg-[#7d457e] py-16 px-4 sm:px-6 lg:px-8">
-  
+  <div
+    class="min-h-screen bg-gradient-to-br bg-[#ffffff] py-16 px-4 sm:px-6 lg:px-8"
+  >
     <div class="max-w-6xl mx-auto">
       <!-- ยินดีต้อนรับ -->
-      <div class="text-center mt-10 mb-12">
-        <h2 class="text-4xl font-extrabold text-[#fbf8f7] dark:text-white tracking-tight">
+      <div class="text-center mb-12">
+        <h2
+          class="text-4xl font-extrabold text-purple-800 dark:text-white tracking-tight"
+        >
           ภูมิปัญญาผ้าทอ กลุ่มชาติพันธุ์เขมรจังหวัดบุรีรัมย์
         </h2>
       </div>
 
       <div
-        class="mt-8 text-left md:text-justify text-xl leading-relaxed text-gray-700 dark:text-gray-300
-               bg-white/70 dark:bg-gray-900/50 backdrop-blur-sm p-6 md:p-10 rounded-2xl shadow-md"
+        class="text-xl p-6 md:p-10 rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-gray-300 dark:border-gray-700"
       >
-        <p class="text-2xl font-extrabold text-purple-800 dark:text-white tracking-tight">
+        <p class="text-2xl font-extrabold text-purple-800">
           ผ้าทอมือของเขมรบุรีรัมย์
         </p>
 
         <!-- พารากราฟย่อให้กระชับ -->
         <p class="text-justify indent-8">
-          ผ้าทอมือของชาวเขมรบุรีรัมย์ใช้ทั้งในชีวิตประจำวันและงานพิธี นิยมนำไปเป็น
-          เครื่องใช้ (ที่นอน หมอน ผ้าห่ม) เครื่องนุ่งห่ม (ผ้าท่อนล่าง/ท่อนบน) และผ้าเอนกประสงค์
+          ผ้าทอมือของชาวเขมรบุรีรัมย์ใช้ทั้งในชีวิตประจำวันและงานพิธี
+          นิยมนำไปเป็น เครื่องใช้ (ที่นอน หมอน ผ้าห่ม) เครื่องนุ่งห่ม
+          (ผ้าท่อนล่าง/ท่อนบน) และผ้าเอนกประสงค์
           โดยมีชื่อเรียกดั้งเดิมที่คุ้นเคย เช่น
           <span class="font-bold">สำป๊วดกะเนียว (ผ้าหางกระรอก)</span>,
           <span class="font-bold">สำป็วดโฮล (ผ้าลาย/มัดหมี่)</span>,
@@ -101,39 +88,46 @@ onMounted(() => {
         </p>
 
         <p class="text-justify indent-8">
-          ปัจจุบันมีการรับอิทธิพลความรู้จากภายนอก ทำให้เกิดคำเรียกแบบไทย/ลาวปนเขมร เช่น
-          <span class="font-bold">“ซินมี”</span> (ผ้าซิ่นลายมัดหมี่) ลักษณะเด่นของผ้าพื้นถิ่นคือ
-          เนื้อแน่น เรียบ ไม่หนาจนเกินไป เมื่อนุ่งแล้ว “ทิ้งตัวสวย” ตรงกับรสนิยมท้องถิ่น
-          และต่างจากภาพ “นางอัปสรา” ในจารีตโบราณที่นิยมผ้าเนื้อบางแนบเนื้อ
+          ปัจจุบันมีการรับอิทธิพลความรู้จากภายนอก
+          ทำให้เกิดคำเรียกแบบไทย/ลาวปนเขมร เช่น
+          <span class="font-bold">“ซินมี”</span> (ผ้าซิ่นลายมัดหมี่)
+          ลักษณะเด่นของผ้าพื้นถิ่นคือ เนื้อแน่น เรียบ ไม่หนาจนเกินไป
+          เมื่อนุ่งแล้ว “ทิ้งตัวสวย” ตรงกับรสนิยมท้องถิ่น และต่างจากภาพ
+          “นางอัปสรา” ในจารีตโบราณที่นิยมผ้าเนื้อบางแนบเนื้อ
         </p>
 
         <div class="mt-4 flex justify-center">
           <img
-            src="/assetts/css/image/Apsaraskirt.jpg"
+            src="/images/Apsaraskirt.jpg"
             alt="ผ้านุ่งอัปสรา"
             class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto"
           />
         </div>
-        <p class="mt-4 text-xl font-semibold text-gray-700 dark:text-gray-300 text-center">
+        <p
+          class="mt-4 text-xl font-semibold text-gray-700 dark:text-gray-300 text-center"
+        >
           ผ้านุ่งอัปสรา
         </p>
 
         <p class="text-justify indent-8">
           เรื่อง “สีสัน” สะท้อนตัวตนมานุษยวิทยาได้ชัด โดยเฉพาะคำล้อท้องถิ่น
-          <span class="font-bold">“เขียวสวายจีก”</span> ที่กลายเป็นตัวแทนรสนิยมสีของชุมชน
-          ในการจัดสีผืนผ้ามักเลือก “แม่สีประจำถิ่น” ราว 5 สี ได้แก่
-          เหลืองเข้ม เขียวขี้ม้า แดงน้ำหมาก น้ำเงินสด และดำ
-          พร้อมใช้ <span class="font-bold">สีขาว</span> เพื่อเว้นจังหวะให้ลายเด่นชัด
+          <span class="font-bold">“เขียวสวายจีก”</span>
+          ที่กลายเป็นตัวแทนรสนิยมสีของชุมชน ในการจัดสีผืนผ้ามักเลือก
+          “แม่สีประจำถิ่น” ราว 5 สี ได้แก่ เหลืองเข้ม เขียวขี้ม้า แดงน้ำหมาก
+          น้ำเงินสด และดำ พร้อมใช้
+          <span class="font-bold">สีขาว</span> เพื่อเว้นจังหวะให้ลายเด่นชัด
         </p>
 
         <div class="mt-4 flex justify-center">
           <img
-            src="/assetts/css/image/Naga.jpg"
+            src="/images/Naga.jpg"
             alt="การให้สีสันผ้าทอมือ ในประเพณีบวชนาคชาวเขมรบุรีรัมย์"
             class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto"
           />
         </div>
-        <p class="mt-4 text-xl font-semibold text-gray-700 dark:text-gray-300 text-center">
+        <p
+          class="mt-4 text-xl font-semibold text-gray-700 dark:text-gray-300 text-center"
+        >
           การให้สีสันผ้าทอมือ ในประเพณีบวชนาคชาวเขมรบุรีรัมย์
         </p>
 
@@ -172,7 +166,8 @@ onMounted(() => {
               การย้อมสีที่ให้น้ำหนักสีที่เหมาะสมอย่างชำนาญการ 4)
               การเลือกคู่สีที่ตัดกันอย่างเหมาะสม เช่น เขียวแดง เหลืองเขียว
               เหลืองแดง น้ำเงินแดง 5) การควบเกลียวเส้นไหมอย่างประณีต สม่ำเสมอ
-              โดยมีระยะเกลียว ประมาณ 14-16 รอบเกลียว ต่อความยาว 1 นิ้ว … (คงข้อความเดิมทั้งหมด)
+              โดยมีระยะเกลียว ประมาณ 14-16 รอบเกลียว ต่อความยาว 1 นิ้ว …
+              (คงข้อความเดิมทั้งหมด)
             </p>
 
             <div class="mt-4 flex justify-center">
@@ -182,15 +177,17 @@ onMounted(() => {
                 class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto"
               />
             </div>
-            <p class="mt-4 text-xl font-semibold text-gray-700 dark:text-gray-300 text-center">
+            <p
+              class="mt-4 text-xl font-semibold text-gray-700 dark:text-gray-300 text-center"
+            >
               ลวดลายและสีสันของผ้าสไบรือเจียร์ บ้านสนวน
             </p>
 
             <p class="text-justify indent-8">
-              ลวดลายผ้าของชาวเขมรบุรีรัมย์จำนวนมากเกิดจาก “โครงสร้างการทอ”
-              เช่น ผ้าโสร่ง ผ้าขาวม้า ผ้าสมอ และลายพื้นถิ่นอื่น ๆ
-              รวมถึงการ “ยกตะกอ” ให้เกิดลวดลายพิเศษ (ผ้ายกดอก ฉนูดเลิก ราชวัตร ฯลฯ)
-              เรียกรวมว่า <span class="font-bold">ผ้าละเบิก</span>
+              ลวดลายผ้าของชาวเขมรบุรีรัมย์จำนวนมากเกิดจาก “โครงสร้างการทอ” เช่น
+              ผ้าโสร่ง ผ้าขาวม้า ผ้าสมอ และลายพื้นถิ่นอื่น ๆ รวมถึงการ “ยกตะกอ”
+              ให้เกิดลวดลายพิเศษ (ผ้ายกดอก ฉนูดเลิก ราชวัตร ฯลฯ) เรียกรวมว่า
+              <span class="font-bold">ผ้าละเบิก</span>
               และการ “มัดย้อมเส้นพุ่ง” ให้เกิดลวดลาย เรียก
               <span class="font-bold">ผ้าโฮล/ผ้ามัดหมี่</span>
               สุดท้ายเอกลักษณ์จึงอยู่ที่ “การวางจังหวะลาย + การให้สีสัน”
@@ -202,4 +199,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
