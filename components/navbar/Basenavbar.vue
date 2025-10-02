@@ -23,7 +23,7 @@ const toggleNotifications = () => {
 const logout = () => {
   // clear token / session
   localStorage.removeItem("token");
-  router.push("/login");
+  router.push("/");
 };
 
 const handleClickOutside = (event: Event) => {
