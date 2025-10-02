@@ -101,7 +101,7 @@ export const SECTIONS: SectionItem[] = [
     "group": "identity",
     "name": "อัตลักษณ์ผ้าบุรีรัมย์",
     "summary": "ภาพรวมอัตลักษณ์ผ้าทอมือบุรีรัมย์: ความเหมือนในความต่างของ 4 ชาติพันธุ์ ลาย–สี–ความหมายเชิงสังคม",
-    "path": "/member/information_list/Identity/identity1",
+    "path": "/member/information_list/identityy/identity1",
     "anchors": [
       "#buriram-identity",
       "#identity-dynamics",
@@ -119,7 +119,7 @@ export const SECTIONS: SectionItem[] = [
     "group": "identity",
     "name": "อัตลักษณ์ผ้าเขมรในยุคนี้",
     "summary": "ลักษณะเด่นที่ช่างเขมรเลือกใช้: ลายละเอียด สีตัดกัน โทนทองอร่าม เนื้อผ้ามันวาว และขนาดผืนร่วมสมัย",
-    "path": "/member/information_list/Identity/identity2",
+    "path": "/member/information_list/identityy/identity2",
     "keywords": [
       "ผ้าเขมร","อัตลักษณ์ร่วมสมัย","ลายละเอียด","โทนทอง","สีตัดกัน",
       "สไบเลือกเจือยย","โสร่ง","ผ้าเอนกประสงค์","ไหม","ความมันวาว"
@@ -130,7 +130,7 @@ export const SECTIONS: SectionItem[] = [
     "group": "identity",
     "name": "ผ้าพื้น (Plain Fabric)",
     "summary": "ผ้าสีเดียวที่งามด้วยโครงสร้างทอและผิวสัมผัสไหมพื้นบ้าน; เรียบแต่มีบุคลิก",
-    "path": "/member/information_list/Identity/identity3",
+    "path": "/member/information_list/identityy/identity3",
     "anchors": [
       "#plain-silk",
       "#plain-key-features",
@@ -147,7 +147,7 @@ export const SECTIONS: SectionItem[] = [
     "group": "identity",
     "name": "ผ้าลายริ้ว (สมปักริ้ว)",
     "summary": "ความหมาย ประวัติ และองค์ความรู้เชิงช่างของลายริ้ว/สมปัก พร้อมไทม์ไลน์ผ้าจังหวัด",
-    "path": "/member/information_list/Identity/identity4",
+    "path": "/member/information_list/identityy/identity4",
     "anchors": [
       "#striped-fabric",
       "#history-meaning",
@@ -168,7 +168,7 @@ export const SECTIONS: SectionItem[] = [
     "group": "identity",
     "name": "ผ้าลายตาราง (Checked Fabric)",
     "summary": "โครงสร้างลายจากเส้นยืน–พุ่ง สีหลัก 5 สี คู่สีตรงข้าม และบทบาทในโสร่ง/ผ้าขาวม้า",
-    "path": "/member/information_list/Identity/identity5",
+    "path": "/member/information_list/identityy/identity5",
     "anchors": [
       "#checked-fabric",
       "#checked-key-features",
@@ -185,7 +185,7 @@ export const SECTIONS: SectionItem[] = [
     "group": "identity",
     "name": "ผ้ามัดหมี่ (Mudmee / Ikat)",
     "summary": "ภาพรวมผ้ามัดหมี่บุรีรัมย์: เนื้อหนากับเนื้อซาติน เทคนิค 2–4 ตะกอ และหมวดลายหลัก",
-    "path": "/member/information_list/Identity/identity6",
+    "path": "/member/information_list/identityy/identity6",
     "anchors": [
       "#mudmee-silk",
       "#mudmee-key-features",
@@ -203,7 +203,7 @@ export const SECTIONS: SectionItem[] = [
     "group": "identity",
     "name": "ผ้ามัดหมี่: ลายจากข้าวของเครื่องใช้",
     "summary": "ตีความสิ่งของใกล้ตัวเป็นลายผ้า ตั้งชื่อแบบพื้นบ้าน/ร่วมสมัย และเล่าเรื่องบนผืนผ้า",
-    "path": "/member/information_list/Identity/identity7",
+    "path": "/member/information_list/identityy/identity7",
     "anchors": [
       "#mudmee-objects",
       "#mudmee-objects-key-features",
@@ -220,7 +220,7 @@ export const SECTIONS: SectionItem[] = [
     "group": "identity",
     "name": "ผ้ามัดหมี่: ลายจากงานสถาปัตยกรรม",
     "summary": "แรงบันดาลใจจากบ้าน วัด ปราสาท—เชื่อมภูมิปัญญาชาย–หญิง สัญลักษณ์นาคและสายน้ำ",
-    "path": "/member/information_list/Identity/identity8",
+    "path": "/member/information_list/identityy/identity8",
     "anchors": [
       "#mudmee-architecture",
       "#mudmee-architecture-key-features",
@@ -237,7 +237,7 @@ export const SECTIONS: SectionItem[] = [
     "group": "identity",
     "name": "ผ้ามัดหมี่: ลายจากพืชพรรณธรรมชาติ",
     "summary": "ดอกไม้ ต้นไม้ บรรยากาศสวน—ถ่ายทอดความอุดมสมบูรณ์และฝีมือเชิงช่างผ่านสีและจังหวะ",
-    "path": "/member/information_list/Identity/identity9",
+    "path": "/member/information_list/identityy/identity9",
     "anchors": [
       "#mudmee-botany",
       "#mudmee-botany-key-features",
@@ -254,7 +254,7 @@ export const SECTIONS: SectionItem[] = [
     "group": "identity",
     "name": "ผ้ามัดหมี่: ลายรูปคนและสัตว์",
     "summary": "สัตว์ศักดิ์สิทธิ์/พาหนะ/สัตว์เลี้ยง/งดงาม และรูปคน—จัดจังหวะนับเส้นให้ภาพอ่านชัด",
-    "path": "/member/information_list/Identity/identity10",
+    "path": "/member/information_list/identityy/identity10",
     "anchors": [
       "#mudmee-figures-animals",
       "#mudmee-figures-animals-key-features",
@@ -271,7 +271,7 @@ export const SECTIONS: SectionItem[] = [
     "group": "identity",
     "name": "ผ้ามัดหมี่: ลายวิถีชีวิต",
     "summary": "วิถีเกษตร บุญประเพณี การละเล่น จารีต—เล่าเรื่องความสุขแบบบ้าน ๆ บนทั้งผืน",
-    "path": "/member/information_list/Identity/identity11",
+    "path": "/member/information_list/identityy/identity11",
     "anchors": [
       "#mudmee-lifestyle",
       "#mudmee-lifestyle-key-features",
@@ -288,7 +288,7 @@ export const SECTIONS: SectionItem[] = [
     "group": "identity",
     "name": "ผ้ามัดหมี่: ลายประยุกต์ประสมประสาน",
     "summary": "ความชำนาญของบุรีรัมย์: มัดหมี่สองทาง โทนสีมีความหมาย โครงสร้างลายใหม่–ร่วมสมัย",
-    "path": "/member/information_list/Identity/identity12",
+    "path": "/member/information_list/identityy/identity12",
     "anchors": [
       "#mudmee-fusion",
       "#mudmee-fusion-key-features",

@@ -299,7 +299,7 @@ onBeforeUnmount(() => {
                 <ul class="py-2 text-sm text-gray-900">
                   <li>
                     <NuxtLink
-                      to="/member/information_list/Identity/identity1"
+                      to="/member/information_list/identityy/identity1"
                       class="block px-4 py-2 hover:bg-gray-100"
                       @click="showIdentity = false"
                     >
@@ -308,7 +308,7 @@ onBeforeUnmount(() => {
                   </li>
                   <li>
                     <NuxtLink
-                      to="/member/information_list/Identity/Identity2"
+                      to="/member/information_list/identityy/identity2"
                       class="block px-4 py-2 hover:bg-gray-100"
                       @click="showIdentity = false"
                     >
@@ -317,7 +317,7 @@ onBeforeUnmount(() => {
                   </li>
                   <li>
                     <NuxtLink
-                      to="/member/information_list/Identity/Identity3"
+                      to="/member/information_list/identityy/identity3"
                       class="block px-4 py-2 hover:bg-gray-100"
                       @click="showIdentity = false"
                     >
@@ -326,7 +326,7 @@ onBeforeUnmount(() => {
                   </li>
                   <li>
                     <NuxtLink
-                      to="/member/information_list/identity/identity4"
+                      to="/member/information_list/identityy/identity4"
                       class="block px-4 py-2 hover:bg-gray-100"
                       @click="showIdentity = false"
                     >
@@ -335,7 +335,7 @@ onBeforeUnmount(() => {
                   </li>
                   <li>
                     <NuxtLink
-                      to="/member/information_list/identity/identity5"
+                      to="/member/information_list/identityy/identity5"
                       class="block px-4 py-2 hover:bg-gray-100"
                       @click="showIdentity = false"
                     >
@@ -344,7 +344,7 @@ onBeforeUnmount(() => {
                   </li>
                   <li>
                     <NuxtLink
-                      to="/member/information_list/identity/identity6"
+                      to="/member/information_list/identityy/identity6"
                       class="block px-4 py-2 hover:bg-gray-100"
                       @click="showIdentity = false"
                     >
@@ -353,7 +353,7 @@ onBeforeUnmount(() => {
                   </li>
                   <li>
                     <NuxtLink
-                      to="/member/information_list/identity/identity7"
+                      to="/member/information_list/identityy/identity7"
                       class="block px-4 py-2 hover:bg-gray-100"
                       @click="showIdentity = false"
                     >
@@ -362,7 +362,7 @@ onBeforeUnmount(() => {
                   </li>
                   <li>
                     <NuxtLink
-                      to="/member/information_list/identity/identity8"
+                      to="/member/information_list/identityy/identity8"
                       class="block px-4 py-2 hover:bg-gray-100"
                       @click="showIdentity = false"
                     >
@@ -371,7 +371,7 @@ onBeforeUnmount(() => {
                   </li>
                   <li>
                     <NuxtLink
-                      to="/member/information_list/identity/identity9"
+                      to="/member/information_list/identityy/identity9"
                       class="block px-4 py-2 hover:bg-gray-100"
                       @click="showIdentity = false"
                     >
@@ -380,7 +380,7 @@ onBeforeUnmount(() => {
                   </li>
                   <li>
                     <NuxtLink
-                      to="/member/information_list/identity/identity10"
+                      to="/member/information_list/identityy/identity10"
                       class="block px-4 py-2 hover:bg-gray-100"
                       @click="showIdentity = false"
                     >
@@ -389,7 +389,7 @@ onBeforeUnmount(() => {
                   </li>
                   <li>
                     <NuxtLink
-                      to="/member/information_list/identity/identity11"
+                      to="/member/information_list/identityy/identity11"
                       class="block px-4 py-2 hover:bg-gray-100"
                       @click="showIdentity = false"
                     >
@@ -398,7 +398,7 @@ onBeforeUnmount(() => {
                   </li>
                   <li>
                     <NuxtLink
-                      to="/member/information_list/identity/identity12"
+                      to="/member/information_list/identityy/identity12"
                       class="block px-4 py-2 hover:bg-gray-100"
                       @click="showIdentity = false"
                     >
@@ -628,84 +628,84 @@ onBeforeUnmount(() => {
               </button>
               <div v-if="mIdentity" id="m-process" class="mt-1 ml-3 space-y-1">
                 <NuxtLink
-                  to="/member/information_list/identity/identity1"
+                  to="/member/information_list/identityy/identity1"
                   class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   อัตลักษณ์ผ้าบรีรัมย์
                 </NuxtLink>
                 <NuxtLink
-                  to="/member/information_list/identity/identity2"
+                  to="/member/information_list/identityy/identity2"
                   class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   อัตลักษณ์ผ้าเขมร
                 </NuxtLink>
                 <NuxtLink
-                  to="/member/information_list/identity/identity3"
+                  to="/member/information_list/identityy/identity3"
                   class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าพื้น
                 </NuxtLink>
                 <NuxtLink
-                  to="/member/information_list/identity/identity4"
+                  to="/member/information_list/identityy/identity4"
                   class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าลายริ้ว
                 </NuxtLink>
                 <NuxtLink
-                  to="/member/information_list/identity/identity5"
+                  to="/member/information_list/identityy/identity5"
                   class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าลายตาราง
                 </NuxtLink>
                 <NuxtLink
-                  to="/member/information_list/identity/identity6"
+                  to="/member/information_list/identityy/identity6"
                   class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้ามัดหมี่
                 </NuxtLink>
                 <NuxtLink
-                  to="/member/information_list/identity/identity7"
+                  to="/member/information_list/identityy/identity7"
                   class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ลายจากรูปลักษณ์ของข้าวของเครื่องใช้
                 </NuxtLink>
                 <NuxtLink
-                  to="/member/information_list/identity/identity8"
+                  to="/member/information_list/identityy/identity8"
                   class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ลายจากงานสถาปัตยกรรม
                 </NuxtLink>
                 <NuxtLink
-                  to="/member/information_list/identity/identity9"
+                  to="/member/information_list/identityy/identity9"
                   class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ลายจากพืชพรรณธรรมชาติ
                 </NuxtLink>
                 <NuxtLink
-                  to="/member/information_list/identity/identity10"
+                  to="/member/information_list/identityy/identity10"
                   class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าลวดลายรูปคนและสัตว์
                 </NuxtLink>
                 <NuxtLink
-                  to="/member/information_list/identity/identity11"
+                  to="/member/information_list/identityy/identity11"
                   class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
                   ผ้าลวดลายที่แสดงวิถีชีวิต
                 </NuxtLink>
                 <NuxtLink
-                  to="/member/information_list/identity/identity12"
+                  to="/member/information_list/identityy/identity12"
                   class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="showMobile = false"
                 >
