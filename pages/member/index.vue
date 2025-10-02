@@ -66,7 +66,6 @@ onMounted(() => {
           ภูมิปัญญาผ้าทอ กลุ่มชาติพันธุ์เขมรจังหวัดบุรีรัมย์
         </h2>
       </div>
-
       <div
         class="text-xl p-6 md:p-10 rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-gray-300 dark:border-gray-700"
       >

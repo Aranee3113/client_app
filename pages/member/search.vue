@@ -118,7 +118,7 @@ watch(
 );
 
 useHead(() => ({
-  title: q.value ? `ค้นหา: ${q.value} | Mai Khmer` : "ค้นหา | Mai Khmer",
+  title: q.value ? `ค้นหา: ${q.value} | Khmer Weave` : "ค้นหา | Khmer Weave",
 }));
 
 onMounted(fetchAll);
@@ -220,7 +220,7 @@ onMounted(fetchAll);
               </div>-->
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <article
                 v-for="s in filteredSections"
                 :key="s.id"

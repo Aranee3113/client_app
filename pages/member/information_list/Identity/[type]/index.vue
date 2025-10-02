@@ -25,7 +25,6 @@ const fetchProducts = async () => {
     console.error("โหลดข้อมูลผ้าล้มเหลว", error);
   }
 };
-
 const normalizeImages = (raw) => {
   if (!raw) return [];
   if (Array.isArray(raw)) return raw;
@@ -63,7 +62,7 @@ onMounted(() => {
 
 <template>
   <div
-    v-if="type === 'Identity1'"
+    v-if="type === 'identity1'"
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
   >
     <!-- ปุ่มกลับด้านบน -->
@@ -203,7 +202,7 @@ onMounted(() => {
   </div>
 
   <div
-    v-else-if="type === 'Identity2'"
+    v-else-if="type === 'identity2'"
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-16 px-4 sm:px-6 lg:px-8"
   >
     <CommonButtonBack />
@@ -348,7 +347,7 @@ onMounted(() => {
   </div>
 
   <div
-    v-else-if="type === 'Identity3'"
+    v-else-if="type === 'identity3'"
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
   >
     <!-- ปุ่มกลับด้านบน -->
@@ -474,7 +473,7 @@ onMounted(() => {
   </div>
 
   <div
-    v-else-if="type === 'Identity4'"
+    v-else-if="type === 'identity4'"
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
   >
     <!-- ปุ่มกลับด้านบน -->
@@ -820,7 +819,7 @@ onMounted(() => {
   </div>
 
   <div
-    v-else-if="type === 'Identity5'"
+    v-else-if="type === 'identity5'"
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
   >
     <!-- ปุ่มกลับด้านบน -->
@@ -994,7 +993,7 @@ onMounted(() => {
   </div>
 
   <div
-    v-else-if="type === 'Identity6'"
+    v-else-if="type === 'identity6'"
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
   >
     <!-- ปุ่มกลับด้านบน -->
@@ -1293,7 +1292,7 @@ onMounted(() => {
   </div>
 
   <div
-    v-else-if="type === 'Identity7'"
+    v-else-if="type === 'identity7'"
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
   >
     <!-- ปุ่มกลับด้านบน -->
@@ -1466,7 +1465,7 @@ onMounted(() => {
   </div>
 
   <div
-    v-else-if="type === 'Identity8'"
+    v-else-if="type === 'identity8'"
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
   >
     <!-- ปุ่มกลับด้านบน -->
@@ -1632,7 +1631,7 @@ onMounted(() => {
   </div>
 
   <div
-    v-else-if="type === 'Identity9'"
+    v-else-if="type === 'identity9'"
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
   >
     <!-- ปุ่มกลับด้านบน -->
@@ -1756,7 +1755,7 @@ onMounted(() => {
   </div>
 
   <div
-    v-else-if="type === 'Identity10'"
+    v-else-if="type === 'identity10'"
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
   >
     <!-- ปุ่มกลับด้านบน -->
@@ -1882,7 +1881,7 @@ onMounted(() => {
   </div>
 
   <div
-    v-else-if="type === 'Identity11'"
+    v-else-if="type === 'identity11'"
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
   >
     <!-- ปุ่มกลับด้านบน -->
@@ -2003,7 +2002,7 @@ onMounted(() => {
   </div>
 
   <div
-    v-else-if="type === 'Identity12'"
+    v-else-if="type === 'identity12'"
     class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
   >
     <!-- ปุ่มกลับด้านบน -->
