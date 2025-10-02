@@ -26,7 +26,6 @@ const fetchProducts = async () => {
     console.error("โหลดข้อมูลผ้าล้มเหลว", error);
   }
 };
-
 const normalizeImages = (raw) => {
   if (!raw) return [];
   if (Array.isArray(raw)) return raw;
@@ -3030,4 +3029,7 @@ onMounted(() => {
       </div>
     </div>
   </div>
+
+
+  
 </template>

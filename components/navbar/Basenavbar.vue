@@ -1,26 +1,29 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { Menu, X, ShieldUser } from "lucide-vue-next";
 import { useRouter } from "vue-router";
-import { Shirt, Search, ShieldUser, Menu, X } from "lucide-vue-next";
-import { decodeJwt } from "jose";
-import { useCookie } from "#app";
 
 const router = useRouter();
 
-/* ---------- auth ---------- */
-const id = ref<string>("");
-const token = useCookie<string | null>("token");
-
-/* ---------- ui state ---------- */
+/* ---------- state ---------- */
+const showMobile = ref(false);
 const showNotifications = ref(false);
 const dropdownRef = ref<HTMLElement | null>(null);
 
-const showMobile = ref(false); // hamburger panel open?
-const searchTerm = ref("");
-
 /* ---------- handlers ---------- */
+const go = (path: string) => {
+  showMobile.value = false;
+  router.push(path);
+};
+
 const toggleNotifications = () => {
   showNotifications.value = !showNotifications.value;
+};
+
+const logout = () => {
+  // clear token / session
+  localStorage.removeItem("token");
+  router.push("/login");
 };
 
 const handleClickOutside = (event: Event) => {
@@ -30,67 +33,24 @@ const handleClickOutside = (event: Event) => {
   }
 };
 
-const onResize = () => {
-  // ปิดเมนูมือถือเมื่อขยายหน้าจอ >= md
-  if (window.innerWidth >= 768 && showMobile.value) showMobile.value = false;
-};
-
-const doSearch = () => {
-  const q = searchTerm.value.trim();
-  if (!q) return;
-  router.push({ path: "/admin/search", query: { q } });
-  searchTerm.value = "";
-  showMobile.value = false; // ปิดแผงมือถือหลังค้นหา
-};
-
-const logout = () => {
-  token.value = null;
-  router.push("/");
-  showMobile.value = false;
-};
-
-const go = (to: string) => {
-  router.push(to);
-  showMobile.value = false; // ปิดแผงมือถือเมื่อเปลี่ยนหน้า
-};
-
-/* ---------- lifecycle ---------- */
 onMounted(() => {
   document.addEventListener("click", handleClickOutside);
-  window.addEventListener("resize", onResize);
-
-  // อ่าน user_id จาก token
-  if (token.value) {
-    try {
-      const decoded: any = decodeJwt(token.value);
-      id.value = String(decoded.user_id ?? decoded.userID ?? "");
-    } catch {
-      // ignore
-    }
-  }
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener("click", handleClickOutside);
-  window.removeEventListener("resize", onResize);
-});
-
-// ถ้า token เปลี่ยน (login/logout) ให้ปิดเมนูที่เปิดอยู่
-watch(token, () => {
-  showNotifications.value = false;
-  showMobile.value = false;
 });
 </script>
 
 <template>
   <nav
-    class="sticky top-0 z-50 backdrop-blur-md bg-white/80 shadow-gray-300 border-b border-gray-200 dark:bg-gray-900/70 dark:border-gray-800"
+    class="sticky top-[env(safe-area-inset-top)] z-[9999] backdrop-blur-md bg-white/80 border-b border-gray-200"
   >
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <!-- Bar -->
-      <div class="flex h-16 md:h-20 items-center justify-between gap-4">
+      <div class="flex items-center justify-between gap-4 py-4 md:py-5">
         <!-- Left: brand + hamburger -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 shrink-0">
           <!-- Hamburger (mobile) -->
           <button
             class="md:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -103,44 +63,44 @@ watch(token, () => {
             <X v-else class="w-6 h-6" />
           </button>
 
-          <!-- Brand -->
-          <NuxtLink
-            to="/admin"
-            class="text-2xl md:text-3xl font-bold flex items-center gap-2 bg-gradient-to-r from-purple-700 to-orange-500 bg-clip-text text-transparent"
-          >
-            <Shirt class="w-6 h-6 md:w-7 md:h-7" />
-            <span>Mai Khmer</span>
+          <!-- โลโก้ + Brand -->
+          <NuxtLink to="/admin" class="shrink-0 flex items-center gap-8 pr-4">
+            <div class="flex items-center">
+              <img
+                src="/assetts/css/image/โลโก้5.png"
+                alt="Mai Khmer Logo"
+                class="object-cover max-w-md w-full h-16"
+              />
+            </div>
           </NuxtLink>
         </div>
 
         <!-- Center: desktop links -->
-        <div class="hidden md:flex items-center gap-6">
+        <div class="hidden md:flex flex-1 items-center justify-center gap-10">
           <NuxtLink
             to="/admin"
-            class="text-base md:text-lg text-gray-700 hover:text-orange-600 transition dark:text-gray-200 dark:hover:text-orange-300"
+            class="px-2 py-2 text-base lg:text-lg text-gray-700 hover:text-orange-600 dark:text-gray-200 dark:hover:text-orange-300"
             >หน้าหลัก</NuxtLink
           >
           <NuxtLink
             to="/admin/post"
-            class="text-base md:text-lg text-gray-700 hover:text-orange-600 transition dark:text-gray-200 dark:hover:text-orange-300"
+            class="px-2 py-2 text-base lg:text-lg text-gray-700 hover:text-orange-600 dark:text-gray-200 dark:hover:text-orange-300"
             >จัดการโพสต์</NuxtLink
           >
           <NuxtLink
             to="/admin/comment"
-            class="text-base md:text-lg text-gray-700 hover:text-orange-600 transition dark:text-gray-200 dark:hover:text-orange-300"
+            class="px-2 py-2 text-base lg:text-lg text-gray-700 hover:text-orange-600 dark:text-gray-200 dark:hover:text-orange-300"
             >จัดการความคิดเห็น</NuxtLink
           >
           <NuxtLink
             to="/admin/user"
-            class="text-base md:text-lg text-gray-700 hover:text-orange-600 transition dark:text-gray-200 dark:hover:text-orange-300"
+            class="px-2 py-2 text-base lg:text-lg text-gray-700 hover:text-orange-600 dark:text-gray-200 dark:hover:text-orange-300"
             >จัดการรายชื่อผู้ใช้</NuxtLink
           >
         </div>
 
-        <!-- Right: search + profile -->
+        <!-- Right: profile -->
         <div class="flex items-center gap-3">
-        
-          <!-- Profile / dropdown -->
           <div ref="dropdownRef" class="relative">
             <button
               @click.stop="toggleNotifications"
@@ -151,6 +111,7 @@ watch(token, () => {
               <ShieldUser class="w-6 h-6" />
             </button>
 
+            <!-- dropdown -->
             <div
               v-if="showNotifications"
               class="absolute right-0 mt-3 w-44 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl rounded-xl ring-1 ring-gray-200 dark:ring-gray-700 z-50"
@@ -161,7 +122,7 @@ watch(token, () => {
                   to="/admin/profile"
                   class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-t-xl"
                   role="menuitem"
-                  @click="showNotifications=false"
+                  @click="showNotifications = false"
                 >
                   แก้ไขข้อมูลผู้ใช้
                 </NuxtLink>
@@ -185,7 +146,6 @@ watch(token, () => {
         class="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95"
       >
         <div class="px-3 py-3 space-y-2">
-          
           <!-- Links (mobile) -->
           <button
             class="w-full text-left block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200"

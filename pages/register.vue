@@ -63,7 +63,7 @@ async function register() {
       <!-- ฟอร์มลงทะเบียน -->
       <div class="p-8 flex flex-col justify-center">
         <h1 class="text-4xl font-bold text-center mb-2 text-purple-600">
-          Mai Khmer
+          KHMER WEAVE
         </h1>
         <h2 class="text-xl text-center text-gray-600 mb-6">ลงทะเบียน</h2>
 

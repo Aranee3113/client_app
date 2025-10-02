@@ -39,7 +39,7 @@ import { Users, Shirt, Star } from "lucide-vue-next";
 
         <div class="mt-8 flex flex-wrap gap-4">
           <NuxtLink
-            to="/member/information_list/info1"
+            to="/member/information_list/cloth/cloth7"
             class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold 
                    bg-gradient-to-r from-purple-900 to-purple-500 
                    text-white hover:from-purple-800 hover:to-purple-600 transition"
@@ -49,7 +49,7 @@ import { Users, Shirt, Star } from "lucide-vue-next";
           </NuxtLink>
 
           <NuxtLink
-            to="/member/information_list/info2"
+            to="/member/information_list/cloth/cloth8"
             class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold 
                    bg-gradient-to-r from-amber-900 to-orange-600 
                    text-white hover:from-orange-800 hover:to-orange-600 transition"

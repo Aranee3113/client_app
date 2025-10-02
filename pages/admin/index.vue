@@ -87,7 +87,7 @@ onMounted(() => {
 
         <div class="text-center mb-12">
           <h2
-            class="text-xl md:text-3xl font-bold bg-gradient-to-r from-orange-700 to-pink-500 bg-clip-text text-transparent mb-4"
+            class="text-xl md:text-3xl font-bold bg-gradient-to-r from-purple-900 via-amber-700 to-amber-900 bg-clip-text text-transparent mb-4"
           >
             ระบบสารสนเทศภูมิปัญญาผ้าทอกลุ่มชาติพันธุ์เขมรจังหวัดบุรีรัมย์
           </h2>
