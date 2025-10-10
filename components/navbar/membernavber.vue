@@ -13,7 +13,6 @@ const router = useRouter();
 const searchTerm = ref("");
 
 const token = useCookie("token").value;
-                       
 
 // desktop dropdown
 const showProcess = ref(false);
@@ -138,8 +137,7 @@ onBeforeUnmount(() => {
   >
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 md:py-6">
       <!-- แถวบน -->
-      <div class="flex h-16 md:h-20 items-center justify-between">
-        <!-- ซ้าย: โลโก้ (fixed width, ไม่หด) -->
+      <div class="flex h-16 md:h-20 items-center ">
         <div class="flex items-center shrink-0">
           <NuxtLink to="/member" class="shrink-0 flex items-center gap-8 pr-4">
             <img
@@ -150,19 +148,19 @@ onBeforeUnmount(() => {
           </NuxtLink>
         </div>
 
-        <!-- กลาง: เมนู -->
         <div class="hidden md:flex flex-1 items-center justify-center">
           <nav class="flex items-center gap-8 lg:gap-10 whitespace-nowrap">
-            <NuxtLink class="text-gray-800 hover:text-red-600" to="/member"
+            <NuxtLink
+              class="text-gray-800 hover:text-red-600 text-xl"
+              to="/member"
               >หน้าหลัก</NuxtLink
             >
 
-            <!-- กระบวนการทอผ้า -->
             <div class="relative">
               <button
                 @click="showProcess = !showProcess"
                 :aria-expanded="showProcess"
-                class="flex items-center gap-1 text-gray-800 hover:text-red-600"
+                class="flex items-center gap-1 text-gray-800 hover:text-red-600 text-xl"
               >
                 กระบวนการทอผ้า
                 <ChevronDown
@@ -176,7 +174,7 @@ onBeforeUnmount(() => {
               >
                 <NuxtLink
                   to="/member/information_list/cloth/cloth13"
-                  class="block px-4 py-2 text-sm hover:bg-gray-100"
+                  class="block px-4 py-2 text-lg hover:bg-gray-100"
                   @click="showProcess = false"
                   >กระบวนการผลิต</NuxtLink
                 >
@@ -185,7 +183,7 @@ onBeforeUnmount(() => {
                   <button
                     @click="showHandmade = !showHandmade"
                     :aria-expanded="showHandmade"
-                    class="w-full text-left block px-4 py-2 text-sm hover:bg-gray-100"
+                    class="w-full text-left block px-4 py-2 text-lg hover:bg-gray-100"
                   >
                     การผลิตผ้าทอมือ
                   </button>
@@ -195,19 +193,19 @@ onBeforeUnmount(() => {
                   >
                     <NuxtLink
                       to="/member/information_list/cloth/cloth10"
-                      class="block px-4 py-2 text-sm hover:bg-gray-100"
+                      class="block px-4 py-2 text-lg hover:bg-gray-100"
                       @click="showProcess = false"
                       >เทคนิคการผลิตผ้าทอมือ</NuxtLink
                     >
                     <NuxtLink
                       to="/member/information_list/cloth/cloth11"
-                      class="block px-4 py-2 text-sm hover:bg-gray-100"
+                      class="block px-4 py-2 text-lg hover:bg-gray-100"
                       @click="showProcess = false"
                       >การย้อมสี</NuxtLink
                     >
                     <NuxtLink
                       to="/member/information_list/cloth/cloth12"
-                      class="block px-4 py-2 text-sm hover:bg-gray-100"
+                      class="block px-4 py-2 text-lg hover:bg-gray-100"
                       @click="showProcess = false"
                       >การตกแต่งเส้นด้ายยืนและพุ่ง</NuxtLink
                     >
@@ -216,19 +214,18 @@ onBeforeUnmount(() => {
 
                 <NuxtLink
                   to="/member/information_list/cloth/cloth14"
-                  class="block px-4 py-2 text-sm hover:bg-gray-100"
+                  class="block px-4 py-2 text-lg hover:bg-gray-100"
                   @click="showProcess = false"
                   >อุปกรณ์การทอ</NuxtLink
                 >
               </div>
             </div>
 
-            <!-- ลวดลายผ้า -->
             <div class="relative">
               <button
                 @click="showCommunity = !showCommunity"
                 :aria-expanded="showCommunity"
-                class="flex items-center gap-1 text-gray-800 hover:text-red-600"
+                class="flex items-center gap-1 text-gray-800 hover:text-red-600 text-xl"
               >
                 ลวดลายผ้า
                 <ChevronDown
@@ -242,48 +239,48 @@ onBeforeUnmount(() => {
               >
                 <NuxtLink
                   to="/member/information_list/cloth/cloth9"
-                  class="block px-4 py-2 text-sm hover:bg-gray-100"
+                  class="block px-4 py-2 text-lg hover:bg-gray-100"
                   >การออกแบบลวดลายผ้าทอมือ</NuxtLink
                 >
                 <NuxtLink
                   to="/member/information_list/cloth/cloth1"
-                  class="block px-4 py-2 text-sm hover:bg-gray-100"
+                  class="block px-4 py-2 text-lg hover:bg-gray-100"
                   >ผ้าหางกระรอก</NuxtLink
                 >
                 <NuxtLink
                   to="/member/information_list/cloth/cloth2"
-                  class="block px-4 py-2 text-sm hover:bg-gray-100"
+                  class="block px-4 py-2 text-lg hover:bg-gray-100"
                   >ผ้าโสร่ง</NuxtLink
                 >
                 <NuxtLink
                   to="/member/information_list/cloth/cloth3"
-                  class="block px-4 py-2 text-sm hover:bg-gray-100"
+                  class="block px-4 py-2 text-lg hover:bg-gray-100"
                   >ผ้าซิ่นหมี่</NuxtLink
                 >
                 <NuxtLink
                   to="/member/information_list/cloth/cloth6"
-                  class="block px-4 py-2 text-sm hover:bg-gray-100"
+                  class="block px-4 py-2 text-lg hover:bg-gray-100"
                   >ผ้าโฮลเปราะห์</NuxtLink
                 >
                 <NuxtLink
                   to="/member/information_list/cloth/cloth4"
-                  class="block px-4 py-2 text-sm hover:bg-gray-100"
+                  class="block px-4 py-2 text-lg hover:bg-gray-100"
                   >ผ้ายกดอกและผ้าสไบยกดอก</NuxtLink
                 >
                 <NuxtLink
                   to="/member/information_list/cloth/cloth5"
-                  class="block px-4 py-2 text-sm hover:bg-gray-100"
+                  class="block px-4 py-2 text-lg hover:bg-gray-100"
                   >ผ้าขาวม้ายกขิด ผ้าสไบยกขิด</NuxtLink
                 >
               </div>
             </div>
-            <!-- เมนู อัตลักษณ์ พร้อม Dropdown -->
+
             <div class="relative" ref="identityRef">
               <button
                 @click="showIdentity = !showIdentity"
                 @keydown.escape="showIdentity = false"
                 :aria-expanded="showIdentity"
-                class="flex items-center gap-1 text-gray-800 hover:text-red-600"
+                class="flex items-center gap-1 text-gray-800 hover:text-red-600 text-xl"
               >
                 อัตลักษณ์
                 <ChevronDown
@@ -294,9 +291,9 @@ onBeforeUnmount(() => {
 
               <div
                 v-if="showIdentity"
-                class="absolute left-1/2 -translate-x-1/2 mt-2 w-60 bg-white shadow-lg rounded-xl border border-gray-200 z-[10000]"
+                class="absolute left-1/2 -translate-x-1/2 mt-2 w-80 bg-white shadow-lg rounded-xl border border-gray-200 z-[10000]"
               >
-                <ul class="py-2 text-sm text-gray-900">
+                <ul class="py-2 text-lg text-gray-900">
                   <li>
                     <NuxtLink
                       to="/member/information_list/identityy/identity1"
@@ -410,17 +407,14 @@ onBeforeUnmount(() => {
             </div>
 
             <NuxtLink
-              class="text-gray-800 hover:text-red-600"
+              class="text-gray-800 hover:text-red-600 text-xl"
               to="/member/post_list"
               >โพสต์</NuxtLink
             >
-            
           </nav>
         </div>
 
-        <!-- ขวา: ค้นหา + โปรไฟล์  -->
-        <div class="flex items-center gap-3 shrink-0">
-          <!-- ช่องค้นหาเหมือนเดิม -->
+        <div class="flex items-center space-x-4 px-8 shrink-0 ml-auto ">
           <div class="hidden sm:flex rounded-md overflow-hidden shadow">
             <input
               v-model="searchTerm"
@@ -437,7 +431,6 @@ onBeforeUnmount(() => {
             </button>
           </div>
 
-          <!-- ปุ่มโปรไฟล์ -->
           <div ref="profileRef" class="relative hidden sm:block">
             <button
               @click="showNotifications = !showNotifications"
@@ -472,7 +465,6 @@ onBeforeUnmount(() => {
             </div>
           </div>
 
-          <!-- Hamburger (มือถือ) -->
           <button
             class="md:hidden inline-flex items-center justify-center rounded-md p-2 border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-300"
             @click="showMobile = !showMobile"
@@ -791,7 +783,7 @@ onBeforeUnmount(() => {
             >
               โพสต์
             </NuxtLink>
-            
+
             <NuxtLink
               to="/member/popularity"
               class="block px-3 py-2 rounded-md text-gray-900 hover:bg-gray-100"
@@ -799,7 +791,6 @@ onBeforeUnmount(() => {
             >
               ความนิยม
             </NuxtLink>
- 
           </div>
         </div>
       </transition>
