@@ -1,5 +1,5 @@
 <script setup>
-import { Users, Shirt, Star } from "lucide-vue-next";
+import { Users, Shirt, Star,SquarePen } from "lucide-vue-next";
 </script>
 
 <template>
@@ -34,39 +34,47 @@ import { Users, Shirt, Star } from "lucide-vue-next";
         </h1>
 
         <p class="mt-6 text-lg md:text-xl text-white dark:text-gray-300">
-          สัมผัสความงดงามแห่งลวดลาย ที่สามารถนำไปสร้างสรรค์บนผืนผ้า
+          มรดกทางวัฒนธรรมที่สะท้อนถึงวิถีชีวิตและภูมิปัญญาท้องถิ่นของกลุ่มชาติพันธุ์เขมร
         </p>
 
-        <div class="mt-8 flex flex-wrap gap-4">
+        <div class="mt-8 flex flex-wrap gap-4 ">
+          <!-- ปุ่มที่ 1: ชมพู -->
           <NuxtLink
             to="/member/information_list/cloth/cloth7"
-            class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold 
-                   bg-gradient-to-r from-purple-900 to-purple-500 
-                   text-white hover:from-purple-800 hover:to-purple-600 transition"
+            class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold bg-gradient-to-r from-pink-600 to-rose-500 text-white hover:from-pink-700 hover:to-rose-600 transition"
           >
             <Users class="w-5 h-5" />
             ชาติพันธุ์เขมรบุรีรัมย์
           </NuxtLink>
 
+          <!-- ปุ่มที่ 2: ม่วง -->
           <NuxtLink
             to="/member/information_list/cloth/cloth8"
-            class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold 
-                   bg-gradient-to-r from-amber-900 to-orange-600 
-                   text-white hover:from-orange-800 hover:to-orange-600 transition"
+            class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold bg-gradient-to-r from-violet-700 to-purple-600 text-white hover:from-violet-800 hover:to-purple-700 transition"
           >
             <Shirt class="w-5 h-5" />
             วัฒนธรรมผ้าทอมือ
           </NuxtLink>
 
+          <!-- ปุ่มที่ 3: ส้ม -->
           <NuxtLink
             to="/member/popularity"
-            class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold 
-                   bg-gradient-to-r from-blue-900 via-blue-900 to-indigo-900
-                   text-white hover:from-blue-900 hover:via-blue-800 hover:to-indigo-800 transition"
+            class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700 transition"
           >
             <Star class="w-5 h-5" />
             ความนิยม
           </NuxtLink>
+
+          <!-- ปุ่มที่ 4: แดง -->
+          <a
+            href="https://pattern.bru.ac.th/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold bg-gradient-to-r from-red-700 to-red-500 text-white hover:from-red-800 hover:to-red-600 transition"
+          >
+            <SquarePen class="w-5 h-5" />
+            ออกแบบลายผ้า
+          </a>
         </div>
       </div>
     </div>

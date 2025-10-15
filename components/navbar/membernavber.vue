@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch, computed } from "vue";
-import { useRouter, useRoute } from "vue-router"; // เพิ่ม useRoute
+import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { Search, ShieldUser, ChevronDown, Menu, X } from "lucide-vue-next";
 import { decodeJwt } from "jose";
 import { useCookie } from "#app";
@@ -18,8 +18,11 @@ const token = useCookie("token").value;
 const showProcess = ref(false);
 const showCommunity = ref(false);
 const showHandmade = ref(false);
-
 const showIdentity = ref(false);
+
+// Refs for click-outside detection
+const processRef = ref<HTMLElement | null>(null);
+const communityRef = ref<HTMLElement | null>(null);
 const identityRef = ref<HTMLElement | null>(null);
 
 // profile dropdown
@@ -33,7 +36,7 @@ const mHandmade = ref(false);
 const mCommunity = ref(false);
 const mIdentity = ref(false);
 
-//  ปิดทุกเมนูเมื่อเส้นทางเปลี่ยน (กันเมนูค้าง)
+//  ปิดทุกเมนูเมื่อเส้นทางเปลี่ยน (กันเมนูค้าง)
 watch(
   () => route.fullPath,
   () => {
@@ -47,6 +50,7 @@ watch(
     mProcess.value = false;
     mHandmade.value = false;
     mCommunity.value = false;
+    mIdentity.value = false;
   }
 );
 
@@ -61,15 +65,22 @@ const doSearch = () => {
 // ปิดเมนูเมื่อคลิกนอกกรอบ (profile + desktop dropdown)
 const handleGlobalPointer = (e: Event) => {
   const t = e.target as Node;
-  if (profileRef.value && !profileRef.value.contains(t))
-    showNotifications.value = false;
 
-  // โซน desktop nav ทั้งหมด
-  const nav = document.getElementById("main-nav");
-  if (nav && !nav.contains(t)) {
+  // ปิด Profile dropdown
+  if (profileRef.value && !profileRef.value.contains(t)) {
+    showNotifications.value = false;
+  }
+  // ปิด 'กระบวนการทอผ้า' (และเมนูย่อย)
+  if (processRef.value && !processRef.value.contains(t)) {
     showProcess.value = false;
+    showHandmade.value = false; // ปิดเมนูย่อยด้วย
+  }
+  // ปิด 'ลวดลายผ้า'
+  if (communityRef.value && !communityRef.value.contains(t)) {
     showCommunity.value = false;
-    showHandmade.value = false;
+  }
+  // ปิด 'อัตลักษณ์'
+  if (identityRef.value && !identityRef.value.contains(t)) {
     showIdentity.value = false;
   }
 };
@@ -87,6 +98,7 @@ const handleEscape = (e: KeyboardEvent) => {
     mProcess.value = false;
     mHandmade.value = false;
     mCommunity.value = false;
+    mIdentity.value = false;
   }
 };
 
@@ -100,6 +112,7 @@ const handleMediaChange = () => {
     mProcess.value = false;
     mHandmade.value = false;
     mCommunity.value = false;
+    mIdentity.value = false;
   }
 };
 
@@ -136,8 +149,7 @@ onBeforeUnmount(() => {
     class="sticky top-[env(safe-area-inset-top)] z-[9999] backdrop-blur-md bg-white/80 shadow-gray-300 border-b border-gray-200 h-24 md:h-28"
   >
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 md:py-6">
-      <!-- แถวบน -->
-      <div class="flex h-16 md:h-20 items-center ">
+      <div class="flex h-16 md:h-20 items-center">
         <div class="flex items-center shrink-0">
           <NuxtLink to="/member" class="shrink-0 flex items-center gap-8 pr-4">
             <img
@@ -156,7 +168,7 @@ onBeforeUnmount(() => {
               >หน้าหลัก</NuxtLink
             >
 
-            <div class="relative">
+            <div class="relative" ref="processRef">
               <button
                 @click="showProcess = !showProcess"
                 :aria-expanded="showProcess"
@@ -221,7 +233,7 @@ onBeforeUnmount(() => {
               </div>
             </div>
 
-            <div class="relative">
+            <div class="relative" ref="communityRef">
               <button
                 @click="showCommunity = !showCommunity"
                 :aria-expanded="showCommunity"
@@ -414,7 +426,7 @@ onBeforeUnmount(() => {
           </nav>
         </div>
 
-        <div class="flex items-center space-x-4 px-8 shrink-0 ml-auto ">
+        <div class="flex items-center space-x-4 px-8 shrink-0 ml-auto">
           <div class="hidden sm:flex rounded-md overflow-hidden shadow">
             <input
               v-model="searchTerm"
@@ -449,7 +461,7 @@ onBeforeUnmount(() => {
                 <template v-if="id">
                   <NuxtLink
                     to="/member/profile"
-                    class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100"
+                    class="block px-4 py-2 text-lg text-gray-900 hover:bg-gray-100"
                     @click="showNotifications = false"
                   >
                     แก้ไขข้อมูลผู้ใช้
@@ -457,7 +469,7 @@ onBeforeUnmount(() => {
                 </template>
                 <button
                   @click="logout"
-                  class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  class="w-full text-left px-4 py-2 text-lg text-red-600 hover:bg-red-50"
                 >
                   ออกจากระบบ
                 </button>
@@ -477,7 +489,6 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <!-- แถวค้นหา (มือถือเท่านั้น) -->
       <div class="sm:hidden pb-2">
         <div class="flex rounded-md overflow-hidden shadow">
           <input
@@ -496,7 +507,6 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <!-- Mobile Menu Panel -->
       <transition
         enter-active-class="transition duration-200 ease-out"
         enter-from-class="opacity-0 -translate-y-2"
@@ -531,7 +541,6 @@ onBeforeUnmount(() => {
               วัฒนธรรมผ้าทอมือ
             </NuxtLink>
 
-            <!-- Accordion: กระบวนการทอผ้า -->
             <div class="px-2">
               <button
                 class="w-full flex items-center justify-between px-2 py-2 rounded-md hover:bg-gray-100 text-gray-900"
@@ -554,7 +563,6 @@ onBeforeUnmount(() => {
                   กระบวนการผลิต
                 </NuxtLink>
 
-                <!-- Handmade sub-accordion -->
                 <button
                   class="w-full flex items-center justify-between px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
                   @click="mHandmade = !mHandmade"
@@ -705,7 +713,6 @@ onBeforeUnmount(() => {
                 </NuxtLink>
               </div>
             </div>
-            <!-- Accordion: ลวดลายผ้า -->
             <div class="px-2">
               <button
                 class="w-full flex items-center justify-between px-2 py-2 rounded-md hover:bg-gray-100 text-gray-900"
