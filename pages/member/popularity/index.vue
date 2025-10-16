@@ -188,7 +188,7 @@ onMounted(async () => {
 <template>
   <div class="min-h-screen bg-[#ddcbe9] py-10 px-6">
     <CommonButtonBack />
-    <div class="max-w-6xl mx-auto space-y-8">
+    <div class="max-w-6xl mx-auto space-y-8 text-lg">
       <div>
         <h1 class="text-3xl font-bold text-purple-800">ความนิยม</h1>
         <p class="text-purple-700/80">แดชบอร์ดสรุป และการให้คะแนน</p>
@@ -219,7 +219,7 @@ onMounted(async () => {
         <div
           class="p-6 rounded-2xl text-white shadow bg-gradient-to-br from-purple-900 to-purple-700"
         >
-          <p class="uppercase text-xs tracking-wider text-white/80">เพิ่มวันนี้</p>
+          <p class="uppercase text-sm tracking-wider text-white/80">เพิ่มวันนี้</p>
           <p class="mt-2 text-4xl font-extrabold">{{ postsToday }}</p>
           <p class="mt-1 text-white/80">โพสต์ที่อัปโหลดวันนี้</p>
         </div>
@@ -252,13 +252,13 @@ onMounted(async () => {
               </div>
 
               <div class="p-4 space-y-2">
-                <h3 class="font-bold text-lg text-purple-900 line-clamp-1">
+                <h3 class="font-bold text-xl text-purple-900 line-clamp-1">
                   {{ p.post_name }}
                 </h3>
-                <p class="text-sm text-gray-600 line-clamp-2">
+                <p class="text-lg text-gray-600 line-clamp-2">
                   {{ p.post_description }}
                 </p>
-                <p class="text-xs text-gray-400">
+                <p class="text-sm text-gray-400">
                   {{ new Date(p.post_timestamp).toLocaleString() }}
                 </p>
 
@@ -313,7 +313,7 @@ onMounted(async () => {
                 <h3 class="font-medium text-purple-900 line-clamp-1">
                   {{ p.post_name }}
                 </h3>
-                <p class="text-xs text-gray-500 line-clamp-2">
+                <p class="text-sm text-gray-500 line-clamp-2">
                   {{ p.post_description }}
                 </p>
                 <div class="mt-1 flex items-center gap-1">

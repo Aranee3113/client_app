@@ -55,13 +55,13 @@ async function register() {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] flex items-center justify-center px-4"
+    class="min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat flex items-center justify-center px-4"
   >
     <div
       class="bg-white/80 backdrop-blur-sm border border-white/30 shadow-2xl rounded-2xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2"
     >
       <!-- ฟอร์มลงทะเบียน -->
-      <div class="p-8 flex flex-col justify-center">
+      <div class="p-8 flex text-lg flex-col justify-center">
         <h1 class="text-4xl font-bold text-center mb-2 text-purple-600">
           KHMER WEAVE
         </h1>

@@ -125,9 +125,15 @@ onMounted(fetchAll);
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad]">
-    <CommonButtonBack />
+  <div
+    class="min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat px-4 pb-12"
+  >
+   
+    <div class="pt-6">
+      <CommonButtonBack />
+    </div>
 
+   
     <main class="max-w-6xl mx-auto px-4 py-8">
       <!-- Loading -->
       <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -160,8 +166,8 @@ onMounted(fetchAll);
           <section v-if="filteredPosts.length">
             <div class="flex items-center gap-2 mb-3">
               <FileText class="w-5 h-5 text-purple-700" />
-              <h2 class="text-lg font-semibold text-gray-900">โพสต์</h2>
-              <span class="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
+              <h2 class="text-xl font-semibold text-gray-900">โพสต์</h2>
+              <span class="text-lg px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
                 {{ filteredPosts.length }}
               </span>
             </div>
@@ -204,20 +210,10 @@ onMounted(fetchAll);
           <section v-if="filteredSections.length" class="mt-10">
             <div class="flex items-center gap-2 mb-3">
               <Shapes class="w-5 h-5 text-emerald-700" />
-              <h2 class="text-lg font-semibold text-gray-900">ผ้าทอ</h2>
-              <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
+              <h2 class="text-xl font-semibold text-gray-900">ผ้าทอ</h2>
+              <span class="text-lg px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
                 {{ filteredSections.length }}
               </span>
-
-              <!-- toggle AND/OR 
-              <div class="ml-auto flex items-center gap-2 text-xs">
-                <button class="px-2 py-1 rounded border"
-                        :class="mode==='AND' ? 'bg-emerald-600 text-white' : 'bg-white'"
-                        @click="mode='AND'">AND</button>
-                <button class="px-2 py-1 rounded border"
-                        :class="mode==='OR' ? 'bg-emerald-600 text-white' : 'bg-white'"
-                        @click="mode='OR'">OR</button>
-              </div>-->
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -255,3 +251,4 @@ onMounted(fetchAll);
     </main>
   </div>
 </template>
+

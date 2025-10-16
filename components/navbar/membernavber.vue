@@ -159,7 +159,6 @@ onBeforeUnmount(() => {
             />
           </NuxtLink>
         </div>
-
         <div class="hidden md:flex flex-1 items-center justify-center">
           <nav class="flex items-center gap-8 lg:gap-10 whitespace-nowrap">
             <NuxtLink
@@ -229,6 +228,12 @@ onBeforeUnmount(() => {
                   class="block px-4 py-2 text-lg hover:bg-gray-100"
                   @click="showProcess = false"
                   >อุปกรณ์การทอ</NuxtLink
+                >
+                <NuxtLink
+                  to="/member/information_list/identityy/identity13"
+                  class="block px-4 py-2 text-lg hover:bg-gray-100"
+                  @click="showProcess = false"
+                  >ขั้นตอนการทอผ้า</NuxtLink
                 >
               </div>
             </div>
@@ -610,6 +615,12 @@ onBeforeUnmount(() => {
                 >
                   อุปกรณ์การทอ
                 </NuxtLink>
+                <NuxtLink
+                  to="/member/information_list/identityy/identity13"
+                  class="block px-2 py-1.5 rounded hover:bg-gray-100 text-gray-900"
+                  @click="showMobile = false"
+                  >ขั้นตอนการทอผ้า</NuxtLink
+                >
               </div>
             </div>
 

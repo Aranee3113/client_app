@@ -41,10 +41,10 @@ async function login() {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] flex items-center justify-center px-4"
+    class="min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat flex items-center justify-center px-4"
   >
     <div
-      class="bg-white/80 backdrop-blur-sm border border-white/50 shadow-2xl rounded-2xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2"
+      class="bg-white/80 backdrop-blur-sm border border-white/50 shadow-2xl rounded-2xl text-lg w-full max-w-4xl grid grid-cols-1 md:grid-cols-2"
     >
       <!-- ฟอร์ม -->
       <div class="p-8 flex flex-col justify-center">

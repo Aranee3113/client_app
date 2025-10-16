@@ -49,11 +49,11 @@ onMounted(() => {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad]"
+    class="min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat "
   >
     <div class="relative overflow-hidden">
       <div
-        class="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-pink-600/10 to-orange-600/10"
+        class="absolute inset-0 "
       ></div>
       <div class="relative p-8 max-w-7xl mx-auto">
         <!-- Top Navigation -->
@@ -77,17 +77,17 @@ onMounted(() => {
               </svg>
             </div>
             <div>
-              <h1 class="text-4xl font-bold text-center mb-2 text-purple-800">
+              <h1 class="text-4xl font-bold text-center mb-2 text-purple-900">
                 ระบบจัดการแอดมิน
               </h1>
-              <p class="text-gray-600">ภาพรวมข้อมูลทั้งหมดในระบบ</p>
+              <p class="text-gray-900 text-xl">ภาพรวมข้อมูลทั้งหมดในระบบ</p>
             </div>
           </div>
         </div>
 
         <div class="text-center mb-12">
           <h2
-            class="text-xl md:text-3xl font-bold bg-gradient-to-r from-purple-900 via-amber-700 to-amber-900 bg-clip-text text-transparent mb-4"
+            class="text-4xl md:text-3xl font-bold text-purple-900  mb-4"
           >
             ระบบสารสนเทศภูมิปัญญาผ้าทอกลุ่มชาติพันธุ์เขมรจังหวัดบุรีรัมย์
           </h2>
@@ -101,14 +101,14 @@ onMounted(() => {
     <div class="p-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
       <card-dashboard
         :data="{ count: posts.length || 0 }"
-        color="bg-gradient-to-r from-red-600 to-rose-300"
+        color="bg-gradient-to-r from-violet-900 to-purple-600 hover:from-violet-800 hover:to-purple-70"
         text="text-white"
         :link="`/admin/post`"
         title="รายการโพสต์ทั้งหมด"
       />
       <card-dashboard
         :data="{ count: comments.length || 0 }"
-        color="bg-gradient-to-r from-pink-600 to-purple-300"
+        color="bg-gradient-to-r from-red-900 to-red-500 hover:from-pink-700 hover:to-rose-600"
         text="text-white"
         :link="`/admin/comment`"
         title="รายการความคิดเห็นทั้งหมด"
