@@ -150,15 +150,15 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-10">
+  <div class="min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat">
      <CommonButtonBack />
-    <h1 class="text-2xl font-bold text-center text-purple-700 mb-8">
+    <h1 class="text-2xl font-bold text-center text-gray-900 mb-8">
       จัดการข้อมูลผู้ใช้ (ผู้ดูแลระบบ)
     </h1>
 
     <div v-if="loading" class="text-center text-gray-500 py-10">กำลังโหลดข้อมูลผู้ใช้...</div>
 
-    <div v-else class="max-w-5xl mx-auto flex flex-col md:flex-row gap-6 items-start">
+    <div v-else class="max-w-5xl mx-auto flex flex-col md:flex-row gap-6 items-start text-lg">
       <!-- ซ้าย: การ์ดโปรไฟล์ -->
       <div class="w-full md:w-1/3 bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-white/30 shadow-md text-purple-700">
         <div class="flex flex-col items-center">
@@ -167,7 +167,7 @@ onBeforeUnmount(() => {
               v-if="user.user_image_path"
               :src="user.user_image_path"
               alt="profile"
-              class="w-full h-full object-cover"
+              class="w-full h-full object-cover "
             />
             <div v-else class="w-full h-full flex items-center justify-center text-gray-400">ไม่มีรูป</div>
 

@@ -56,7 +56,10 @@ onMounted(() => {
 <template>
   <div
     v-if="type === 'identity1'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -196,7 +199,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'identity2'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <CommonButtonBack />
     <div class="max-w-6xl mx-auto">
@@ -341,7 +347,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'identity3'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -467,7 +476,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'identity4'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -813,7 +825,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'identity5'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -987,7 +1002,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'identity6'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -1286,7 +1304,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'identity7'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -1459,7 +1480,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'identity8'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -1625,7 +1649,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'identity9'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -1749,7 +1776,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'identity10'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -1875,7 +1905,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'identity11'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -1996,7 +2029,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'identity12'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -2120,4 +2156,110 @@ onMounted(() => {
       </section>
     </div>
   </div>
+
+  <div 
+  v-else-if="type === 'identity13'"
+  class="relative min-h-screen
+         bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+         md:bg-fixed
+         pb-24 md:pb-28 lg:pb-32"
+>
+  <!-- ปุ่มกลับด้านบน -->
+  <CommonButtonBack class="mb-6" />
+
+  <div class="mx-auto w-full max-w-6xl space-y-10 md:space-y-12">
+    <!-- หัวข้อหลัก -->
+    <header class="text-center">
+      <h1
+        class="text-3xl md:text-4xl font-extrabold text-gray-800 dark:text-white tracking-tight"
+      >
+        ขั้นตอนการทอผ้าไหมมัดหมี่
+      </h1>
+    </header>
+
+    <section
+      class="text-base md:text-xl leading-relaxed text-gray-700 dark:text-gray-300 bg-white/80 dark:bg-gray-900/60 backdrop-blur-sm p-5 md:p-10 rounded-2xl shadow-md space-y-8"
+    >
+      <!-- บทนำ -->
+      <p class="text-justify indent-8">
+        การทอผ้าไหมมัดหมี่เป็นศิลปะหัตถกรรมอีสานที่ต้องอาศัยความประณีตและความชำนาญ
+        กระบวนการผลิตเริ่มตั้งแต่การเตรียมเส้นไหม ย้อม มัดลาย ไปจนถึงการทอเป็นผืน
+        การมัดลายเพื่อป้องกันสีไม่ซึมเข้าส่วนที่ไม่ต้องการ ทำให้เกิดลวดลายเฉพาะตัว
+      </p>
+
+      <!-- ขั้นตอน -->
+      <h2 class="text-2xl md:text-3xl font-extrabold text-purple-800 dark:text-white">
+        ขั้นตอนหลักของการผลิตผ้าไหมมัดหมี่
+      </h2>
+
+      <ol class="list-decimal list-inside indent-8 space-y-4 text-justify">
+        <li>
+          <span class="font-medium">การค้นเครือ / การเตรียมเส้นยืน</span> — 
+          เริ่มจากนำเส้นไหม (ที่ผ่านการลอกกาวไหม / ฟอก / ย้อมพื้นแล้ว) เข้ากงเพื่อกรอเป็นอัก
+          จากนั้น “ค้นเครือ” คือการร้อยเส้นไหมยืนเข้ากับหลักฟืม (ฟันหวี / ตะกอ) จัดเส้นให้เรียงเป็นระเบียบ
+          เพื่อเตรียมเข้าสู่การทอต่อไป
+        </li>
+
+        <li>
+          <span class="font-medium">การเตรียมฟืม / ขึงเส้นยืน</span> — 
+          เส้นยืนที่ค้นเครือแล้วจะถูกร้อยผ่านช่องฟันหวี (ฟืม) จัดระเบียบเส้นให้แต่ละช่องตามต้องการ
+          และเก็บตะกอ (กลุ่มเส้นยืนที่ยก / ไม่ยก) ให้พร้อมสำหรับการทอ 
+        </li>
+
+        <li>
+          <span class="font-medium">การมัดลาย (มัดหมี่ / มัดโอบ)</span> — 
+          เมื่อเส้นยืนพร้อม ช่างจะมัดด้วยเชือกฟางหรือวัสดุอื่น ๆ ในจุดที่ต้องการ “กันสีซึม”
+          บริเวณที่ถูกมัดจะไม่ติดสีเมื่อย้อม การมัดสามารถทำเป็นลายเต็มหรือแบ่งลำตามหัวหมี่ก็ได้ 
+        </li>
+
+        <li>
+          <span class="font-medium">การย้อมสีเส้นไหม</span> — 
+          แช่เส้นไหมมัดหมี่ในสารละลายสีย้อม (เคมีหรือธรรมชาติ เช่น เปลือกไม้ ใบไม้ ฯลฯ)
+          ย้อมซ้อนหลายรอบตามลวดลายที่ออกแบบไว้ บริเวณที่มัดจะไม่ติดสี ส่วนที่ไม่มัดจะซึมสีตามที่ย้อม 
+        </li>
+
+        <li>
+          <span class="font-medium">การแก้หมี่ / แก้เชือกมัด</span> — 
+          หลังย้อมเสร็จ ช่างจะถอดเชือก / ฟางที่มัดทิ้งออก (แก้มัด) เพื่อเปิดเส้นไหมกลับ
+          ทำให้ลวดลายที่ถูกกันสีเด่นชัดบนเส้นไหม 
+        </li>
+
+        <li>
+          <span class="font-medium">การกรอเส้นไหมเข้าหลอด / การเตรียมเส้นพุ่ง</span> — 
+          เส้นไหมที่แก้มัดแล้วจะถูกกรอเข้าหลอด (ผ่านอัก) ตามลำดับลายที่ออกแบบไว้
+          และเตรียมเส้นพุ่ง (ด้ายพุ่ง) เพื่อใช้ในการทอผ้าตามลวดลาย 
+        </li>
+
+        <li>
+          <span class="font-medium">การทอ / สอดเส้นพุ่งและสร้างลวดลาย</span> — 
+          ทอผ้าด้วยการสลับยกตะกอ สอดกระสวยด้ายพุ่งผ่านตามจังหวะสลับ เมื่อสอดแล้ว “ฟืม / กระทบฟันหวี”
+          เพื่อให้เส้นพุ่งแนบเส้นยืน เกิดเนื้อผ้าแน่น และลวดลายตามจุดมัดสีจะปรากฏขึ้นมาในผืนผ้า 
+        </li>
+      </ol>
+
+      <!-- ขั้นตอนเสริม / เก็บงาน -->
+      <h3 class="text-xl md:text-2xl font-bold text-purple-700 dark:text-purple-300">
+        ขั้นตอนเก็บงานและตรวจคุณภาพ
+      </h3>
+      <ul class="list-disc list-inside indent-8 space-y-2 text-justify">
+        <li>ม้วนผ้าลงมาเมื่อทอได้สัดส่วนหนึ่ง พร้อมปรับความตึงของเส้นยืนใหม่ </li>
+        <li>ซักล้างเพื่อล้างสีตกค้าง ฝุ่น และสิ่งเจือปน / ตากให้แห้งสนิท </li>
+        <li>รีด / ตัดริม / เย็บตกแต่งริมผ้า / ตรวจสอบว่าลวดลายสมบูรณ์ ไม่มีตำหนิ </li>
+      </ul>
+
+      <!-- อัตลักษณ์ / จุดเด่น -->
+      <h3 class="text-xl md:text-2xl font-bold text-purple-700 dark:text-purple-300">
+        จุดเด่นของผ้าไหมมัดหมี่
+      </h3>
+      <p class="text-justify indent-8">
+        ผ้าไหมมัดหมี่มีลักษณะ “สีที่ซึมแบบเหลื่อม / การคลาดเคลื่อนเล็กน้อยของลวดลาย”
+        ซึ่งเป็นเสน่ห์เฉพาะตัวที่ต่างจากผ้าทอธรรมดา 
+        เทคนิคการมัดโอบ, การย้อมซ้อน, การเลือกเชือกมัด, การจัดลำหมี่ — ทั้งหมดเป็นส่วนประกอบที่เมื่อรวมกัน
+        ทำให้ผ้ามัดหมี่มีเอกลักษณ์เฉพาะตัว และเผยถึงฝีมือช่างผู้ประณีตในแต่ละขั้นตอน
+      </p>
+
+    </section>
+  </div>
+</div>
+
 </template>

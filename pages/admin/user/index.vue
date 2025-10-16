@@ -46,11 +46,11 @@ onMounted(fetchUsers);
 
 <template>
   
-  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad]">
+  <div class="min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat ">
     <CommonButtonBack />
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
-        <h2 class="text-3xl font-bold text-purple-800">
+        <h2 class="text-3xl font-bold text-gray-900">
           รายชื่อผู้ใช้
         </h2>
         <div class="flex flex-col items-end space-y-2">
@@ -60,18 +60,18 @@ onMounted(fetchUsers);
           >
             + เพิ่มข้อมูลผู้ใช้
           </NuxtLink>
-          <NuxtLink
+          <!-- <NuxtLink
             to="/admin/dashboard"
             class="px-6 py-2 rounded-lg text-white font-medium bg-purple-400 transition transform hover:scale-105 shadow-md"
           >
             ย้อนกลับ
-          </NuxtLink>
+          </NuxtLink> -->
         </div>
       </div>
 
       <div class="overflow-x-auto rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20">
-        <table class="min-w-full text-left text-sm">
-          <thead class="bg-gradient-to-r from-purple-100 to-indigo-100 text-gray-700">
+        <table class="min-w-full text-left text-lg">
+          <thead class="bg-gradient-to-r from-purple-100 to-indigo-100 text-gray-700 ">
             <tr>
               <th class="py-3 px-4 font-semibold text-center">User ID</th>
               <th class="py-3 px-4 font-semibold">รูปภาพ</th>

@@ -131,14 +131,15 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <CommonButtonBack />
-  <div class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 px-6">
+  
+  <div class="min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat ">
+    <CommonButtonBack />
     <div class="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
       <h1 class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
         {{ isEditMode ? "แก้ไขโพสต์" : "เพิ่มโพสต์" }}
       </h1>
 
-      <form @submit.prevent="handleSubmit" class="space-y-5">
+      <form @submit.prevent="handleSubmit" class="space-y-5 text-lg">
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">ชื่อโพสต์</label>
           <input

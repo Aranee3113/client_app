@@ -81,18 +81,21 @@ onMounted(async () => {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-8 px-4 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <CommonButtonBack />
     <div class="max-w-3xl mx-auto py-12 px-6">
-      <div v-if="!loading && post" class="bg-white p-6 shadow-md rounded-xl">
+      <div v-if="!loading && post" class="bg-white p-6 shadow-md rounded-xl ">
         <h1 class="text-2xl font-bold text-orange-600 mb-4">
           {{ post.post_name }}
         </h1>
         <p class="text-gray-700 mb-4 whitespace-pre-line">
           {{ post.post_description }}
         </p>
-        <p class="text-sm text-gray-400">
+        <p class="text-lg text-gray-400">
           โพสต์เมื่อ: {{ new Date(post.post_timestamp).toLocaleString() }}
         </p>
 

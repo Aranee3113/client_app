@@ -34,7 +34,7 @@ const props = defineProps({
           </svg>
         </div>
         <div class="text-right">
-          <p class="text-sm text-gray-500 font-medium">อัปเดตล่าสุด</p>
+          <p class="text-lg text-gray-500 font-medium">อัปเดตล่าสุด</p>
           <p class="text-xs text-gray-400">
             {{ new Date().toLocaleDateString("th-TH") }}
           </p>
@@ -45,12 +45,12 @@ const props = defineProps({
         :class="[
           'text-5xl font-bold  mb-4 group-hover:scale-105 transition-transform duration-300',
           'text-' + color,
-          !data.count && 'text-xl',
+          !data.count && 'text-2xl',
         ]"
       >
         {{ data.count || "กำลังโหลดจ้า" }}
       </p>
-      <p class="text-gray-600 text-sm mb-6"> {{ title }}</p>
+      <p class="text-gray-600 text-xl mb-6"> {{ title }}</p>
       <NuxtLink
         :to="link"
         :class="[

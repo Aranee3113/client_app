@@ -56,7 +56,10 @@ onMounted(() => {
 <template>
   <div
     v-if="type === 'cloth1'"
-    class="min-h-screen bg-gradient-to-br bg-[#ddcbe9] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -272,7 +275,10 @@ onMounted(() => {
 
   <div
     v-if="type === 'cloth2'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <CommonButtonBack />
 
@@ -542,7 +548,10 @@ onMounted(() => {
 
   <div
     v-if="type === 'cloth3'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <CommonButtonBack />
     <div class="max-w-6xl mx-auto">
@@ -849,7 +858,10 @@ onMounted(() => {
 
   <div
     v-if="type === 'cloth4'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <CommonButtonBack />
     <div class="max-w-6xl mx-auto">
@@ -1014,7 +1026,10 @@ onMounted(() => {
 
   <div
     v-if="type === 'cloth5'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <CommonButtonBack />
     <div class="max-w-6xl mx-auto">
@@ -1207,7 +1222,10 @@ onMounted(() => {
 
   <div
     v-if="type === 'cloth6'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <CommonButtonBack />
     <div class="max-w-6xl mx-auto">
@@ -1458,7 +1476,10 @@ onMounted(() => {
 
 <div
     v-if="type === 'cloth7'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -1762,7 +1783,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'cloth8'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -1956,7 +1980,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'cloth9'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -2057,7 +2084,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'cloth10'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -2295,7 +2325,10 @@ onMounted(() => {
 
 <div
     v-else-if="type === 'cloth11'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -2564,7 +2597,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'cloth12'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 md:py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <!-- ปุ่มกลับด้านบน -->
     <CommonButtonBack class="mb-6" />
@@ -2657,14 +2693,17 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'cloth13'"
-    class="min-h-screen bg-gradient-to-br bg-[#ddcbe9] py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <CommonButtonBack />
     <div class="max-w-6xl mx-auto">
       <!-- หัวข้อหลัก -->
       <div class="mb-8 text-center">
         <h2
-          class="text-4xl font-extrabold text-[#b14614] dark:text-white tracking-tight"
+          class="text-4xl font-extrabold dark:text-white tracking-tight"
         >
           กระบวนการทอผ้าเขมรบุรีรัมย์
         </h2>
@@ -2888,7 +2927,10 @@ onMounted(() => {
 
   <div
     v-else-if="type === 'cloth14'"
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
     <CommonButtonBack />
     <div class="max-w-6xl mx-auto">
@@ -3021,5 +3063,4 @@ onMounted(() => {
   </div>
 
 
-  
 </template>

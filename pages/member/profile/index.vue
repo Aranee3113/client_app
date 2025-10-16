@@ -149,10 +149,13 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-10"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
   <CommonButtonBack />
-    <h1 class="text-2xl font-bold text-center text-purple-700 mb-8">
+    <h1 class="text-2xl font-bold text-center  mb-8">
       จัดการข้อมูลผู้ใช้ (สมาชิก)
     </h1>
 
@@ -162,7 +165,7 @@ onUnmounted(() => {
 
     <div
       v-else
-      class="max-w-5xl mx-auto flex flex-col md:flex-row gap-6 items-start"
+      class="max-w-5xl mx-auto  text-lg flex flex-col md:flex-row gap-6 items-start"
     >
       <!-- ซ้าย: การ์ดโปรไฟล์ -->
       <div

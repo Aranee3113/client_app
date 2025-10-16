@@ -219,13 +219,16 @@ onMounted(async () => {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-[#bf9fdf] via-white to-[#e8c9ad] py-12 px-6"
+    class="relative min-h-screen 
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           px-4 pb-24 md:pb-28 lg:pb-32"
   >
     <div
-      class="max-w-4xl mx-auto bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-8 border border-white/30"
+      class="max-w-4xl mx-auto pt-28 md:pt-32 lg:pt-36"
     >
       <h1
-        class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-purple-700 to-red-500 bg-clip-text text-transparent"
+        class="text-4xl font-bold text-center mb-6 bg-gradient-to-r from-purple-900 to-red-500 bg-clip-text text-transparent"
       >
         โพสต์
       </h1>
@@ -233,7 +236,7 @@ onMounted(async () => {
       <!-- ฟอร์มเพิ่ม/แก้ไขโพสต์ -->
       <NuxtLink
         to="/member/post_list/add"
-        class="flex-1 block rounded-full px-5 py-3 bg-gray-200 text-gray-600 shadow-inner hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-orange-300 transition"
+        class="flex-1 block rounded-full px-5 py-3 bg-gray-200 text-gray-600 text-lg shadow-inner hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-orange-300 transition"
       >
         คุณกำลังคิดอะไรอยู่
       </NuxtLink>
@@ -246,7 +249,7 @@ onMounted(async () => {
           <div
             v-for="post in posts"
             :key="post.post_id"
-            class="relative bg-white/80 backdrop-blur-sm border border-white/30 p-6 rounded-2xl shadow-md hover:shadow-xl transition"
+            class="relative bg-white/80 backdrop-blur-sm   text-lg border  border-white/30 p-6 rounded-2xl shadow-md hover:shadow-xl transition"
           >
             <div class="absolute top-3 right-3 flex gap-2">
               <!-- ปุ่มแก้ไข: แสดงเฉพาะเจ้าของ -->

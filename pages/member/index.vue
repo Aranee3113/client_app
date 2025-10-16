@@ -54,20 +54,25 @@ onMounted(() => {
     <!-- BaseCard -->
     <card-basecard />
   </div>
+
+  
   <div
-    class="min-h-screen bg-gradient-to-br bg-[#ffffff] py-16 px-4 sm:px-6 lg:px-8"
+    class="relative min-h-screen
+           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+           md:bg-fixed
+           pb-24 md:pb-28 lg:pb-32"
   >
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-6xl mx-auto pt-8 md:pt-12 lg:pt-16">
       <!-- ยินดีต้อนรับ -->
       <div class="text-center mb-12">
         <h2
-          class="text-4xl font-extrabold text-purple-800 dark:text-white tracking-tight"
+          class="text-4xl font-extrabold  dark:text-white tracking-tight"
         >
           ภูมิปัญญาผ้าทอ กลุ่มชาติพันธุ์เขมรจังหวัดบุรีรัมย์
         </h2>
       </div>
       <div
-        class="text-xl p-6 md:p-10 rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-gray-300 dark:border-gray-700"
+        class="text-xl p-6 md:p-10 rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-gray-300 dark:border-gray-700 mb-12 md:mb-16 lg:mb-24"
       >
         <p class="text-2xl font-extrabold text-purple-800">
           ผ้าทอมือของเขมรบุรีรัมย์

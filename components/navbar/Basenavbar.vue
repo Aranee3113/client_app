@@ -65,7 +65,7 @@ onBeforeUnmount(() => {
               <img
                 src="/assetts/css/image/โลโก้5.png"
                 alt="Mai Khmer Logo"
-                class="object-cover h-16 md:h-16"
+                class="object-cover h-20 md:h-20  "
               />
             </NuxtLink>
           </div>
@@ -113,7 +113,7 @@ onBeforeUnmount(() => {
               <div class="py-2">
                 <NuxtLink
                   to="/admin/profile"
-                  class="block px-4 py-2 text-base text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-t-xl"
+                  class="block px-4 py-2 text-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-t-xl"
                   role="menuitem"
                   @click="showNotifications = false"
                 >
@@ -121,7 +121,7 @@ onBeforeUnmount(() => {
                 </NuxtLink>
                 <button
                   @click="logout"
-                  class="w-full text-left px-4 py-2 text-base text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-b-xl"
+                  class="w-full text-left px-4 py-2 text-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-b-xl"
                   role="menuitem"
                 >
                   ออกจากระบบ
