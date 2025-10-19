@@ -2199,7 +2199,16 @@ onMounted(() => {
           จากนั้น “ค้นเครือ” คือการร้อยเส้นไหมยืนเข้ากับหลักฟืม (ฟันหวี / ตะกอ) จัดเส้นให้เรียงเป็นระเบียบ
           เพื่อเตรียมเข้าสู่การทอต่อไป
         </li>
-
+        <div class="mt-4 flex justify-center gap-4">
+          <img
+            src="/assetts/css/image/การค้นเส้น.jpg"
+            alt="ผ้ามัดหมี่ลวดลายประยุกต์"
+            class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto"
+          />
+        </div>
+        <p class="justify-center text-center italic">
+          ภาพที่ 1 การเตรียมเส้นยืน<br>และร้อยเข้า“เครือ/ค้นเครือ”
+        </p>
         <li>
           <span class="font-medium">การเตรียมฟืม / ขึงเส้นยืน</span> — 
           เส้นยืนที่ค้นเครือแล้วจะถูกร้อยผ่านช่องฟันหวี (ฟืม) จัดระเบียบเส้นให้แต่ละช่องตามต้องการ
@@ -2211,13 +2220,31 @@ onMounted(() => {
           เมื่อเส้นยืนพร้อม ช่างจะมัดด้วยเชือกฟางหรือวัสดุอื่น ๆ ในจุดที่ต้องการ “กันสีซึม”
           บริเวณที่ถูกมัดจะไม่ติดสีเมื่อย้อม การมัดสามารถทำเป็นลายเต็มหรือแบ่งลำตามหัวหมี่ก็ได้ 
         </li>
-
+        <div class="mt-4 flex justify-center gap-4">
+          <img
+            src="/assetts/css/image/การมัดหมี่ย้อม.jpg"
+            alt="การมัดลาย"
+            class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto"
+          />
+        </div>
+        <p class="justify-center text-center italic">
+          ภาพที่ 2 การมัดลาย
+        </p>
         <li>
           <span class="font-medium">การย้อมสีเส้นไหม</span> — 
           แช่เส้นไหมมัดหมี่ในสารละลายสีย้อม (เคมีหรือธรรมชาติ เช่น เปลือกไม้ ใบไม้ ฯลฯ)
           ย้อมซ้อนหลายรอบตามลวดลายที่ออกแบบไว้ บริเวณที่มัดจะไม่ติดสี ส่วนที่ไม่มัดจะซึมสีตามที่ย้อม 
         </li>
-
+        <div class="mt-4 flex justify-center gap-4">
+          <img
+            src="/assetts/css/image/การฟอกย้อมสี.jpg"
+            alt="การย้อมสีเส้นไหม"
+            class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto"
+          />
+        </div>
+        <p class="justify-center text-center italic">
+          ภาพที่ 3 การย้อมสีเส้นไหม
+        </p>
         <li>
           <span class="font-medium">การแก้หมี่ / แก้เชือกมัด</span> — 
           หลังย้อมเสร็จ ช่างจะถอดเชือก / ฟางที่มัดทิ้งออก (แก้มัด) เพื่อเปิดเส้นไหมกลับ
@@ -2229,7 +2256,16 @@ onMounted(() => {
           เส้นไหมที่แก้มัดแล้วจะถูกกรอเข้าหลอด (ผ่านอัก) ตามลำดับลายที่ออกแบบไว้
           และเตรียมเส้นพุ่ง (ด้ายพุ่ง) เพื่อใช้ในการทอผ้าตามลวดลาย 
         </li>
-
+        <div class="mt-4 flex justify-center gap-4">
+          <img
+            src="/assetts/css/image/กระสวย.jpeg"
+            alt="การกรอเส้นไหมเข้าหลอด"
+            class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto"
+          />
+        </div>
+        <p class="justify-center text-center italic">
+          ภาพที่ 4 การกรอเส้นไหมเข้าหลอด
+        </p>
         <li>
           <span class="font-medium">การทอ / สอดเส้นพุ่งและสร้างลวดลาย</span> — 
           ทอผ้าด้วยการสลับยกตะกอ สอดกระสวยด้ายพุ่งผ่านตามจังหวะสลับ เมื่อสอดแล้ว “ฟืม / กระทบฟันหวี”
