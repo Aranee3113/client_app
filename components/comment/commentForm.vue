@@ -47,10 +47,11 @@ const submitComment = async () => {
     message.value = "กรุณาเข้าสู่ระบบก่อนแสดงความคิดเห็น";
     return;
   }
-  if (!commentText.value.trim()) {
-    message.value = "กรุณาพิมพ์ข้อความความคิดเห็น";
-    return;
-  }
+  if (!commentText.value.trim() && !file.value) {
+  message.value = "กรุณาพิมพ์ข้อความหรือเลือกรูปภาพก่อนส่ง";
+  return;
+}
+
 
   const fd = new FormData();
   fd.append("post_id", String(props.postId));

@@ -1521,7 +1521,16 @@ onMounted(() => {
           คือศาสตร์ที่ศึกษาวัฒนธรรมของมนุษยชาติ
           ทั้งที่ดำรงอยู่และที่สูญหายไปในเชิงวิทยาศาสตร์
         </p>
-
+        <div class="mt-4 flex justify-center gap-4">
+          <img
+            src="/assetts/css/image/คน.jpg"
+            alt="คน"
+            class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto"
+          />
+        </div>
+        <p class="justify-center text-center italic">
+          ภาพที่ 1 ชาติพันธุ์เขมรบุรีรัมย์
+        </p>
         <h4
           id="culture-system"
           class="text-lg md:text-xl font-semibold text-purple-700 dark:text-purple-200"
@@ -1760,23 +1769,7 @@ onMounted(() => {
           และ “เครื่องมือทางสังคม” ที่สร้างเกียรติ ประเพณี และสุนทรียะ
         </p>
 
-        <!-- สรุปภาพรวม -->
-        <h2
-          id="summary"
-          class="text-2xl md:text-3xl font-extrabold text-purple-800 dark:text-white"
-        >
-          สรุปภาพรวม
-        </h2>
-        <p class="text-justify indent-8">
-          ชาติพันธุ์เขมรบุรีรัมย์เป็นตัวอย่างของการที่ภาษา พิธีกรรม เครือญาติ
-          สิ่งแวดล้อม และหัตถกรรมผสานกันเป็น “ระบบวัฒนธรรมมีชีวิต”
-          พรมแดนชาติพันธุ์ยืดหยุ่นตามบริบท แต่ยังรักษาแกนแกนของอัตลักษณ์ไว้ได้
-          ผ่านการเรียนรู้ การผลิตผ้าทอ การทำบุญและพิธีกรรม ในโลกสมัยใหม่
-          การศึกษาและดิจิทัลช่วยเปิดโอกาสใหม่ ๆ
-          ให้ชุมชนทั้งด้านเศรษฐกิจและการสืบสาน
-          หากบริหารจัดการความรู้อย่างมีส่วนร่วม ผ้าทอและภูมิปัญญาจะยังคงงอกงาม
-          ควบคู่กับความเข้มแข็งของสังคมท้องถิ่น
-        </p>
+        
       </section>
     </div>
   </div>
@@ -1826,7 +1819,16 @@ onMounted(() => {
           การทำผ้าและกระบวนการทอผ้าเข้าไปใช้ในพิธีกรรมต่างๆ อย่างแยบยล เป็นต้น
           ดั้งนั้นผ้าทอมือจึงให้ความหมายมากกว่าการเป็นเครื่องนุ่งห่ม
         </p>
-
+        <div class="mt-4 flex justify-center gap-4">
+          <img
+            src="/assetts/css/image/ผ้าทอมือมือ.jpg"
+            alt="ผ้าทอมือ"
+            class="rounded-2xl shadow-lg object-cover max-w-md w-full h-auto"
+          />
+        </div>
+        <p class="justify-center text-center italic">
+          ภาพที่ 1 ผ้าทอมือ
+        </p>
         <!-- การแต่งงาน -->
         <h3
           id="marriage"

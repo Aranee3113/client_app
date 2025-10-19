@@ -29,6 +29,6 @@ async function handleNavigate() {
       'bg-amber-400 hover:bg-amber-700 shadow-md cursor-pointer ',
     ]"
   >
-    <icon name="uil:wrench" />
+    <icon name="uil:edit-alt" class="w-5 h-5" />
   </button>
 </template>
