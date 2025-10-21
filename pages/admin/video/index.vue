@@ -18,14 +18,14 @@ definePageMeta({ layout: "admin" });
         </div>
       </div>
     </div>
-    <div class="overflow-x-auto rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20">
+    <div >
     
 
 
 
 
 
-        
+
     </div>
 
 </div>
