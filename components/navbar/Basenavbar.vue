@@ -88,6 +88,11 @@ onBeforeUnmount(() => {
             >จัดการความคิดเห็น</NuxtLink
           >
           <NuxtLink
+            to="/admin/video"
+            class="px-2 py-2 text-xl text-gray-700 hover:text-orange-600 dark:text-gray-200 dark:hover:text-orange-300"
+            >จัดการวิดีโอ</NuxtLink
+          >
+          <NuxtLink
             to="/admin/user"
             class="px-2 py-2 text-xl text-gray-700 hover:text-orange-600 dark:text-gray-200 dark:hover:text-orange-300"
             >จัดการรายชื่อผู้ใช้</NuxtLink

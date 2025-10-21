@@ -224,6 +224,7 @@ onMounted(async () => {
            md:bg-fixed
            px-4 pb-24 md:pb-28 lg:pb-32"
   >
+  
     <div
       class="max-w-4xl mx-auto pt-28 md:pt-32 lg:pt-36"
     >

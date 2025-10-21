@@ -78,7 +78,7 @@ onMounted(() => {
             </div>
             <div>
               <h1 class="text-4xl font-bold text-center mb-2 text-purple-900">
-                ระบบจัดการแอดมิน
+                ระบบจัดการข้อมูลผู้ดูแลระบบ
               </h1>
               <p class="text-gray-900 text-xl">ภาพรวมข้อมูลทั้งหมดในระบบ</p>
             </div>

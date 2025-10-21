@@ -15,14 +15,20 @@
         การพัฒนาระบบสารสนเทศภูมิปัญญาผ้าทอ <br />
         กลุ่มชาติพันธุ์เขมรจังหวัดบุรีรัมย์
       </p>
+      <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500">
+        จัดทำโดย
+      </p>
+      <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500">
+        สโรชา ขวางรัมย์ <br> อรณี โสมินทร์
+      </p>
       <!-- เส้นคั่นบาง ๆ -->
       <div class="my-6 h-px bg-gray-300 dark:bg-gray-700 w-1/2 mx-auto"></div>
 
       <!-- Footer Bottom -->
       <p class="text-sm text-center text-gray-500 dark:text-gray-400">
-        © 2025
+        สาขาเทคโนโลยีสารสนเทศ มหาวิทยาลัยราชภัฏบุรีรัมย์
         <span class="font-semibold text-amber-900 dark:text-orange-400">
-          มหาวิทยาลัยราชภัฏบุรีรัมย์
+          © 2025
         </span>
       </p>
     </div>
