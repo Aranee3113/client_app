@@ -102,6 +102,11 @@ onBeforeUnmount(() => document.removeEventListener("click", handleClickOutside))
           class="text-gray-700 hover:text-orange-600 dark:text-gray-200 dark:hover:text-orange-300"
           >โพสต์</NuxtLink
         >
+        <NuxtLink
+          to="/member/ref"
+          class="text-gray-700 hover:text-orange-600 dark:text-gray-200 dark:hover:text-orange-300"
+          >อ้างอิง</NuxtLink
+        >
       </div>
 
       <div class="flex items-center gap-2 md:gap-6">
@@ -210,6 +215,12 @@ onBeforeUnmount(() => document.removeEventListener("click", handleClickOutside))
           class="text-gray-700 hover:text-orange-600 dark:text-gray-200 dark:hover:text-orange-300 text-lg p-2 rounded-md hover:bg-gray-100"
           @click="isMobileMenuOpen = false"
           >โพสต์</NuxtLink
+        >
+        <NuxtLink
+          to="/member/ref"
+          class="text-gray-700 hover:text-orange-600 dark:text-gray-200 dark:hover:text-orange-300 text-lg p-2 rounded-md hover:bg-gray-100"
+          @click="isMobileMenuOpen = false"
+          >อ้างอิง</NuxtLink
         >
       </nav>
     </div>
