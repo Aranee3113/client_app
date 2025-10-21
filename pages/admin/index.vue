@@ -14,6 +14,7 @@ const { $axios } = useNuxtApp();
 const posts = ref([]);
 const users = ref([]);
 const comments = ref([]);
+const videos = ref([]); // <--- 1. เพิ่ม state สำหรับวิดีโอ
 
 const id = ref<string>("");
 const token = useCookie("token").value;
@@ -25,18 +26,22 @@ if (token) {
 
 const fetchAllData = async () => {
   try {
-    const [postRes, userRes, commentRes] = await Promise.all([
+    // 2. เพิ่ม videoRes และ $axios.get("/post/video")
+    const [postRes, userRes, commentRes, videoRes] = await Promise.all([
       $axios.get("/post"),
       $axios.get("/user"),
       $axios.get("/comment"),
+      $axios.get("/post/video"), // <-- เพิ่มการดึงข้อมูลวิดีโอ
     ]);
     console.log("Post Response:", postRes);
     console.log("User Response:", userRes);
     console.log("Comment Response:", commentRes);
+    console.log("Video Response:", videoRes); // <-- เพิ่ม log
 
     if (postRes.status === 200) posts.value = postRes.data.data;
     if (userRes.status === 200) users.value = userRes.data.data;
     if (commentRes.status === 200) comments.value = commentRes.data.data || [];
+    if (videoRes.status === 200) videos.value = videoRes.data.data || []; // <-- นำข้อมูลเข้า state
   } catch (err) {
     console.error("โหลดข้อมูลไม่สำเร็จ", err);
   }
@@ -56,7 +61,6 @@ onMounted(() => {
         class="absolute inset-0 "
       ></div>
       <div class="relative p-8 max-w-7xl mx-auto">
-        <!-- Top Navigation -->
         <div class="flex justify-between items-center mb-8">
           <div class="flex items-center space-x-4">
             <div
@@ -87,7 +91,7 @@ onMounted(() => {
 
         <div class="text-center mb-12">
           <h2
-            class="text-4xl md:text-3xl font-bold text-purple-900  mb-4"
+            class="text-4xl md:text-3xl font-bold text-purple-900  mb-4"
           >
             ระบบสารสนเทศภูมิปัญญาผ้าทอกลุ่มชาติพันธุ์เขมรจังหวัดบุรีรัมย์
           </h2>
@@ -98,7 +102,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="p-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div class="p-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
       <card-dashboard
         :data="{ count: posts.length || 0 }"
         color="bg-gradient-to-r from-violet-900 to-purple-600 hover:from-violet-800 hover:to-purple-70"
@@ -119,6 +123,14 @@ onMounted(() => {
         text="text-white"
         :link="`/admin/user`"
         title="รายการผู้ใช้ทั้งหมด"
+      />
+      
+      <card-dashboard
+        :data="{ count: videos.length || 0 }" 
+        color="bg-gradient-to-r from-pink-600 to-pink-300"
+        text="text-white"
+        :link="`/admin/video`"
+        title="รายการวิดีโอทั้งหมด"
       />
     </div>
   </div>

@@ -40,14 +40,8 @@ const pattern = [
   { name: "ผ้าโสร่ง", path: "/member/information_list/cloth/cloth2" },
   { name: "ผ้าซิ่นหมี่", path: "/member/information_list/cloth/cloth3" },
   { name: "ผ้าโฮลเปราะห์", path: "/member/information_list/cloth/cloth6" },
-  {
-    name: "ผ้ายกดอกและผ้าสไบยกดอก",
-    path: "/member/information_list/cloth/cloth4",
-  },
-  {
-    name: "ผ้าขาวม้ายกขิด ผ้าสไบยกขิด",
-    path: "/member/information_list/cloth/cloth5",
-  },
+  { name: "ผ้ายกดอกสไบยกดอก",path: "/member/information_list/cloth/cloth4",},
+  { name: "ผ้าขาวม้าสไบยกขิด",path: "/member/information_list/cloth/cloth5",},
 ];
 
 const identity = [
@@ -60,39 +54,39 @@ const identity = [
   { name: "ผ้าลายตาราง", path: "/member/information_list/identityy/identity5" },
   { name: "ผ้ามัดหมี่", path: "/member/information_list/identityy/identity6" },
   {
-    name: "ลายจากรูปลักษณ์ของข้าวของเครื่องใช้",
+    name: "ลายรูปลักษณ์เครื่องใช้",
     path: "/member/information_list/identityy/identity7",
   },
   {
-    name: "ลายจากงานสถาปัตยกรรม",
+    name: "ลายงานสถาปัตยกรรม",
     path: "/member/information_list/identityy/identity8",
   },
   {
-    name: "ลายจากพืชพรรณธรรมชาติ",
+    name: "ลายพืชธรรมชาติ",
     path: "/member/information_list/identityy/identity9",
   },
   {
-    name: "ผ้าลวดลายรูปคนและสัตว์",
+    name: "ลายรูปคนและสัตว์",
     path: "/member/information_list/identityy/identity10",
   },
   {
-    name: "ผ้าลวดลายที่แสดงวิถีชีวิต",
+    name: "ลายที่แสดงวิถีชีวิต",
     path: "/member/information_list/identityy/identity11",
   },
   {
-    name: "ลายประยุกต์ประสมประสาน",
+    name: "ลายประยุกต์",
     path: "/member/information_list/identityy/identity12",
   },
 ];
 
 const style_weaving =
-  "inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center text-violet-700 hover:bg-violet-200 hover:text-black transition";
+  "inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center text-purple-700 hover:bg-purple-200 hover:text-black transition";
 
 const style_pattern =
-  "inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center text-pink-700 hover:bg-pink-200 hover:text-black transition";
+  "inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center  text-purple-700 hover:bg-purple-200 hover:text-black transition";
 
 const style_identity =
-  "inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center text-amber-700 hover:bg-amber-900 hover:text-white transition";
+  "inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center text-purple-700 hover:bg-purple-200 hover:text-black transition";
 </script>
 
 <template>
@@ -100,6 +94,7 @@ const style_identity =
     class="relative min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat md:bg-fixed pb-24 md:pb-28 lg:pb-32"
   >
     <CommonButtonBack />
+    
     <div class="container mx-auto">
       <div class="pt-16 pb-8 text-center">
         <h1
@@ -121,8 +116,31 @@ const style_identity =
       <div
         class="mt-8 text-left md:text-justify text-xl leading-relaxed text-gray-700 dark:text-gray-300 bg-white/70 dark:bg-gray-900/50 backdrop-blur-sm p-6 md:p-10 rounded-2xl shadow-md"
       >
+      
         <!-- กระบวนการทอผ้า -->
         <div v-if="params === 'weaving'">
+          <div class="grid grid-cols-5 gap-4">
+            <card-menu
+              v-for="(item, index) in params === 'weaving'
+                ? weaving
+                : params === 'pattern'
+                ? pattern
+                : params === 'identity'
+                ? identity
+                : []"
+              :key="index"
+              :name="item.name"
+              :path="item.path"
+              :style="
+                params === 'weaving'
+                  ? style_weaving
+                  : params === 'pattern'
+                  ? style_pattern
+                  : style_identity
+              "
+            />
+          </div>
+          <br />
           <div>
             <p class="text-2xl font-extrabold text-purple-800 dark:text-white">
               เทคโนโลยีและนวัตกรรมในการทอผ้า
@@ -334,7 +352,11 @@ const style_identity =
             </div>
           </div>
           <br />
-          <div class="grid grid-cols-5 gap-4">
+          
+        </div>
+        <!-- ลวดลาย -->
+        <div v-else-if="params === 'pattern'">
+          <div class="grid grid-cols-6 gap-4">
             <card-menu
               v-for="(item, index) in params === 'weaving'
                 ? weaving
@@ -355,9 +377,7 @@ const style_identity =
               "
             />
           </div>
-        </div>
-        <!-- ลวดลาย -->
-        <div v-else-if="params === 'pattern'">
+          <br>
           <h2
             id="design-overview"
             class="text-2xl md:text-3xl font-extrabold text-purple-800 dark:text-white"
@@ -473,7 +493,11 @@ const style_identity =
             <li>วิธีการทอ — จังหวะทอ เทคนิคเฉพาะ และการควบคุมคุณภาพ</li>
           </ol>
           <br />
-          <div class="grid grid-cols-3 gap-4">
+          
+        </div>
+        <!-- อัตลักษณ์ -->
+        <div v-else-if="params === 'identity'">
+          <div class="grid grid-cols-6 gap-4">
             <card-menu
               v-for="(item, index) in params === 'weaving'
                 ? weaving
@@ -494,9 +518,7 @@ const style_identity =
               "
             />
           </div>
-        </div>
-        <!-- อัตลักษณ์ -->
-        <div v-else-if="params === 'identity'">
+          <br />
           <h2
             id="buriram-identity"
             class="text-2xl md:text-3xl font-extrabold text-purple-800 dark:text-white"
@@ -615,27 +637,7 @@ const style_identity =
             “รสนิยมชุมชน” และ “บริบทการใช้” (เช่น งานพิธี–งานประจำวัน)
           </p>
           <br />
-          <div class="grid grid-cols-3 gap-4">
-            <card-menu
-              v-for="(item, index) in params === 'weaving'
-                ? weaving
-                : params === 'pattern'
-                ? pattern
-                : params === 'identity'
-                ? identity
-                : []"
-              :key="index"
-              :name="item.name"
-              :path="item.path"
-              :style="
-                params === 'weaving'
-                  ? style_weaving
-                  : params === 'pattern'
-                  ? style_pattern
-                  : style_identity
-              "
-            />
-          </div>
+          
         </div>
       </div>
 
