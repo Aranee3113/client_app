@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+  layout: "member",
+});
+
 import { Users, Shirt, Star, SquarePen } from "lucide-vue-next";
 </script>
 
@@ -64,17 +68,15 @@ import { Users, Shirt, Star, SquarePen } from "lucide-vue-next";
             <Star class="w-5 h-5" />
             ความนิยม
           </NuxtLink>
-
           <!-- ปุ่มที่ 4: แดง -->
-          <a
-            href="https://pattern.bru.ac.th/"
+          <NuxtLink
+            to="/member/design"
             target="_blank"
-            rel="noopener noreferrer"
             class="inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center bg-gradient-to-r from-red-900 to-red-500 text-white hover:from-red-800 hover:to-red-600 transition"
           >
             <SquarePen class="w-5 h-5" />
             ออกแบบลายผ้า
-          </a>
+          </NuxtLink>
         </div>
       </div>
     </div>
