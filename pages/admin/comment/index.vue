@@ -1,18 +1,40 @@
 <script setup>
 definePageMeta({ layout: "admin" });
 
+// MODIFIED: เพิ่ม useRoute, useRouter และ import Modal
 import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import CommonConfirmModal from "~/components/common/button/ConfirmModal.vue"; // ADDED: Import Modal (ใช้ path ที่ถูกต้อง)
+
 const { $axios } = useNuxtApp();
 const config = useRuntimeConfig();
 
+// --- Composables ---
+const route = useRoute(); // ADDED
+const router = useRouter(); // ADDED
+
+// --- State ---
 const comments = ref([]);
 const loading = ref(true);
 const error = ref("");
 
+// --- Notification State (Toast) ---
+const notification = ref({
+  show: false,
+  message: "",
+  type: "success",
+});
+let notificationTimer = null;
+
+// --- Modal State (Confirm) ---
+const showDeleteModal = ref(false); // ADDED: State ควบคุม Modal
+const commentToDelete = ref(null); // ADDED: State เก็บข้อมูลคอมเมนต์ที่จะลบ
+
 // ---- helpers ----
 const getFileBase = () =>
-  (config?.public?.fileBase ||
-    (config?.public?.apiBase || "").replace(/\/api\/?$/, "")) || "";
+  config?.public?.fileBase ||
+  (config?.public?.apiBase || "").replace(/\/api\/?$/, "") ||
+  "";
 
 const getImageUrl = (path) => {
   if (!path || typeof path !== "string") return "";
@@ -22,27 +44,157 @@ const getImageUrl = (path) => {
   return `${base}${p}`;
 };
 
+// --- Notification (Toast) Helper ---
+// ADDED: ฟังก์ชันสำหรับแสดงการแจ้งเตือน
+const showNotification = (message, type = "success", duration = 3500) => {
+  if (notificationTimer) {
+    clearTimeout(notificationTimer);
+  }
+  notification.value = { show: true, message, type };
+  notificationTimer = setTimeout(() => {
+    notification.value.show = false;
+  }, duration);
+};
+
+// --- Data Fetching ---
 const fetchComments = async () => {
   loading.value = true;
   error.value = "";
   try {
-    const res = await $axios.get("/comment"); // คืนทั้งหมด (ทั้งอนุมัติ/ยังไม่อนุมัติ)
+    const res = await $axios.get("/comment");
     comments.value = Array.isArray(res.data?.data) ? res.data.data : [];
   } catch (e) {
     console.error("โหลดคอมเมนต์ล้มเหลว", e);
     error.value = "ไม่สามารถโหลดคอมเมนต์ได้";
+    showNotification("ไม่สามารถโหลดคอมเมนต์ได้", "error"); // ADDED: แจ้งเตือน
   } finally {
     loading.value = false;
   }
 };
 
-onMounted(fetchComments);
+// --- Modal Handlers (ADDED) ---
+
+// ADDED: ฟังก์ชันสำหรับเปิด Modal
+const openDeleteModal = (comment) => {
+  commentToDelete.value = comment; // เก็บข้อมูลคอมเมนต์ที่จะลบ
+  showDeleteModal.value = true; // เปิด Modal
+};
+
+// ADDED: ฟังก์ชันสำหรับปิด Modal
+const closeDeleteModal = () => {
+  showDeleteModal.value = false;
+  commentToDelete.value = null; // ล้างข้อมูล
+};
+
+// ADDED: ฟังก์ชันสำหรับ "ยืนยัน" การลบ
+const confirmDelete = async () => {
+  if (!commentToDelete.value) return;
+
+  try {
+    // 1. เรียก API ลบ (ตาม path="comment", :params="c.comment_id")
+    await $axios.delete(`/comment/${commentToDelete.value.comment_id}`);
+
+    // 2. แสดง Toast แจ้งเตือน
+    showNotification("ลบคอมเมนต์สำเร็จแล้ว", "success");
+
+    // 3. โหลดข้อมูลใหม่
+    await fetchComments();
+  } catch (e) {
+    console.error("ลบคอมเมนต์ล้มเหลว", e);
+    showNotification("ลบคอมเมนต์ล้มเหลว", "error");
+  } finally {
+    // 4. ปิด Modal
+    closeDeleteModal();
+  }
+};
+
+// MODIFIED: onMounted
+onMounted(() => {
+  // ADDED: ตรวจสอบ query params จากหน้า Add/Edit
+  if (route.query.status === "edited") {
+    showNotification("แก้ไขคอมเมนต์สำเร็จแล้ว", "success");
+    router.replace({ query: { ...route.query, status: undefined } });
+  } else if (route.query.status === "added") {
+    showNotification("เพิ่มคอมเมนต์สำเร็จแล้ว", "success");
+    router.replace({ query: { ...route.query, status: undefined } });
+  }
+
+  fetchComments(); // เรียก fetchComments เดิม
+});
 </script>
 
 <template>
-  
-
-  <div class="min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat ">
+  <div
+    class="min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat"
+  >
+    <Transition
+      enter-active-class="transition-all duration-300 ease-out"
+      enter-from-class="opacity-0 transform translate-x-10"
+      enter-to-class="opacity-100 transform translate-x-0"
+      leave-active-class="transition-all duration-300 ease-in"
+      leave-from-class="opacity-100 transform translate-x-0"
+      leave-to-class="opacity-0 transform translate-x-10"
+    >
+      <div
+        v-if="notification.show"
+        :class="[
+          'fixed bottom-5 right-5 z-50 max-w-sm rounded-lg p-4 text-white shadow-xl',
+          notification.type === 'success'
+            ? 'bg-gradient-to-r from-green-500 to-emerald-600'
+            : 'bg-gradient-to-r from-red-500 to-rose-600',
+        ]"
+        role="alert"
+      >
+        <div class="flex items-center justify-between">
+          <svg
+            v-if="notification.type === 'success'"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-6 w-6 flex-shrink-0"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-6 w-6 flex-shrink-0"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+            />
+          </svg>
+          <span class="ml-3 font-medium">{{ notification.message }}</span>
+          <button
+            @click="notification.show = false"
+            class="ml-6 -mr-1 rounded-full p-1 text-white/80 hover:bg-white/20 hover:text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="h-5 w-5"
+            >
+              <path
+                d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </Transition>
     <CommonButtonBack />
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
@@ -54,18 +206,16 @@ onMounted(fetchComments);
           >
             + เพิ่มความคิดเห็น
           </NuxtLink>
-          <!-- <NuxtLink
-            to="/admin/dashboard"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-purple-400 transition transform hover:scale-105 shadow-md"
-          >
-            ย้อนกลับ
-          </NuxtLink> -->
         </div>
       </div>
 
-      <div class="overflow-x-auto rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20">
-        <table class="min-w-full text-left text-lg">
-          <thead class="bg-gradient-to-r from-orange-100 to-red-100 text-gray-700 ">
+      <div
+        class="max-w-6xl mx-auto overflow-x-auto rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20 p-4 sm:p-6"
+      >
+        <table class="min-w-full text-left text-base sm:text-lg">
+          <thead
+            class="bg-gradient-to-r from-orange-100 to-red-100 text-gray-700"
+          >
             <tr>
               <th class="py-3 px-4 font-semibold text-center">ID</th>
               <th class="py-3 px-4 font-semibold">ผู้ใช้</th>
@@ -78,11 +228,15 @@ onMounted(fetchComments);
 
           <tbody>
             <tr v-if="loading">
-              <td colspan="7" class="py-6 text-center text-gray-500">กำลังโหลดข้อมูล...</td>
+              <td colspan="6" class="py-6 text-center text-gray-500">
+                กำลังโหลดข้อมูล...
+              </td>
             </tr>
 
             <tr v-else-if="error">
-              <td colspan="7" class="py-6 text-center text-red-500">{{ error }}</td>
+              <td colspan="6" class="py-6 text-center text-red-500">
+                {{ error }}
+              </td>
             </tr>
 
             <tr
@@ -95,11 +249,13 @@ onMounted(fetchComments);
 
               <td class="py-3 px-4">
                 <div class="flex items-center gap-2">
-                  <div class="font-medium">{{ c.user_name || 'ไม่ทราบชื่อ' }}</div>
+                  <div class="font-medium">
+                    {{ c.user_name || "ไม่ทราบชื่อ" }}
+                  </div>
                 </div>
               </td>
 
-              <td class="py-3 px-4 max-w-[22rem]">
+              <td class="py-3 px-4 max-w-[20rem] sm:max-w-[24rem]">
                 <div class="line-clamp-2 text-gray-700">
                   {{ c.comment_text }}
                 </div>
@@ -122,34 +278,55 @@ onMounted(fetchComments);
                 {{ new Date(c.comment_timestamp).toLocaleString() }}
               </td>
 
-              <!-- จัดการ -->
               <td class="py-3 px-4">
                 <div class="flex justify-center gap-2">
-                  <!-- ปุ่มแก้ไข (เส้นทางในแอดมิน) -->
                   <CommonButtonEditbutton
                     type="edit"
                     path="/admin/comment"
                     :params="c.comment_id"
                   />
-
-                  <!-- ปุ่มลบ เรียก API /comment/:id -->
-                  <CommonButtonDeletebutton
-                    type="comment"
-                    path="comment"
-                    :params="c.comment_id"
-                    @deleted="fetchComments"
-                  />
-
+                  <button
+                    @click="openDeleteModal(c)"
+                    type="button"
+                    title="ลบคอมเมนต์"
+                    class="flex h-10 w-10 items-center justify-center rounded-lg bg-red-100 text-red-500 transition-all hover:bg-red-200 hover:text-red-700 hover:shadow-md"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="h-5 w-5"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </button>
                 </div>
               </td>
             </tr>
 
             <tr v-if="!loading && !error && comments.length === 0">
-              <td colspan="7" class="text-center text-gray-400 py-6">ยังไม่มีคอมเมนต์ในระบบ</td>
+              <td colspan="6" class="text-center text-gray-400 py-6">
+                ยังไม่มีคอมเมนต์ในระบบ
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+
+    <CommonConfirmModal
+      :show="showDeleteModal"
+      title="ยืนยันการลบคอมเมนต์"
+      :message="`คุณต้องการลบคอมเมนต์จาก '${
+        commentToDelete?.user_name || 'ไม่ทราบชื่อ'
+      }' ใช่หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้`"
+      confirmText="ยืนยันการลบ"
+      @confirm="confirmDelete"
+      @cancel="closeDeleteModal"
+    />
   </div>
 </template>

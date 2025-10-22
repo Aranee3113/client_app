@@ -1,6 +1,8 @@
 <script setup lang="ts">
+// MODIFIED: เพิ่ม import Modal
 import { ref, onMounted, watch, onUnmounted } from "vue";
 import { useCookie } from "#app";
+import CommonConfirmModal from "~/components/common/button/ConfirmModal.vue"; // ADDED: Import Modal
 
 const props = defineProps<{ postId: number | string }>();
 const { $axios } = useNuxtApp();
@@ -12,36 +14,105 @@ const comments = ref<any[]>([]);
 const loading = ref(true);
 const error = ref("");
 
+// --- Notification State (Toast) ---
+const notification = ref({
+  show: false,
+  message: "",
+  type: "success",
+});
+let notificationTimer: any = null;
+
+// --- Modal State (Confirm) ---
+const showDeleteModal = ref(false); // ADDED: State ควบคุม Modal
+const commentToDelete = ref<any>(null); // ADDED: State เก็บข้อมูลคอมเมนต์ที่จะลบ
+
 // ================== จัดการ current user ==================
 const currentUser = ref<{ user_id?: number | string } | null>(null);
 
-// ดึง userId จาก token (ถ้าไม่มีหรือแปลงไม่ได้คืนค่า null)
 const getUserIdFromToken = (jwt?: string | null): string | null => {
   if (!jwt) return null;
   try {
     const payload = JSON.parse(atob(jwt.split(".")[1] || ""));
-    // ปรับชื่อ field ให้ตรง backend (จากไฟล์หลังบ้านใช้ decoded.userId)
     return payload?.userId != null ? String(payload.userId) : null;
   } catch {
     return null;
   }
 };
-// รีเฟรช currentUser จาก token
 const refreshCurrentUser = () => {
   currentUser.value = null;
   const userId = getUserIdFromToken(tokenCookie.value || null);
   if (userId) currentUser.value = { user_id: userId };
 };
-// ตรวจสอบว่าเป็นเจ้าของคอมเมนต์หรือไม่
 const isOwner = (c: any) =>
   currentUser.value?.user_id != null &&
   String(currentUser.value.user_id) === String(c.user_id);
 // =======================================================================
 
-// แก้ไขข้อความ/รูป
+// --- Notification (Toast) Helper ---
+// ADDED: ฟังก์ชันสำหรับแสดงการแจ้งเตือน
+const showNotification = (
+  message: string,
+  type: "success" | "error" = "success",
+  duration = 3500
+) => {
+  if (notificationTimer) {
+    clearTimeout(notificationTimer);
+  }
+  notification.value = { show: true, message, type };
+  notificationTimer = setTimeout(() => {
+    notification.value.show = false;
+  }, duration);
+};
+
+// --- Modal Handlers (ADDED) ---
+
+// ADDED: ฟังก์ชันสำหรับเปิด Modal
+const openDeleteModal = (comment: any) => {
+  commentToDelete.value = comment; // เก็บข้อมูลคอมเมนต์ที่จะลบ
+  showDeleteModal.value = true; // เปิด Modal
+};
+
+// ADDED: ฟังก์ชันสำหรับปิด Modal
+const closeDeleteModal = () => {
+  showDeleteModal.value = false;
+  commentToDelete.value = null; // ล้างข้อมูล
+};
+
+// ADDED: ฟังก์ชันสำหรับ "ยืนยัน" การลบ
+const confirmDelete = async () => {
+  if (!commentToDelete.value) return;
+
+  if (!isOwner(commentToDelete.value)) {
+    showNotification("ลบได้เฉพาะคอมเมนต์ของตัวเอง", "error");
+    closeDeleteModal();
+    return;
+  }
+
+  try {
+    // 1. เรียก API ลบ (ตาม path="comment", :params="c.comment_id")
+    await $axios.delete(`/comment/${commentToDelete.value.comment_id}`, {
+      headers: {
+        Authorization: tokenCookie.value ? `Bearer ${tokenCookie.value}` : "",
+      },
+    });
+
+    // 2. แสดง Toast แจ้งเตือน
+    showNotification("ลบคอมเมนต์สำเร็จแล้ว", "success");
+
+    // 3. โหลดข้อมูลใหม่
+    await fetchComments();
+  } catch (e) {
+    console.error("ลบคอมเมนต์ล้มเหลว", e);
+    showNotification("ลบคอมเมนต์ล้มเหลว", "error");
+  } finally {
+    // 4. ปิด Modal
+    closeDeleteModal();
+  }
+};
+// =======================================================================
+
 const editingId = ref<number | null>(null);
 const editingText = ref("");
-
 const editImageFile = ref<File | null>(null);
 const editPreviewUrl = ref<string>("");
 const editImageName = ref<string>("");
@@ -59,6 +130,7 @@ const getImageUrl = (path?: string) => {
   return `${base}${p}`;
 };
 
+// MODIFIED: fetchComments (เพิ่ม notification)
 const fetchComments = async () => {
   loading.value = true;
   error.value = "";
@@ -73,25 +145,26 @@ const fetchComments = async () => {
   } catch (e) {
     console.error("โหลดคอมเมนต์ล้มเหลว", e);
     error.value = "ไม่สามารถโหลดคอมเมนต์ได้";
+    showNotification("ไม่สามารถโหลดคอมเมนต์ได้", "error"); // ADDED
   } finally {
     loading.value = false;
   }
 };
 
-// รวม logic ลบรูป/พรีวิวไว้ที่เดียว
 const removeEditImage = () => {
   if (editPreviewUrl.value) URL.revokeObjectURL(editPreviewUrl.value);
   editPreviewUrl.value = "";
   editImageFile.value = null;
   editImageName.value = "";
   const input = editingId.value
-    ? (document.getElementById(`edit-file-${editingId.value}`) as HTMLInputElement | null)
+    ? (document.getElementById(
+        `edit-file-${editingId.value}`
+      ) as HTMLInputElement | null)
     : null;
   if (input) input.value = "";
 };
 
 const startEdit = (c: any) => {
-  // กันไว้ชั้นหน้า: ไม่ใช่เจ้าของไม่ให้เริ่มแก้ไข
   if (!isOwner(c)) return;
   editingId.value = c.comment_id;
   editingText.value = c.comment_text ?? "";
@@ -104,13 +177,10 @@ const cancelEdit = () => {
   removeEditImage();
 };
 
-// จัดการเลือกรูปใหม่ตอนแก้ไข
 const onEditImageChange = (e: Event) => {
   const input = e.target as HTMLInputElement;
   const file = input.files?.[0] || null;
-
   if (editPreviewUrl.value) URL.revokeObjectURL(editPreviewUrl.value);
-
   if (file) {
     editImageFile.value = file;
     editImageName.value = file.name;
@@ -120,7 +190,7 @@ const onEditImageChange = (e: Event) => {
   }
 };
 
-// บันทึกการแก้ไข (ข้อความ + รูปใหม่ถ้ามี)
+// MODIFIED: saveEdit (เปลี่ยน alert เป็น showNotification)
 const saveEdit = async (c: any) => {
   if (!isOwner(c)) return;
   try {
@@ -134,15 +204,16 @@ const saveEdit = async (c: any) => {
       },
     });
 
+    showNotification("บันทึกคอมเมนต์สำเร็จ", "success"); // ADDED
     await fetchComments();
     cancelEdit();
   } catch (e) {
     console.error("บันทึกคอมเมนต์ไม่สำเร็จ", e);
-    alert("บันทึกไม่สำเร็จ");
+    showNotification("บันทึกไม่สำเร็จ", "error"); // MODIFIED
   }
 };
 
-// ลบรูปเดิมออกจากคอมเมนต์
+// MODIFIED: removeImage (เปลี่ยน alert เป็น showNotification)
 const removeImage = async (c: any) => {
   if (!isOwner(c)) return;
   try {
@@ -156,10 +227,11 @@ const removeImage = async (c: any) => {
       },
     });
 
+    showNotification("ลบภาพสำเร็จ", "success"); // ADDED
     await fetchComments();
   } catch (e) {
     console.error("ลบภาพไม่สำเร็จ", e);
-    alert("ลบภาพไม่สำเร็จ");
+    showNotification("ลบภาพไม่สำเร็จ", "error"); // MODIFIED
   }
 };
 
@@ -168,16 +240,82 @@ onMounted(() => {
   fetchComments();
 });
 watch(() => props.postId, fetchComments);
-// อัปเดต user เมื่อ token เปลี่ยน
 watch(tokenCookie, refreshCurrentUser);
 
-// กันลืม revoke ตอนออกจากหน้า
 onUnmounted(() => {
   if (editPreviewUrl.value) URL.revokeObjectURL(editPreviewUrl.value);
 });
 </script>
 
 <template>
+  <Transition
+    enter-active-class="transition-all duration-300 ease-out"
+    enter-from-class="opacity-0 transform translate-x-10"
+    enter-to-class="opacity-100 transform translate-x-0"
+    leave-active-class="transition-all duration-300 ease-in"
+    leave-from-class="opacity-100 transform translate-x-0"
+    leave-to-class="opacity-0 transform translate-x-10"
+  >
+    <div
+      v-if="notification.show"
+      :class="[
+        'fixed bottom-5 right-5 z-50 max-w-sm rounded-lg p-4 text-white shadow-xl',
+        notification.type === 'success'
+          ? 'bg-gradient-to-r from-green-500 to-emerald-600'
+          : 'bg-gradient-to-r from-red-500 to-rose-600',
+      ]"
+      role="alert"
+    >
+      <div class="flex items-center justify-between">
+        <svg
+          v-if="notification.type === 'success'"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="h-6 w-6 flex-shrink-0"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        <svg
+          v-else
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="h-6 w-6 flex-shrink-0"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+          />
+        </svg>
+        <span class="ml-3 font-medium">{{ notification.message }}</span>
+        <button
+          @click="notification.show = false"
+          class="ml-6 -mr-1 rounded-full p-1 text-white/80 hover:bg-white/20 hover:text-white"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            class="h-5 w-5"
+          >
+            <path
+              d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </Transition>
   <div class="bg-white rounded-xl p-4">
     <h3 class="font-semibold mb-3">ความคิดเห็น</h3>
 
@@ -204,64 +342,106 @@ onUnmounted(() => {
             </span>
 
             <div class="ml-auto flex gap-2">
-              <!-- แก้ไข: แสดงเฉพาะเจ้าของ -->
               <button
                 v-if="isOwner(c) && editingId !== c.comment_id"
                 class="rounded bg-purple-300 text-gray-800 hover:bg-purple-400 cursor-pointer p-1"
                 @click="startEdit(c)"
                 title="แก้ไข"
               >
-                <!-- ไอคอนดินสอ -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536a2 2 0 010 2.828l-8.486 8.486a2 2 0 01-1.414.586H5v-4.364a2 2 0 01.586-1.414l8.486-8.486a2 2 0 012.828 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7l-1.5-1.5" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15.232 5.232l3.536 3.536a2 2 0 010 2.828l-8.486 8.486a2 2 0 01-1.414.586H5v-4.364a2 2 0 01.586-1.414l8.486-8.486a2 2 0 012.828 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7l-1.5-1.5"
+                  />
                 </svg>
               </button>
-
               <button
                 v-if="isOwner(c) && editingId === c.comment_id"
                 class="text-green-600 hover:bg-green-100 rounded p-1 cursor-pointer"
                 @click="saveEdit(c)"
                 title="บันทึก"
               >
-                <!-- ไอคอนติ๊กถูก -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               </button>
-
               <button
                 v-if="isOwner(c) && editingId === c.comment_id"
                 class="text-gray-500 hover:bg-gray-200 rounded p-1 cursor-pointer"
                 @click="cancelEdit"
                 title="ยกเลิก"
               >
-                <!-- ไอคอนกากบาท -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
 
-              <!-- ลบคอมเมนต์: แสดงเฉพาะเจ้าของ -->
-              <CommonButtonDeletebutton
-                v-if="isOwner(c)"
-                type="comment"
-                path="comment"
-                :params="c.comment_id"
-                @deleted="fetchComments"
-              />
+              <button
+                v-if="isOwner(c) && editingId !== c.comment_id"
+                class="text-red-600 hover:bg-red-100 rounded p-1 cursor-pointer"
+                @click="openDeleteModal(c)"
+                title="ลบ"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
 
-          <!-- โหมดแก้ไข (เข้าได้เฉพาะเจ้าของอยู่แล้วจากปุ่มด้านบน) -->
           <div v-if="editingId === c.comment_id">
             <textarea
               v-model="editingText"
               class="w-full border rounded p-2 mt-2"
               rows="2"
             />
-
-            <!-- ปุ่มอัปโหลดภาพแบบไอคอนกล้อง -->
             <div class="mt-2 flex items-center gap-2">
               <input
                 :id="'edit-file-' + c.comment_id"
@@ -278,7 +458,6 @@ onUnmounted(() => {
                 <div
                   class="w-10 h-10 bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition shadow-sm ring-1 ring-gray-300/60"
                 >
-                  <!-- ไอคอนกล้อง -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="w-5 h-5 text-gray-700"
@@ -301,13 +480,13 @@ onUnmounted(() => {
                   </svg>
                 </div>
               </label>
-
-              <span v-if="editImageName" class="text-xs text-gray-500 truncate max-w-[160px]">
+              <span
+                v-if="editImageName"
+                class="text-xs text-gray-500 truncate max-w-[160px]"
+              >
                 {{ editImageName }}
               </span>
             </div>
-
-            <!-- รูป preview + ปุ่มลบแบบกากบาทมุมขวาบน -->
             <div v-if="editPreviewUrl" class="mt-2 relative inline-block">
               <img
                 :src="editPreviewUrl"
@@ -324,13 +503,9 @@ onUnmounted(() => {
               </button>
             </div>
           </div>
-
-          <!-- โหมดปกติ -->
           <p v-else class="text-gray-800 whitespace-pre-line">
             {{ c.comment_text }}
           </p>
-
-          <!-- รูปเดิมของคอมเมนต์ + ปุ่มลบ (เฉพาะเจ้าของ) -->
           <div v-if="c.comment_image_path" class="mt-2 relative inline-block">
             <img
               :src="getImageUrl(c.comment_image_path)"
@@ -352,5 +527,13 @@ onUnmounted(() => {
       </li>
     </ul>
   </div>
-</template>
 
+  <CommonConfirmModal
+    :show="showDeleteModal"
+    title="ยืนยันการลบคอมเมนต์"
+    :message="`คุณต้องการลบคอมเมนต์นี้ใช่หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้`"
+    confirmText="ยืนยันการลบ"
+    @confirm="confirmDelete"
+    @cancel="closeDeleteModal"
+  />
+</template>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 definePageMeta({ layout: "member" });
 
+// MODIFIED: เพิ่ม import Modal
 import { ref, onMounted, onUnmounted } from "vue";
 import { useCookie } from "#app";
 import { decodeJwt } from "jose";
+import CommonConfirmModal from "~/components/common/button/ConfirmModal.vue"; // ADDED
 
 const { $axios } = useNuxtApp();
 const config = useRuntimeConfig();
@@ -27,6 +29,44 @@ const form = ref({
 const newImageFile = ref<File | null>(null);
 const newImagePreview = ref<string>("");
 
+// --- Notification State (Toast) ---
+const notification = ref({
+  show: false,
+  message: "",
+  type: "success" as "success" | "error",
+});
+let notificationTimer: any = null;
+
+// --- Modal State (Confirm) ---
+const showDeleteModal = ref(false); // ADDED
+
+// --- Notification (Toast) Helper ---
+// ADDED: ฟังก์ชันสำหรับแสดงการแจ้งเตือน
+const showNotification = (
+  message: string,
+  type: "success" | "error" = "success",
+  duration = 3500
+) => {
+  if (notificationTimer) clearTimeout(notificationTimer);
+  notification.value = { show: true, message, type };
+  notificationTimer = setTimeout(() => {
+    notification.value.show = false;
+  }, duration);
+};
+
+// --- Modal Handlers (ADDED) ---
+// ADDED: ฟังก์ชันสำหรับเปิด Modal
+const openDeleteModal = () => {
+  if (!form.value.user_id) return;
+  showDeleteModal.value = true;
+};
+
+// ADDED: ฟังก์ชันสำหรับปิด Modal
+const closeDeleteModal = () => {
+  showDeleteModal.value = false;
+};
+// ---------------------------------
+
 const getFileBase = () =>
   config?.public?.fileBase ||
   (config?.public?.apiBase || "").replace(/\/api\/?$/, "") ||
@@ -40,6 +80,7 @@ const getImageUrl = (path?: string | null) => {
   return `${base}${p}`;
 };
 
+// MODIFIED: loadMe (เพิ่ม notification)
 const loadMe = async () => {
   try {
     loading.value = true;
@@ -65,6 +106,7 @@ const loadMe = async () => {
   } catch (e: any) {
     console.error(e);
     error.value = e?.message || "โหลดข้อมูลไม่สำเร็จ";
+    showNotification(error.value, "error"); // ADDED
   } finally {
     loading.value = false;
   }
@@ -90,13 +132,13 @@ const removeSelectedImage = () => {
   if (newImagePreview.value) URL.revokeObjectURL(newImagePreview.value);
   newImagePreview.value = "";
   newImageFile.value = null;
-  // รีเซ็ต input file
   const input = document.getElementById(
     "profile-image"
   ) as HTMLInputElement | null;
   if (input) input.value = "";
 };
 
+// MODIFIED: saveProfile (เปลี่ยน alert เป็น showNotification)
 const saveProfile = async () => {
   if (!form.value.user_id) return;
   try {
@@ -113,21 +155,21 @@ const saveProfile = async () => {
 
     await $axios.put(`/user/${form.value.user_id}`, fd); // PUT /user/:id
 
-    // รีเฟรชข้อมูลหลังบันทึก
     removeSelectedImage();
     await loadMe();
-    alert("อัปเดตโปรไฟล์สำเร็จ");
+    showNotification("อัปเดตโปรไฟล์สำเร็จ", "success"); // MODIFIED
   } catch (e: any) {
     console.error(e);
-    alert("อัปเดตไม่สำเร็จ");
+    showNotification("อัปเดตไม่สำเร็จ", "error"); // MODIFIED
   } finally {
     saving.value = false;
   }
 };
 
-const deleteProfile = async () => {
+// RENAMED & MODIFIED: (เดิมชื่อ deleteProfile)
+const confirmDelete = async () => {
   if (!form.value.user_id) return;
-  if (!confirm("ยืนยันลบโปรไฟล์ของคุณ? การลบไม่สามารถย้อนกลับได้")) return;
+  // ลบ confirm() ออก
   try {
     deleting.value = true;
     await $axios.delete(`/user/${form.value.user_id}`); // DELETE /user/:id
@@ -135,9 +177,10 @@ const deleteProfile = async () => {
     navigateTo("/"); // กลับหน้าแรก
   } catch (e: any) {
     console.error(e);
-    alert("ลบโปรไฟล์ไม่สำเร็จ");
+    showNotification("ลบโปรไฟล์ไม่สำเร็จ", "error"); // MODIFIED
   } finally {
     deleting.value = false;
+    closeDeleteModal(); // ADDED
   }
 };
 
@@ -154,8 +197,76 @@ onUnmounted(() => {
            md:bg-fixed
            pb-24 md:pb-28 lg:pb-32"
   >
-  <CommonButtonBack />
-    <h1 class="text-2xl font-bold text-center  mb-8">
+    <Transition
+      enter-active-class="transition-all duration-300 ease-out"
+      enter-from-class="opacity-0 transform translate-x-10"
+      enter-to-class="opacity-100 transform translate-x-0"
+      leave-active-class="transition-all duration-300 ease-in"
+      leave-from-class="opacity-100 transform translate-x-0"
+      leave-to-class="opacity-0 transform translate-x-10"
+    >
+      <div
+        v-if="notification.show"
+        :class="[
+          'fixed bottom-5 right-5 z-50 max-w-sm rounded-lg p-4 text-white shadow-xl',
+          notification.type === 'success'
+            ? 'bg-gradient-to-r from-green-500 to-emerald-600'
+            : 'bg-gradient-to-r from-red-500 to-rose-600',
+        ]"
+        role="alert"
+      >
+        <div class="flex items-center justify-between">
+          <svg
+            v-if="notification.type === 'success'"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-6 w-6 flex-shrink-0"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-6 w-6 flex-shrink-0"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+            />
+          </svg>
+          <span class="ml-3 font-medium">{{ notification.message }}</span>
+          <button
+            @click="notification.show = false"
+            class="ml-6 -mr-1 rounded-full p-1 text-white/80 hover:bg-white/20 hover:text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="h-5 w-5"
+            >
+              <path
+                d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </Transition>
+    <CommonButtonBack />
+    <h1 class="text-2xl font-bold text-center mb-8">
       จัดการข้อมูลผู้ใช้ (สมาชิก)
     </h1>
 
@@ -165,9 +276,8 @@ onUnmounted(() => {
 
     <div
       v-else
-      class="max-w-5xl mx-auto  text-lg flex flex-col md:flex-row gap-6 items-start"
+      class="max-w-5xl mx-auto text-lg flex flex-col md:flex-row gap-6 items-start"
     >
-      <!-- ซ้าย: การ์ดโปรไฟล์ -->
       <div
         class="w-full md:w-1/3 bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-white/30 shadow-md text-purple-700"
       >
@@ -180,7 +290,6 @@ onUnmounted(() => {
               alt="profile"
               class="w-full h-full object-cover"
             />
-            <!-- ปุ่มกากบาทล้างรูปที่เลือก (เฉพาะตอนมีพรีวิวใหม่) -->
             <button
               v-if="newImagePreview"
               type="button"
@@ -191,8 +300,6 @@ onUnmounted(() => {
               ✕
             </button>
           </div>
-
-          <!-- ปุ่มกล้องอัปโหลด -->
           <label
             for="profile-image"
             class="mt-1 cursor-pointer"
@@ -201,7 +308,6 @@ onUnmounted(() => {
             <div
               class="w-10 h-10 bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition shadow-sm ring-1 ring-gray-300/60 rounded-xl"
             >
-              <!-- ไอคอนกล้อง -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-5 h-5 text-gray-700"
@@ -246,7 +352,6 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- ขวา: ฟอร์ม -->
       <div
         class="w-full md:w-2/3 bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-white/30 shadow space-y-4 text-purple-700"
       >
@@ -287,7 +392,7 @@ onUnmounted(() => {
 
           <button
             type="button"
-            @click="deleteProfile"
+            @click="openDeleteModal"
             :disabled="deleting"
             class="px-5 py-2.5 rounded-full bg-red-500 text-white shadow hover:bg-red-600 transition disabled:opacity-60 cursor-pointer"
             title="ลบโปรไฟล์นี้และกลับสู่หน้าแรก"
@@ -297,5 +402,16 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
+
+    <CommonConfirmModal
+      :show="showDeleteModal"
+      title="ยืนยันการลบโปรไฟล์"
+      :message="`คุณต้องการลบโปรไฟล์ '${
+        form.user_username
+      }' ใช่หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้`"
+      confirmText="ยืนยันการลบ"
+      @confirm="confirmDelete"
+      @cancel="closeDeleteModal"
+    />
   </div>
 </template>
