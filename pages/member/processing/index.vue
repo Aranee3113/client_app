@@ -80,13 +80,14 @@ const identity = [
 ];
 
 const style_weaving =
-  "inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center text-purple-700 hover:bg-purple-200 hover:text-black transition";
+  "inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center text-purple-700  hover:bg-purple-200 hover:text-black shadow-md shadow-gray-400 transition";
 
 const style_pattern =
-  "inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center  text-purple-700 hover:bg-purple-200 hover:text-black transition";
+  "inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center text-purple-700  hover:bg-purple-200 hover:text-black shadow-md shadow-gray-400 transition";
 
 const style_identity =
-  "inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center text-purple-700 hover:bg-purple-200 hover:text-black transition";
+  "inline-flex flex-col sm:flex-row items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-center text-purple-700  hover:bg-purple-200 hover:text-black shadow-md shadow-gray-400 transition";
+
 </script>
 
 <template>
