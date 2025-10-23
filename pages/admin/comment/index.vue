@@ -26,9 +26,13 @@ const notification = ref({
 });
 let notificationTimer = null;
 
-// --- Modal State (Confirm) ---
+// --- Modal State (Confirm Delete) ---
 const showDeleteModal = ref(false); // ADDED: State ควบคุม Modal
 const commentToDelete = ref(null); // ADDED: State เก็บข้อมูลคอมเมนต์ที่จะลบ
+
+// --- Modal State (Confirm Edit) ---
+const showEditModal = ref(false);
+const commentToEdit = ref(null);
 
 // ---- helpers ----
 const getFileBase = () =>
@@ -72,7 +76,7 @@ const fetchComments = async () => {
   }
 };
 
-// --- Modal Handlers (ADDED) ---
+// --- Delete Modal Handlers (ADDED) ---
 
 // ADDED: ฟังก์ชันสำหรับเปิด Modal
 const openDeleteModal = (comment) => {
@@ -106,6 +110,24 @@ const confirmDelete = async () => {
     // 4. ปิด Modal
     closeDeleteModal();
   }
+};
+
+// --- Edit Modal Handlers (ADDED) ---
+const openEditModal = (comment) => {
+  commentToEdit.value = comment;
+  showEditModal.value = true;
+};
+
+const closeEditModal = () => {
+  showEditModal.value = false;
+  commentToEdit.value = null;
+};
+
+const confirmEdit = () => {
+  if (!commentToEdit.value) return;
+  // สั่งให้ไปหน้าแก้ไข
+  router.push(`/admin/comment/${commentToEdit.value.comment_id}`);
+  closeEditModal();
 };
 
 // MODIFIED: onMounted
@@ -196,6 +218,7 @@ onMounted(() => {
       </div>
     </Transition>
     <CommonButtonBack />
+
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
         <h2 class="text-3xl font-bold text-gray-900">จัดการความคิดเห็น</h2>
@@ -280,11 +303,23 @@ onMounted(() => {
 
               <td class="py-3 px-4">
                 <div class="flex justify-center gap-2">
-                  <CommonButtonEditbutton
-                    type="edit"
-                    path="/admin/comment"
-                    :params="c.comment_id"
-                  />
+                  <button
+                    @click="openEditModal(c)"
+                    type="button"
+                    title="แก้ไขคอมเมนต์"
+                    class="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-100 text-yellow-600 transition-all hover:bg-yellow-200 hover:text-yellow-700 hover:shadow-md"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="h-5 w-5"
+                    >
+                      <path
+                        d="M13.586 3.586a2 2 0 1 1 2.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793 3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+                      />
+                    </svg>
+                  </button>
                   <button
                     @click="openDeleteModal(c)"
                     type="button"
@@ -327,6 +362,18 @@ onMounted(() => {
       confirmText="ยืนยันการลบ"
       @confirm="confirmDelete"
       @cancel="closeDeleteModal"
+    />
+
+    <CommonConfirmModal
+      :show="showEditModal"
+      title="ยืนยันการแก้ไข"
+      :message="`คุณต้องการแก้ไขคอมเมนต์จาก '${
+        commentToEdit?.user_name || 'ไม่ทราบชื่อ'
+      }' ใช่หรือไม่?`"
+      confirmText="ไปที่หน้าแก้ไข"
+      type="info"
+      @confirm="confirmEdit"
+      @cancel="closeEditModal"
     />
   </div>
 </template>

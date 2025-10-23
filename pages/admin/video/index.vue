@@ -25,9 +25,13 @@ const notification = ref({
 });
 let notificationTimer = null;
 
-// --- Modal State (Confirm) ---
+// --- Modal State (Confirm Delete) ---
 const showDeleteModal = ref(false);
 const videoToDelete = ref(null);
+
+// --- Modal State (Confirm Edit) ---
+const showEditModal = ref(false);
+const videoToEdit = ref(null);
 
 // ---- helpers ----
 const getFileBase = () =>
@@ -70,7 +74,7 @@ const fetchVideos = async () => {
   }
 };
 
-// --- Modal Handlers ---
+// --- Delete Modal Handlers ---
 const openDeleteModal = (video) => {
   videoToDelete.value = video;
   showDeleteModal.value = true;
@@ -93,6 +97,27 @@ const confirmDelete = async () => {
   } finally {
     closeDeleteModal();
   }
+};
+
+// --- Edit Modal Handlers ---
+const openEditModal = (video) => {
+  videoToEdit.value = video;
+  showEditModal.value = true;
+};
+
+const closeEditModal = () => {
+  showEditModal.value = false;
+  videoToEdit.value = null;
+};
+
+const confirmEdit = () => {
+  if (!videoToEdit.value) return;
+
+  // สั่งให้ไปหน้าแก้ไข
+  router.push(`/admin/video/${videoToEdit.value.post_id}`);
+
+  // ปิด Modal (ถึงแม้จะเปลี่ยนหน้าทันทีก็ตาม)
+  closeEditModal();
 };
 
 // --- Lifecycle ---
@@ -267,12 +292,23 @@ onMounted(() => {
 
               <td class="py-3 px-4">
                 <div class="flex justify-center gap-2">
-                  <CommonButtonEditbutton
-                    type="edit"
-                    path="/admin/video"
-                    :params="v.post_id"
-                  />
-
+                  <button
+                    @click="openEditModal(v)"
+                    type="button"
+                    title="แก้ไขวิดีโอ"
+                    class="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-100 text-yellow-600 transition-all hover:bg-yellow-200 hover:text-yellow-700 hover:shadow-md"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="h-5 w-5"
+                    >
+                      <path
+                        d="M13.586 3.586a2 2 0 1 1 2.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793 3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+                      />
+                    </svg>
+                  </button>
                   <button
                     @click="openDeleteModal(v)"
                     type="button"
@@ -314,6 +350,17 @@ onMounted(() => {
       confirmText="ยืนยันการลบ"
       @confirm="confirmDelete"
       @cancel="closeDeleteModal"
+    />
+
+    <CommonConfirmModal
+      :show="showEditModal"
+      title="ยืนยันการแก้ไข"
+      :message="`คุณต้องการแก้ไขวิดีโอ '${
+        videoToEdit?.post_name || ''
+      }' ใช่หรือไม่?`"
+      confirmText="ไปที่หน้าแก้ไข"
+      type="info"  @confirm="confirmEdit"
+      @cancel="closeEditModal"
     />
   </div>
 </template>

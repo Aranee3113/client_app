@@ -99,22 +99,24 @@ onMounted(async () => {
           โพสต์เมื่อ: {{ new Date(post.post_timestamp).toLocaleString() }}
         </p>
 
-        <!-- รูปภาพของโพสต์ -->
         <div
           v-if="post.images && post.images.length > 0"
-          class="mt-5 space-y-3"
-        >
+          class="mt-5 space-y-4" >
           <div
             v-for="img in post.images.slice(0)"
             :key="img.post_image_id || img.post_image_path"
-            class="rounded-lg overflow-hidden "
-          >
-            <img
+            class="rounded-lg overflow-hidden shadow-sm" > <img
               :src="getImageUrl(img.post_image_path)"
               alt="post image"
-              class="w-full object-contain"
-              loading="lazy"
+              class="w-full object-contain bg-gray-100" loading="lazy"
             />
+            
+            <p
+              v-if="img.post_image_description"
+              class="p-3 text-sm text-gray-800 bg-white shadow-md" >
+              {{ img.post_image_description }}
+            </p>
+            
           </div>
         </div>
         <div
@@ -124,7 +126,6 @@ onMounted(async () => {
           ไม่มีรูปภาพ
         </div>
 
-        <!-- ส่วนคอมเมนต์ -->
         <div class="mt-8 pt-4">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-semibold text-gray-800">
@@ -138,12 +139,10 @@ onMounted(async () => {
             </span>
           </div>
 
-          <!-- กำลังโหลดคอมเมนต์ -->
           <div v-if="loadingComments" class="text-gray-500">
             กำลังโหลดคอมเมนต์...
           </div>
 
-          <!-- ไม่มีคอมเมนต์ -->
           <div
             v-else-if="comments.length === 0"
             class="text-gray-500 italic"
@@ -151,7 +150,6 @@ onMounted(async () => {
             ยังไม่มีคอมเมนต์
           </div>
 
-          <!-- รายการคอมเมนต์ -->
           <ul v-else class="space-y-4">
             <li
               v-for="c in comments"
@@ -159,7 +157,6 @@ onMounted(async () => {
               class="p-4 rounded-xl bg-gray-100"
             >
               <div class="flex items-start gap-3">
-                <!-- Avatar ชั่วคราว (อักษรแรกชื่อ) -->
                 <div
                   class="w-10 h-10 rounded-full bg-orange-200 flex items-center justify-center font-bold text-orange-900 shrink-0"
                   :title="c.user_name || 'ผู้ใช้'"
@@ -181,7 +178,6 @@ onMounted(async () => {
                     {{ c.comment_text }}
                   </p>
 
-                  <!-- รูปคอมเมนต์ถ้ามี -->
                   <div v-if="c.comment_image_path" class="mt-3">
                     <img
                       :src="getImageUrl(c.comment_image_path)"

@@ -3,8 +3,8 @@ definePageMeta({ layout: "admin" });
 
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
-// import { useCookie } from "#app"; // ไม่จำเป็นถ้า $axios ส่ง token ให้อัตโนมัติ
-// import { decodeJwt } from "jose"; // ไม่จำเป็น เพราะ backend จัดการเอง
+import { useCookie } from "#app";
+import { decodeJwt } from "jose";
 
 const { $axios } = useNuxtApp();
 const config = useRuntimeConfig();
@@ -18,21 +18,21 @@ const loading = ref(false);
 const error = ref("");
 const success = ref("");
 
-// ------- ฟอร์มวิดีโอ -------
 const form = ref({
   post_name: "",
   post_description: "",
-  existingVideos: [], // path วิดีโอเดิม (ถ้ามี) [{ post_image_id, post_image_path }]
-  newVideoPreviewUrls: [], // objectURLs สำหรับพรีวิววิดีโอใหม่
+  user_id: "",
+  existingVideos: [], // { post_image_id, post_image_path, post_image_description }
+  keep_image_ids: [], 
+  videos: [], // { file, url, description } - สำหรับ preview วิดีโอใหม่
 });
-const newVideoFiles = ref([]); // Array of File (วิดีโอใหม่)
 
 // ---- helpers ----
 const getFileBase = () =>
-  (config?.public?.fileBase ||
-    (config?.public?.apiBase || "").replace(/\/api\/?$/, "")) || "";
+  config?.public?.fileBase ||
+  (config?.public?.apiBase || "").replace(/\/api\/?$/, "") ||
+  "";
 
-// เปลี่ยนชื่อเป็น getMediaUrl เพื่อความชัดเจน
 const getMediaUrl = (path) => {
   if (!path) return "";
   if (path.startsWith("http")) return path;
@@ -41,111 +41,130 @@ const getMediaUrl = (path) => {
   return `${base}${p}`;
 };
 
-// (ลบ loadUserFromToken และ loadPosts เพราะไม่จำเป็นสำหรับฟอร์มนี้)
-
-// โหลดโพสต์วิดีโอเดิมตอนแก้ไข
-const loadVideoPost = async () => {
-  // สมมติว่ามี endpoint สำหรับดึง post 1 รายการ
-  const res = await $axios.get(`/post/${id}`); 
-  const postData = res.data?.data;
-
-  if (!postData) {
-    throw new Error("ไม่พบโพสต์วิดีโอที่ต้องการแก้ไข");
+const normalizeVideos = (raw) => {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  try {
+    const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
   }
-  
-  form.value.post_name = postData.post_name || "";
-  form.value.post_description = postData.post_description || "";
-  // 'videos' คือ array ที่ backend คืนค่ามาใน 'createvideo'
-  form.value.existingVideos = postData.videos || []; 
 };
 
-// เลือกวิดีโอใหม่ (รองรับหลายไฟล์)
-const handleFileChange = (e) => {
-  // 1. clear พรีวิวเดิมทั้งหมด
-  if (form.value.newVideoPreviewUrls.length > 0) {
-    form.value.newVideoPreviewUrls.forEach(URL.revokeObjectURL);
-    form.value.newVideoPreviewUrls = [];
-  }
-  newVideoFiles.value = [];
-
-  const files = e.target.files;
-  if (!files) return;
-
-  // 2. วนลูปไฟล์ใหม่
-  for (const file of files) {
-    // 3. กรองเฉพาะ MP4 (ตามที่ backend บังคับ)
-    if (file.type === "video/mp4") { 
-      newVideoFiles.value.push(file);
-      form.value.newVideoPreviewUrls.push(URL.createObjectURL(file));
-    } else {
-      console.warn(`ไฟล์ ${file.name} ไม่ใช่ .mp4 และจะถูกข้าม`);
-    }
-  }
+const handleFileChange = (event) => {
+  const files = Array.from(event.target.files || []).filter(file => 
+    file.type.startsWith("video/")
+  );
+  
+  form.value.videos.forEach((i) => URL.revokeObjectURL(i.url));
+  
+  form.value.videos = files.map((file) => ({
+    file,
+    url: URL.createObjectURL(file),
+    description: "", 
+  }));
 };
 
 onBeforeUnmount(() => {
-  // เคลียร์ object URL ทั้งหมด
-  if (form.value.newVideoPreviewUrls.length > 0) {
-    form.value.newVideoPreviewUrls.forEach(URL.revokeObjectURL);
-  }
+  form.value.videos.forEach((i) => URL.revokeObjectURL(i.url));
 });
 
-// ส่งฟอร์ม
-const handleSubmit = async () => {
-  error.value = "";
-  success.value = "";
-  loading.value = true;
-
-  try {
-    const fd = new FormData();
-    // 1. เพิ่ม fields ที่ backend ต้องการ (จาก createvideo)
-    fd.append("post_name", form.value.post_name);
-    fd.append("post_description", form.value.post_description);
-
-    // 2. เพิ่มไฟล์วิดีโอทั้งหมด (ใช้ key "video_files" ตาม backend)
-    if (newVideoFiles.value.length > 0) {
-      for (const file of newVideoFiles.value) {
-        fd.append("video_files", file);
-      }
-    }
-
-    if (isEditMode) {
-      // 3. (Edit) สมมติว่าใช้ PUT /post/:id สำหรับอัปเดต
-      // หมายเหตุ: backend `createvideo` ของคุณคือการ 'สร้าง'
-      // คุณต้องสร้าง endpoint 'updatevideo' ที่รับ PUT/POST และจัดการไฟล์เก่า/ใหม่ด้วย
-      await $axios.put(`/post/${id}`, fd, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      success.value = "อัปเดตวิดีโอสำเร็จ";
-    } else {
-      // 4. (Add) ใช้ POST /post/video (ตามที่เราคาดเดาจากชื่อ createvideo)
-      await $axios.post("/post/video", fd, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      success.value = "เพิ่มวิดีโอสำเร็จ";
-    }
-
-    setTimeout(() => router.push("/admin/video"), 800); // 5. เปลี่ยน path ย้อนกลับ
-  } catch (e) {
-    console.error(e);
-    error.value = e?.response?.data?.message || "เกิดข้อผิดพลาด";
-  } finally {
-    loading.value = false;
-  }
-};
-
+// โหลดข้อมูลโพสต์
 onMounted(async () => {
+  const token = useCookie("token").value;
+  if (token) {
+    try {
+      const decoded = decodeJwt(token);
+      form.value.user_id = decoded.user_id; 
+    } catch(e) {
+      console.error("Invalid token:", e);
+    }
+  }
+
   if (isEditMode) {
     loading.value = true;
     try {
-      await loadVideoPost();
+      const res = await $axios.get(`/post/${id}`);
+      if (res.status === 200) {
+        const data = res.data?.data || {};
+        form.value.post_name = data.post_name || "";
+        form.value.post_description = data.post_description || "";
+        form.value.user_id = data.user_id || form.value.user_id; 
+
+        const videos = normalizeVideos(data.images); 
+        
+        form.value.existingVideos = videos.map(video => ({
+          ...video,
+          post_image_description: video.post_image_description || ''
+        }));
+        
+        form.value.keep_image_ids = videos.map((video) => video.post_image_id);
+      }
     } catch (e) {
-      error.value = e?.message || "โหลดข้อมูลวิดีโอล้มเหลว";
+      error.value = "โหลดข้อมูลล้มเหลว";
     } finally {
       loading.value = false;
     }
   }
 });
+
+// ✅
+// ✅✅✅ FUNCTION ที่แก้ไข ✅✅✅
+// ✅
+const handleSubmit = async () => {
+  error.value = "";
+  success.value = "";
+  loading.value = true; 
+
+  const payload = new FormData();
+  payload.append("post_name", form.value.post_name);
+  payload.append("post_description", form.value.post_description);
+  
+  try {
+    if (isEditMode) {
+      // --- EDIT MODE ---
+      // (ใช้ key 'post_images' ฯลฯ สำหรับ Endpoint 'updatepostById')
+
+      // 1. แนบไฟล์วิดีโอใหม่ + คำอธิบาย
+      form.value.videos.forEach((video) => {
+        payload.append("post_images", video.file); 
+        payload.append("post_image_descriptions", video.description || "");
+      });
+      
+      // 2. แนบ ID วิดีโอเก่าที่เก็บ + คำอธิบาย
+      form.value.keep_image_ids.forEach((id) => {
+        payload.append("keep_image_ids", String(id));
+        const video = form.value.existingVideos.find(v => v.post_image_id === id);
+        payload.append("update_descriptions", video?.post_image_description || "");
+      });
+      
+      // 3. เรียก API (PUT /post/:id)
+      await $axios.put(`/post/${id}`, payload);
+      success.value = "อัปเดตโพสต์สำเร็จ";
+
+    } else {
+      // --- ADD MODE ---
+      // (ใช้ key 'video_files' ฯลฯ สำหรับ Endpoint 'createvideo')
+
+      // 1. แนบไฟล์วิดีโอใหม่ + คำอธิบาย
+      form.value.videos.forEach((video) => {
+        payload.append("video_files", video.file); // ✅ แก้ Key เป็น 'video_files'
+        payload.append("video_descriptions", video.description || ""); // ✅ แก้ Key (เผื่ออัปเดต createvideo)
+      });
+
+      // 2. เรียก API (POST /post/video)
+      await $axios.post(`/post/video`, payload); // ✅ แก้ Endpoint เป็น '/post/video'
+      success.value = "เพิ่มโพสต์ใหม่สำเร็จ";
+    }
+    
+    setTimeout(() => router.push("/admin/video"), 800); 
+  } catch (err) {
+    error.value = err?.response?.data?.message || "เกิดข้อผิดพลาด";
+  } finally {
+    loading.value = false; 
+  }
+};
 </script>
 
 <template>
@@ -157,9 +176,13 @@ onMounted(async () => {
         {{ isEditMode ? "แก้ไขวิดีโอ" : "เพิ่มวิดีโอ" }}
       </h1>
 
-      <form @submit.prevent="handleSubmit" class="space-y-5 text-lg">
+      <div v-if="loading" class="text-center p-4">
+        <p>Loading...</p>
+      </div>
+
+      <form v-else @submit.prevent="handleSubmit" class="space-y-5 text-lg">
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">ชื่อเรื่องวิดีโอ</label>
+          <label class="block mb-1 text-sm font-medium text-gray-700">ชื่อวิดีโอ</label>
           <input
             v-model="form.post_name"
             type="text"
@@ -167,9 +190,8 @@ onMounted(async () => {
             required
           />
         </div>
-
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">คำอธิบาย</label>
+          <label class="block mb-1 text-sm font-medium text-gray-700">รายละเอียดวิดีโอ</label>
           <textarea
             v-model="form.post_description"
             rows="4"
@@ -178,68 +200,109 @@ onMounted(async () => {
           />
         </div>
 
-        <div v-if="isEditMode && form.existingVideos.length > 0" class="mt-2">
-          <label class="block mb-1 text-sm font-medium text-gray-700">วิดีโอเดิม</label>
-          <div class="flex flex-wrap gap-2">
-            <video
+        <div v-if="form.existingVideos.length" class="mt-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">วิดีโอเดิม</label>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div
               v-for="video in form.existingVideos"
               :key="video.post_image_id"
-              :src="getMediaUrl(video.post_image_path)"
-              class="w-32 h-24 object-cover rounded border bg-black"
-              controls
-              preload="metadata"
-              muted
-              playsinline
-            ></video>
+              class="relative border rounded overflow-hidden shadow-sm"
+            >
+              <video
+                :src="getMediaUrl(video.post_image_path)"
+                class="w-full h-32 object-cover bg-black"
+                alt="post old video"
+                controls
+                muted
+                loop
+                playsinline
+              ></video>
+              
+              <label class="absolute top-1 right-1 bg-white/80 backdrop-blur-sm text-xs p-1 rounded shadow cursor-pointer">
+                <input
+                  type="checkbox"
+                  v-model="form.keep_image_ids"
+                  :value="video.post_image_id"
+                />
+                เก็บไว้
+              </label>
+
+              <input
+                type="text"
+                v-model="video.post_image_description"
+                placeholder="คำอธิบายวิดีโอ..."
+                class="w-full text-xs p-2 border-t bg-white focus:outline-none focus:ring-1 focus:ring-orange-300"
+                :disabled="!form.keep_image_ids.includes(video.post_image_id)"
+                :class="{ 'bg-gray-100 text-gray-400': !form.keep_image_ids.includes(video.post_image_id) }"
+              />
+            </div>
           </div>
-          <p class="text-xs text-gray-500 mt-1">
-            * ถ้าอัปโหลดวิดีโอใหม่ ระบบจะทับวิดีโอเดิมทั้งหมด (ขึ้นอยู่กับการออกแบบ backend)
-          </p>
+          <p class="text-xs text-gray-500 mt-2">* เอาเครื่องหมายถูกออก = ลบวิดีโอนั้นเมื่อบันทึก</p>
+          <p class="text-xs text-gray-500 mt-1">* แก้ไขคำอธิบายได้เฉพาะวิดีโอที่ "เก็บไว้"</p>
         </div>
 
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">
-            อัปโหลดวิดีโอ (MP4 เท่านั้น)
+        <div v-if="form.videos.length" class="mt-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">วิดีโอใหม่</label>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            
+            <div 
+              v-for="(video, index) in form.videos" 
+              :key="index" 
+              class="border rounded overflow-hidden shadow-sm"
+            >
+              <video 
+                :src="video.url" 
+                class="w-full h-32 object-cover bg-black" 
+                alt="post new video preview"
+                controls
+                muted
+                loop
+                playsinline
+              ></video>
+              
+              <input
+                type="text"
+                v-model="video.description"
+                placeholder="คำอธิบายวิดีโอ..."
+                class="w-full text-xs p-2 border-t bg-white focus:outline-none focus:ring-1 focus:ring-orange-300"
+              />
+            </div>
+
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            {{ isEditMode ? "อัปโหลดวิดีโอ (เพื่อแทนที่ทั้งหมด)" : "อัปโหลดวิดีโอ" }}
           </label>
           <input
             type="file"
-            accept="video/mp4"
+            multiple
+            accept="video/*" 
             @change="handleFileChange"
-            multiple 
-            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-300 focus:outline-none bg-white"
+            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-300 focus:outline-none file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-medium file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100"
           />
-
-          <div v-if="form.newVideoPreviewUrls.length > 0" class="mt-3">
-            <label class="block text-xs text-gray-600 mb-1">
-              วิดีโอใหม่ที่จะอัปโหลด ({{ form.newVideoPreviewUrls.length }} ไฟล์)
-            </label>
-            <div class="flex flex-wrap gap-2">
-              <video
-                v-for="(url, index) in form.newVideoPreviewUrls"
-                :key="index"
-                :src="url"
-                class="w-32 h-24 object-cover rounded border bg-black"
-                controls
-                preload="metadata"
-                muted
-                playsinline
-              ></video>
-            </div>
-          </div>
+           <p v-if="isEditMode && form.videos.length" class="text-xs text-red-500 mt-1">
+             * การอัปโหลดวิดีโอใหม่จะลบวิดีโอเก่าที่ "เก็บไว้" ทั้งหมด (ตาม logic backend)
+           </p>
+           <p v-else-if="isEditMode" class="text-xs text-gray-500 mt-1">
+             * หากไม่ต้องการเปลี่ยนวิดีโอ ให้ปล่อยว่างไว้ และเลือกเฉพาะวิดีโอที่ "เก็บไว้" ด้านบน
+           </p>
         </div>
 
         <div class="flex justify-between items-center mt-6">
           <button
             type="submit"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition transform hover:scale-105 shadow-md disabled:opacity-60"
+            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition transform hover:scale-105 shadow-md disabled:opacity-50 disabled:scale-100"
             :disabled="loading"
           >
-            {{ isEditMode ? "บันทึกการแก้ไข" : "เพิ่มวิดีโอ" }}
+            <span v-if="loading">กำลังบันทึก...</span>
+            <span v-else>{{ isEditMode ? "บันทึกการแก้ไข" : "เพิ่มวิดีโอ" }}</span>
           </button>
 
           <NuxtLink
             to="/admin/video"
-            class="px-6 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition transform hover:scale-105 shadow-md"
+            class="px-6 py-2 rounded-lg text-gray-700 font-medium bg-white hover:bg-gray-100 transition shadow-md border"
           >
             ย้อนกลับ
           </NuxtLink>

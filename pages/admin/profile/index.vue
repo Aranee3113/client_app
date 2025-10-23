@@ -34,8 +34,11 @@ const notification = ref({
 });
 let notificationTimer = null;
 
-// --- Modal State (Confirm) ---
+// --- Modal State (Confirm Delete) ---
 const showDeleteModal = ref(false); // ADDED
+
+// --- Modal State (Confirm Save) ---
+const showSaveModal = ref(false);
 
 // --- Notification (Toast) Helper ---
 // ADDED: ฟังก์ชันสำหรับแสดงการแจ้งเตือน
@@ -47,7 +50,7 @@ const showNotification = (message, type = "success", duration = 3500) => {
   }, duration);
 };
 
-// --- Modal Handlers (ADDED) ---
+// --- Delete Modal Handlers (ADDED) ---
 // ADDED: ฟังก์ชันสำหรับเปิด Modal
 const openDeleteModal = () => {
   if (!user.value.user_id) return;
@@ -57,6 +60,17 @@ const openDeleteModal = () => {
 // ADDED: ฟังก์ชันสำหรับปิด Modal
 const closeDeleteModal = () => {
   showDeleteModal.value = false;
+};
+// ---------------------------------
+
+// --- Save Modal Handlers (ADDED) ---
+const openSaveModal = () => {
+  // สามารถเพิ่มการตรวจสอบข้อมูล (validation) ตรงนี้ก่อนเปิด Modal ได้
+  showSaveModal.value = true;
+};
+
+const closeSaveModal = () => {
+  showSaveModal.value = false;
 };
 // ---------------------------------
 
@@ -130,11 +144,12 @@ const clearSelectedImage = () => {
   // (ไม่ต้อง fetchUser ใหม่ทันที)
 };
 
-// MODIFIED: saveProfile (เปลี่ยน alert เป็น showNotification)
-const saveProfile = async () => {
+// RENAMED & MODIFIED: (เดิมชื่อ saveProfile) -> confirmSave
+const confirmSave = async () => {
   if (!user.value.user_id) return;
   saving.value = true;
-
+  closeSaveModal(); // ปิด Modal ทันทีที่กด
+  
   try {
     const formData = new FormData();
     formData.append("user_name", user.value.user_name);
@@ -148,7 +163,6 @@ const saveProfile = async () => {
 
     const res = await $axios.put(`/user/${user.value.user_id}`, formData);
     if (res.status === 200) {
-      // alert("บันทึกข้อมูลเรียบร้อยแล้ว"); // REMOVED
       showNotification("บันทึกข้อมูลเรียบร้อยแล้ว", "success"); // ADDED
       user.value.user_password = "";
       await fetchUser(); // รีเฟรชข้อมูลจริง
@@ -156,7 +170,6 @@ const saveProfile = async () => {
     }
   } catch (err) {
     console.error("ไม่สามารถบันทึกข้อมูลได้", err);
-    // alert("เกิดข้อผิดพลาด"); // REMOVED
     showNotification("ไม่สามารถบันทึกข้อมูลได้", "error"); // ADDED
   } finally {
     saving.value = false;
@@ -172,17 +185,15 @@ const confirmDelete = async () => {
     deleting.value = true;
     await $axios.delete(`/user/${user.value.user_id}`);
     useCookie("token").value = null; // ออกจากระบบกรณีลบตัวเอง
-    
+
     // ADDED: แจ้งเตือนก่อนเด้ง
     showNotification("ลบโปรไฟล์สำเร็จ", "success");
     // รอแป๊บนึงให้ Toast แสดง
     setTimeout(() => {
       navigateTo("/"); // กลับหน้าแรก
     }, 1500);
-
   } catch (err) {
     console.error("ลบโปรไฟล์ไม่สำเร็จ", err);
-    // alert("ลบโปรไฟล์ไม่สำเร็จ"); // REMOVED
     showNotification("ลบโปรไฟล์ไม่สำเร็จ", "error"); // ADDED
   } finally {
     deleting.value = false;
@@ -386,7 +397,7 @@ onBeforeUnmount(() => {
 
         <div class="flex flex-wrap gap-3 pt-2">
           <button
-            @click="saveProfile"
+            @click="openSaveModal"
             :disabled="saving"
             class="px-5 py-2.5 rounded-full bg-gradient-to-r bg-purple-500 text-white shadow hover:opacity-95 transition disabled:opacity-60 cursor-pointer"
           >
@@ -415,6 +426,18 @@ onBeforeUnmount(() => {
       confirmText="ยืนยันการลบ"
       @confirm="confirmDelete"
       @cancel="closeDeleteModal"
+    />
+
+    <CommonConfirmModal
+      :show="showSaveModal"
+      title="ยืนยันการบันทึก"
+      :message="`คุณต้องการบันทึกการเปลี่ยนแปลงข้อมูลสำหรับ '${
+        user.user_username || ''
+      }' ใช่หรือไม่?`"
+      confirmText="ยืนยันการบันทึก"
+      type="info"
+      @confirm="confirmSave"
+      @cancel="closeSaveModal"
     />
   </div>
 </template>
