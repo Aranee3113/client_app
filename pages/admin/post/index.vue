@@ -179,6 +179,7 @@ onMounted(() => {
   <div
     class="min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat"
   >
+    <!--  Notification Toast -->
     <Transition
       enter-active-class="transition-all duration-300 ease-out"
       enter-from-class="opacity-0 transform translate-x-10"
@@ -247,8 +248,11 @@ onMounted(() => {
         </div>
       </div>
     </Transition>
+
+    <!--  ปุ่มย้อนกลับ -->
     <CommonButtonBack />
 
+    <!--  รายการโพสต์ -->
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
         <h2 class="text-3xl font-bold text-gray-900">รายการโพสต์</h2>
@@ -277,20 +281,17 @@ onMounted(() => {
               <th class="py-3 px-4 font-semibold text-center">จัดการ</th>
             </tr>
           </thead>
-
           <tbody>
             <tr v-if="loading">
               <td colspan="5" class="py-6 text-center text-gray-500">
                 กำลังโหลดข้อมูล...
               </td>
             </tr>
-
             <tr v-else-if="error">
               <td colspan="5" class="py-6 text-center text-red-500">
                 {{ error }}
               </td>
             </tr>
-
             <tr
               v-else
               v-for="post in posts"
@@ -298,15 +299,21 @@ onMounted(() => {
               class="hover:bg-gray-50 transition"
             >
               <td class="py-3 px-4 text-center">{{ post.post_id }}</td>
-
               <td class="py-3 px-4 truncate max-w-[20rem] sm:max-w-[24rem]">
                 {{ post.post_name }}
               </td>
-
               <td class="py-3 px-4">
                 <div class="flex justify-center">
+                  <!-- เงื่อนไขใหม่: แสดงเฉพาะภาพที่ไม่ใช่ /uploads/videos/ -->
                   <img
-                    v-if="post.images && post.images.length > 0"
+                    v-if="
+                      post.images &&
+                      post.images.length > 0 &&
+                      post.images[0].post_image_path &&
+                      !post.images[0].post_image_path.includes(
+                        '/uploads/videos/'
+                      )
+                    "
                     :src="getImageUrl(post.images[0].post_image_path)"
                     alt="Post Image"
                     class="w-16 h-16 object-cover rounded-lg shadow-md border"
@@ -315,11 +322,9 @@ onMounted(() => {
                   <span v-else class="text-gray-400">ไม่มีรูปภาพ</span>
                 </div>
               </td>
-
               <td class="py-3 px-4 whitespace-nowrap">
                 {{ new Date(post.post_timestamp).toLocaleString() }}
               </td>
-
               <td class="py-3 px-4">
                 <div class="flex justify-center gap-2">
                   <button
@@ -358,7 +363,6 @@ onMounted(() => {
                       />
                     </svg>
                   </button>
-
                   <CommonButtonApprovebutton
                     @fetchPost="
                       handleApproveSuccess(post.is_active === 1 ? 0 : 1)
@@ -370,7 +374,6 @@ onMounted(() => {
                 </div>
               </td>
             </tr>
-
             <tr v-if="!loading && !error && posts.length === 0">
               <td colspan="5" class="text-center text-gray-400 py-6">
                 ไม่มีโพสต์ในระบบ
@@ -381,6 +384,7 @@ onMounted(() => {
       </div>
     </div>
 
+    <!-- Modal ยืนยันการลบ -->
     <CommonConfirmModal
       :show="showDeleteModal"
       title="ยืนยันการลบโพสต์"
@@ -392,6 +396,7 @@ onMounted(() => {
       @cancel="closeDeleteModal"
     />
 
+    <!--  Modal ยืนยันการแก้ไข -->
     <CommonConfirmModal
       :show="showEditModal"
       title="ยืนยันการแก้ไข"

@@ -8,8 +8,6 @@ import { useRuntimeConfig, useHead } from "#app";
 import { Search as SearchIcon, FileText, AlertCircle, Shapes } from "lucide-vue-next";
 import { SECTIONS } from "~/textiles/index";
 
-
-
 const route = useRoute();
 
 const q = ref<string>((route.query.q as string) || "");
@@ -88,9 +86,20 @@ const matchText = (text: string, ws: string[], m: "AND" | "OR") => {
 const filteredPosts = computed(() => {
   const ws = words.value;
   if (!ws.length) return [];
-  return allPosts.value.filter((p) =>
-    matchText(`${p.post_name ?? ""} ${p.post_description ?? ""}`, ws, mode.value)
-  );
+
+  return allPosts.value
+    .filter((p) =>
+      matchText(`${p.post_name ?? ""} ${p.post_description ?? ""}`, ws, mode.value)
+    )
+    // กรองโพสต์ที่มีไฟล์อยู่ใน /uploads/videos/ ออก
+    .filter((p) => {
+      const allPaths = [
+        p.cover,
+        ...(normalizeImages(p?.images) || []),
+        ...(normalizeImages(p?.post_images) || []),
+      ].filter(Boolean);
+      return !allPaths.some((path: string) => path.includes("/uploads/videos/"));
+    });
 });
 
 /* ---------- filter textile sections ---------- */
@@ -128,16 +137,18 @@ onMounted(fetchAll);
   <div
     class="min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat px-4 pb-12"
   >
-   
     <div class="pt-6">
       <CommonButtonBack />
     </div>
 
-   
     <main class="max-w-6xl mx-auto px-4 py-8">
       <!-- Loading -->
       <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div v-for="i in 6" :key="i" class="animate-pulse rounded-2xl border border-gray-200 bg-white p-4">
+        <div
+          v-for="i in 6"
+          :key="i"
+          class="animate-pulse rounded-2xl border border-gray-200 bg-white p-4"
+        >
           <div class="h-48 w-full bg-gray-200 rounded-xl mb-4"></div>
           <div class="h-5 w-1/2 bg-gray-200 rounded mb-3"></div>
           <div class="h-4 w-11/12 bg-gray-200 rounded mb-2"></div>
@@ -146,7 +157,10 @@ onMounted(fetchAll);
       </div>
 
       <!-- Error -->
-      <div v-else-if="errorMsg" class="flex items-start gap-3 p-4 rounded-xl border border-red-200 bg-red-50 text-red-700">
+      <div
+        v-else-if="errorMsg"
+        class="flex items-start gap-3 p-4 rounded-xl border border-red-200 bg-red-50 text-red-700"
+      >
         <AlertCircle class="w-5 h-5 mt-0.5" />
         <div>{{ errorMsg }}</div>
       </div>
@@ -167,7 +181,9 @@ onMounted(fetchAll);
             <div class="flex items-center gap-2 mb-3">
               <FileText class="w-5 h-5 text-purple-700" />
               <h2 class="text-xl font-semibold text-gray-900">โพสต์</h2>
-              <span class="text-lg px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
+              <span
+                class="text-lg px-2 py-0.5 rounded-full bg-purple-100 text-purple-700"
+              >
                 {{ filteredPosts.length }}
               </span>
             </div>
@@ -189,16 +205,30 @@ onMounted(fetchAll);
                 </div>
 
                 <div class="p-5">
-                  <h3 class="font-semibold text-gray-900 mb-1 line-clamp-1">{{ p.post_name }}</h3>
-                  <p class="text-sm text-gray-600 line-clamp-3">{{ p.post_description }}</p>
+                  <h3 class="font-semibold text-gray-900 mb-1 line-clamp-1">
+                    {{ p.post_name }}
+                  </h3>
+                  <p class="text-sm text-gray-600 line-clamp-3">
+                    {{ p.post_description }}
+                  </p>
 
                   <NuxtLink
                     :to="`/member/post/${p.post_id}`"
                     class="inline-flex items-center gap-1 mt-3 text-sm text-orange-700 group-hover:text-orange-800 hover:underline"
                   >
                     เปิดโพสต์
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    <svg
+                      class="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </NuxtLink>
                 </div>
@@ -206,12 +236,14 @@ onMounted(fetchAll);
             </div>
           </section>
 
-          <!-- ผ้าทอ / ชิ้นงาน -->
+          <!-- ผ้าทอ -->
           <section v-if="filteredSections.length" class="mt-10">
             <div class="flex items-center gap-2 mb-3">
               <Shapes class="w-5 h-5 text-emerald-700" />
               <h2 class="text-xl font-semibold text-gray-900">ผ้าทอ</h2>
-              <span class="text-lg px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
+              <span
+                class="text-lg px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700"
+              >
                 {{ filteredSections.length }}
               </span>
             </div>
@@ -223,7 +255,9 @@ onMounted(fetchAll);
                 class="group overflow-hidden rounded-2xl border border-gray-200 bg-white hover:shadow-xl hover:-translate-y-0.5 transition"
               >
                 <div class="p-5">
-                  <h3 class="font-semibold text-gray-900 mb-1 line-clamp-2">{{ s.name }}</h3>
+                  <h3 class="font-semibold text-gray-900 mb-1 line-clamp-2">
+                    {{ s.name }}
+                  </h3>
                   <p class="text-sm text-gray-600 line-clamp-3">{{ s.summary }}</p>
 
                   <NuxtLink
@@ -231,8 +265,18 @@ onMounted(fetchAll);
                     class="inline-flex items-center gap-1 mt-3 text-sm text-orange-700 group-hover:text-orange-800 hover:underline"
                   >
                     ดูรายละเอียด
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    <svg
+                      class="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </NuxtLink>
                 </div>
@@ -241,14 +285,18 @@ onMounted(fetchAll);
           </section>
         </template>
 
-        <!-- Empty state -->
-        <div v-else class="mx-auto max-w-xl text-center rounded-3xl border border-dashed border-gray-300 bg-white/70 p-10">
+        <!-- Empty -->
+        <div
+          v-else
+          class="mx-auto max-w-xl text-center rounded-3xl border border-dashed border-gray-300 bg-white/70 p-10"
+        >
           <SearchIcon class="w-10 h-10 mx-auto mb-3 text-gray-400" />
           <h3 class="text-lg font-semibold text-gray-800">ไม่พบผลลัพธ์</h3>
-          <p class="text-sm text-gray-600 mt-1">ลองปรับคำค้นให้กว้างขึ้น หรือใช้คำหลักสั้น ๆ</p>
+          <p class="text-sm text-gray-600 mt-1">
+            ลองปรับคำค้นให้กว้างขึ้น หรือใช้คำหลักสั้น ๆ
+          </p>
         </div>
       </div>
     </main>
   </div>
 </template>
-

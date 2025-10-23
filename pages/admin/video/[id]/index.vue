@@ -22,9 +22,9 @@ const form = ref({
   post_name: "",
   post_description: "",
   user_id: "",
-  existingVideos: [], // { post_image_id, post_image_path, post_image_description }
+  existingVideos: [], // { post_image_id, post_image_path }
   keep_image_ids: [], 
-  videos: [], // { file, url, description } - สำหรับ preview วิดีโอใหม่
+  videos: [], // { file, url }
 });
 
 // ---- helpers ----
@@ -53,16 +53,15 @@ const normalizeVideos = (raw) => {
 };
 
 const handleFileChange = (event) => {
-  const files = Array.from(event.target.files || []).filter(file => 
+  const files = Array.from(event.target.files || []).filter(file =>
     file.type.startsWith("video/")
   );
-  
+
   form.value.videos.forEach((i) => URL.revokeObjectURL(i.url));
-  
+
   form.value.videos = files.map((file) => ({
     file,
     url: URL.createObjectURL(file),
-    description: "", 
   }));
 };
 
@@ -93,12 +92,7 @@ onMounted(async () => {
         form.value.user_id = data.user_id || form.value.user_id; 
 
         const videos = normalizeVideos(data.images); 
-        
-        form.value.existingVideos = videos.map(video => ({
-          ...video,
-          post_image_description: video.post_image_description || ''
-        }));
-        
+        form.value.existingVideos = videos;
         form.value.keep_image_ids = videos.map((video) => video.post_image_id);
       }
     } catch (e) {
@@ -109,9 +103,7 @@ onMounted(async () => {
   }
 });
 
-// ✅
-// ✅✅✅ FUNCTION ที่แก้ไข ✅✅✅
-// ✅
+
 const handleSubmit = async () => {
   error.value = "";
   success.value = "";
@@ -124,40 +116,26 @@ const handleSubmit = async () => {
   try {
     if (isEditMode) {
       // --- EDIT MODE ---
-      // (ใช้ key 'post_images' ฯลฯ สำหรับ Endpoint 'updatepostById')
-
-      // 1. แนบไฟล์วิดีโอใหม่ + คำอธิบาย
       form.value.videos.forEach((video) => {
-        payload.append("post_images", video.file); 
-        payload.append("post_image_descriptions", video.description || "");
+        payload.append("post_images", video.file);
       });
-      
-      // 2. แนบ ID วิดีโอเก่าที่เก็บ + คำอธิบาย
+
       form.value.keep_image_ids.forEach((id) => {
         payload.append("keep_image_ids", String(id));
-        const video = form.value.existingVideos.find(v => v.post_image_id === id);
-        payload.append("update_descriptions", video?.post_image_description || "");
       });
-      
-      // 3. เรียก API (PUT /post/:id)
+
       await $axios.put(`/post/${id}`, payload);
       success.value = "อัปเดตโพสต์สำเร็จ";
-
     } else {
       // --- ADD MODE ---
-      // (ใช้ key 'video_files' ฯลฯ สำหรับ Endpoint 'createvideo')
-
-      // 1. แนบไฟล์วิดีโอใหม่ + คำอธิบาย
       form.value.videos.forEach((video) => {
-        payload.append("video_files", video.file); // ✅ แก้ Key เป็น 'video_files'
-        payload.append("video_descriptions", video.description || ""); // ✅ แก้ Key (เผื่ออัปเดต createvideo)
+        payload.append("video_files", video.file);
       });
 
-      // 2. เรียก API (POST /post/video)
-      await $axios.post(`/post/video`, payload); // ✅ แก้ Endpoint เป็น '/post/video'
+      await $axios.post(`/post/video`, payload);
       success.value = "เพิ่มโพสต์ใหม่สำเร็จ";
     }
-    
+
     setTimeout(() => router.push("/admin/video"), 800); 
   } catch (err) {
     error.value = err?.response?.data?.message || "เกิดข้อผิดพลาด";
@@ -190,6 +168,7 @@ const handleSubmit = async () => {
             required
           />
         </div>
+
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">รายละเอียดวิดีโอ</label>
           <textarea
@@ -200,6 +179,7 @@ const handleSubmit = async () => {
           />
         </div>
 
+        <!-- วิดีโอเดิม -->
         <div v-if="form.existingVideos.length" class="mt-4">
           <label class="block text-sm font-medium text-gray-700 mb-2">วิดีโอเดิม</label>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -211,7 +191,6 @@ const handleSubmit = async () => {
               <video
                 :src="getMediaUrl(video.post_image_path)"
                 class="w-full h-32 object-cover bg-black"
-                alt="post old video"
                 controls
                 muted
                 loop
@@ -226,25 +205,15 @@ const handleSubmit = async () => {
                 />
                 เก็บไว้
               </label>
-
-              <input
-                type="text"
-                v-model="video.post_image_description"
-                placeholder="คำอธิบายวิดีโอ..."
-                class="w-full text-xs p-2 border-t bg-white focus:outline-none focus:ring-1 focus:ring-orange-300"
-                :disabled="!form.keep_image_ids.includes(video.post_image_id)"
-                :class="{ 'bg-gray-100 text-gray-400': !form.keep_image_ids.includes(video.post_image_id) }"
-              />
             </div>
           </div>
           <p class="text-xs text-gray-500 mt-2">* เอาเครื่องหมายถูกออก = ลบวิดีโอนั้นเมื่อบันทึก</p>
-          <p class="text-xs text-gray-500 mt-1">* แก้ไขคำอธิบายได้เฉพาะวิดีโอที่ "เก็บไว้"</p>
         </div>
 
+        <!-- วิดีโอใหม่ -->
         <div v-if="form.videos.length" class="mt-4">
           <label class="block text-sm font-medium text-gray-700 mb-2">วิดีโอใหม่</label>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            
             <div 
               v-for="(video, index) in form.videos" 
               :key="index" 
@@ -253,24 +222,16 @@ const handleSubmit = async () => {
               <video 
                 :src="video.url" 
                 class="w-full h-32 object-cover bg-black" 
-                alt="post new video preview"
                 controls
                 muted
                 loop
                 playsinline
               ></video>
-              
-              <input
-                type="text"
-                v-model="video.description"
-                placeholder="คำอธิบายวิดีโอ..."
-                class="w-full text-xs p-2 border-t bg-white focus:outline-none focus:ring-1 focus:ring-orange-300"
-              />
             </div>
-
           </div>
         </div>
 
+        <!-- อัปโหลด -->
         <div class="mt-4">
           <label class="block text-sm font-medium text-gray-700 mb-1">
             {{ isEditMode ? "อัปโหลดวิดีโอ (เพื่อแทนที่ทั้งหมด)" : "อัปโหลดวิดีโอ" }}
@@ -283,7 +244,7 @@ const handleSubmit = async () => {
             class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-300 focus:outline-none file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-medium file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100"
           />
            <p v-if="isEditMode && form.videos.length" class="text-xs text-red-500 mt-1">
-             * การอัปโหลดวิดีโอใหม่จะลบวิดีโอเก่าที่ "เก็บไว้" ทั้งหมด (ตาม logic backend)
+             * การอัปโหลดวิดีโอใหม่จะลบวิดีโอเก่าที่ "เก็บไว้" ทั้งหมด
            </p>
            <p v-else-if="isEditMode" class="text-xs text-gray-500 mt-1">
              * หากไม่ต้องการเปลี่ยนวิดีโอ ให้ปล่อยว่างไว้ และเลือกเฉพาะวิดีโอที่ "เก็บไว้" ด้านบน
