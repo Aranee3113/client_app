@@ -37,8 +37,11 @@ const notification = ref({
 });
 let notificationTimer: any = null;
 
-// --- Modal State (Confirm) ---
+// --- Modal State (Confirm Delete) ---
 const showDeleteModal = ref(false); // ADDED
+
+// --- Modal State (Confirm Save) ---
+const showSaveModal = ref(false);
 
 // --- Notification (Toast) Helper ---
 // ADDED: ฟังก์ชันสำหรับแสดงการแจ้งเตือน
@@ -54,7 +57,7 @@ const showNotification = (
   }, duration);
 };
 
-// --- Modal Handlers (ADDED) ---
+// --- Delete Modal Handlers (ADDED) ---
 // ADDED: ฟังก์ชันสำหรับเปิด Modal
 const openDeleteModal = () => {
   if (!form.value.user_id) return;
@@ -64,6 +67,16 @@ const openDeleteModal = () => {
 // ADDED: ฟังก์ชันสำหรับปิด Modal
 const closeDeleteModal = () => {
   showDeleteModal.value = false;
+};
+// ---------------------------------
+
+// --- Save Modal Handlers (ADDED) ---
+const openSaveModal = () => {
+  showSaveModal.value = true;
+};
+
+const closeSaveModal = () => {
+  showSaveModal.value = false;
 };
 // ---------------------------------
 
@@ -138,9 +151,10 @@ const removeSelectedImage = () => {
   if (input) input.value = "";
 };
 
-// MODIFIED: saveProfile (เปลี่ยน alert เป็น showNotification)
-const saveProfile = async () => {
+// RENAMED & MODIFIED: (เดิมชื่อ saveProfile)
+const confirmSave = async () => {
   if (!form.value.user_id) return;
+  closeSaveModal(); // ปิด Modal
   try {
     saving.value = true;
     const fd = new FormData();
@@ -193,9 +207,9 @@ onUnmounted(() => {
 <template>
   <div
     class="relative min-h-screen
-           bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
-           md:bg-fixed
-           pb-24 md:pb-28 lg:pb-32"
+             bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat
+             md:bg-fixed
+             pb-24 md:pb-28 lg:pb-32"
   >
     <Transition
       enter-active-class="transition-all duration-300 ease-out"
@@ -383,13 +397,12 @@ onUnmounted(() => {
 
         <div class="flex flex-wrap gap-3 pt-2">
           <button
-            @click="saveProfile"
+            @click="openSaveModal"
             :disabled="saving"
             class="px-5 py-2.5 rounded-full bg-gradient-to-r bg-purple-500 text-white shadow hover:opacity-95 transition disabled:opacity-60 cursor-pointer"
           >
             {{ saving ? "กำลังบันทึก..." : "บันทึก" }}
           </button>
-
           <button
             type="button"
             @click="openDeleteModal"
@@ -412,6 +425,18 @@ onUnmounted(() => {
       confirmText="ยืนยันการลบ"
       @confirm="confirmDelete"
       @cancel="closeDeleteModal"
+    />
+
+    <CommonConfirmModal
+      :show="showSaveModal"
+      title="ยืนยันการบันทึก"
+      :message="`คุณต้องการบันทึกการเปลี่ยนแปลงโปรไฟล์ '${
+        form.user_username
+      }' ใช่หรือไม่?`"
+      confirmText="ยืนยันการบันทึก"
+      type="info"
+      @confirm="confirmSave"
+      @cancel="closeSaveModal"
     />
   </div>
 </template>

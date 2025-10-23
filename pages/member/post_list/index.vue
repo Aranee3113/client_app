@@ -493,7 +493,7 @@ onMounted(async () => {
                 </div>
                 <button
                   v-if="myRatings[String(post.post_id)] != null"
-                  class="flex items-center gap-1 text-xs px-3 py-1 rounded text-white cursor-pointer"
+                  class="flex items-center gap-1 text-xs px-3 py-1 rounded text-black cursor-pointer"
                   @click="removeMyRating(post.post_id)"
                   title="ลบคะแนนของฉัน"
                 >

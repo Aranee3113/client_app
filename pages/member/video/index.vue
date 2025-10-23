@@ -98,6 +98,7 @@ onMounted(fetchVideoPosts);
               </div>
 
               <div class="md:col-span-2 space-y-4">
+                
                 <div class="aspect-video w-full">
                   <video
                     v-if="post.videos && post.videos.length > 0"
@@ -116,9 +117,18 @@ onMounted(fetchVideoPosts);
                   </div>
                 </div>
                 
-                </div>
+                <p 
+                  v-if="post.videos && post.videos.length > 0 && post.videos[0].post_image_description"
+                  class="text-base text-gray-700 dark:text-green-700 whitespace-pre-wrap break-words pt-2"
+                >
+                  {{ post.videos[0].post_image_description }}
+                </p>
+                
+              </div>
             </div>
-          </article> </div>
+          </article>
+
+        </div>
       </div>
     </div>
   </div>

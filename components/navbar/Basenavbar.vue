@@ -163,6 +163,12 @@ onBeforeUnmount(() => {
           </button>
           <button
             class="w-full text-left block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200"
+            @click="go('/admin/video')"
+          >
+            จัดการวิดีโอ
+          </button>
+          <button
+            class="w-full text-left block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200"
             @click="go('/admin/user')"
           >
             จัดการรายชื่อผู้ใช้
