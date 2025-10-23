@@ -1,6 +1,6 @@
 <template>
 <div class="member-layout-sarabun">
-<navbar-membernavber class="sticky top-0 z-50 bg-white shadow-md w-full" />
+<navbar-membernavber class="sticky top-0 z-50" />
 
 <slot />
 <footer-Basefooter />
