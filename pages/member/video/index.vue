@@ -1,7 +1,5 @@
 <script setup>
 import { ref, onMounted } from "vue";
-// ไม่ต้องใช้ useRoute เพราะเราจะแสดงผลทั้งหมด
-// import { useRoute } from "vue-router"; 
 
 definePageMeta({
   layout: "member",
@@ -10,12 +8,10 @@ definePageMeta({
 const { $axios } = useNuxtApp();
 const config = useRuntimeConfig();
 
-// เปลี่ยนจาก post (Object) เป็น posts (Array)
-const posts = ref([]); 
+const posts = ref([]);
 const loading = ref(true);
 const error = ref("");
 
-// ---- helpers ----
 const getFileBase = () =>
   (config?.public?.fileBase ||
     (config?.public?.apiBase || "").replace(/\/api\/?$/, "")) || "";
@@ -29,16 +25,13 @@ const getMediaUrl = (path) => {
 };
 
 // ---- data fetching ----
-// เปลี่ยนชื่อฟังก์ชันเป็น fetchVideoPosts
 const fetchVideoPosts = async () => {
   loading.value = true;
   error.value = "";
   
   try {
-    // สมมติว่า endpoint ดึงวิดีโอทั้งหมดคือ /post/video
-    // (หากเป็น /post ให้กรองเฉพาะ is_video เอาเอง)
     const res = await $axios.get(`/post/video`);
-    posts.value = res.data?.data || []; // เก็บข้อมูลเป็น Array
+    posts.value = res.data?.data || [];
 
   } catch (e) {
     console.error("โหลดโพสต์ล้มเหลว:", e);
@@ -80,26 +73,10 @@ onMounted(fetchVideoPosts);
             :key="post.post_id"
             class="border-b border-gray-300/50 pb-10 last:border-b-0 last:pb-0"
           >
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="flex flex-col md:flex-row md:items-start gap-8">
               
-              <div class="md:col-span-1 space-y-4">
-                <h2 class="text-3xl font-bold text-gray-800 dark:text-white break-words">
-                  {{ post.post_name }}
-                  </h2>
-                
-                <div class="text-sm text-gray-500 dark:text-gray-400">
-                  <span>โพสต์เมื่อ: </span>
-                  <span>{{ new Date(post.post_timestamp).toLocaleString() }}</span>
-                </div>
-
-                <p class="text-lg text-gray-700 dark:text-gray-200 whitespace-pre-wrap break-words line-clamp-4">
-                  {{ post.post_description }}
-                </p>
-              </div>
-
-              <div class="md:col-span-2 space-y-4">
-                
-                <div class="aspect-video w-full">
+              <div class="w-full md:w-2/3 order-1 md:order-2">
+                <div class="aspect-video w-full rounded-xl overflow-hidden shadow-lg bg-black">
                   <video
                     v-if="post.videos && post.videos.length > 0"
                     :src="getMediaUrl(post.videos[0].post_image_path)"
@@ -108,23 +85,37 @@ onMounted(fetchVideoPosts);
                     muted
                     loop
                     playsinline
-                    class="w-full h-full rounded-lg shadow-lg bg-black"
+                    class="w-full h-full object-cover"
                   >
                     เบราว์เซอร์ของคุณไม่รองรับแท็กวิดีโอ
                   </video>
-                  <div v-else class="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-lg">
+                  <div v-else class="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700">
                     <p class="text-gray-500">ไม่มีไฟล์วิดีโอสำหรับแสดงผล</p>
                   </div>
                 </div>
-                
-                <p 
-                  v-if="post.videos && post.videos.length > 0 && post.videos[0].post_image_description"
-                  class="text-base text-gray-700 dark:text-green-700 whitespace-pre-wrap break-words pt-2"
-                >
-                  {{ post.videos[0].post_image_description }}
-                </p>
-                
               </div>
+
+              <div class="w-full md:w-1/3 order-2 md:order-1 flex flex-col">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white break-words">
+                  {{ post.post_name }}
+                </h2>
+                
+                <div class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                  <span>โพสต์เมื่อ: </span>
+                  <span>{{ new Date(post.post_timestamp).toLocaleString() }}</span>
+                </div>
+
+                <div
+                  class="mt-4 max-h-[40vh] md:max-h-[60vh] overflow-y-auto rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-inner p-4"
+                >
+                  <p
+                    class="text-lg text-gray-700 dark:text-gray-200 whitespace-pre-wrap break-words leading-relaxed"
+                  >
+                    {{ post.post_description }}
+                  </p>
+                </div>
+
+                </div>
             </div>
           </article>
 
@@ -133,3 +124,19 @@ onMounted(fetchVideoPosts);
     </div>
   </div>
 </template>
+
+<style scoped>
+div.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+div.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.3);
+  border-radius: 4px;
+}
+div.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 100, 100, 0.5);
+}
+div.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+</style>
