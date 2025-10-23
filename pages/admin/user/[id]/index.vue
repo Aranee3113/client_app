@@ -128,7 +128,7 @@ const handleSubmit = async () => {
   <div class="min-h-screen bg-[url('/assetts/css/image/bg.png')] bg-cover bg-center bg-no-repeat ">
     <CommonButtonBack />
     <div class="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
-      <h1 class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+      <h1 class="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
         {{ isEditMode ? "แก้ไขผู้ใช้" : "เพิ่มผู้ใช้" }}
       </h1>
 
