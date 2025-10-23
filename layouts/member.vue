@@ -1,9 +1,10 @@
 <template>
-  <div class="member-layout-sarabun">
-    <navbar-membernavber />
-    <slot />
-    <footer-Basefooter />
-  </div>
+<div class="member-layout-sarabun">
+<navbar-membernavber class="sticky top-0 z-50 bg-white shadow-md w-full" />
+
+<slot />
+<footer-Basefooter />
+</div>
 </template>
 
 <script setup>
