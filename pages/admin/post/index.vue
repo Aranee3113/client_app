@@ -383,7 +383,6 @@ onMounted(() => {
         </table>
       </div>
     </div>
-
     <!-- Modal ยืนยันการลบ -->
     <CommonConfirmModal
       :show="showDeleteModal"
