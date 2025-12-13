@@ -98,7 +98,6 @@ async function login() {
           </p>
         </form>
       </div>
-
       <!-- รูปภาพ -->
       <div class="hidden md:flex items-center justify-center p-6">
         <img
